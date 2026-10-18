@@ -1,0 +1,32 @@
+name: vinted-deal-hunter
+services:
+  app:
+    build: .
+    ports:
+      - "127.0.0.1:${VDH_PORT:-8000}:8000"
+    environment:
+      VDH_DB_PATH: /data/offers.sqlite3
+      ADMIN_PASSWORD_HASH: ${ADMIN_PASSWORD_HASH:-}
+      JOBS_API_TOKEN: ${JOBS_API_TOKEN:-}
+      VDH_ADMIN: '${VDH_ADMIN:-{"username":"admin","secure_cookies":false}}'
+      VDH_SCHEDULER: '${VDH_SCHEDULER:-{"enabled":true,"interval_seconds":300}}'
+      VDH_AI: '${VDH_AI:-{"enabled":false}}'
+      VDH_DEAL: '${VDH_DEAL:-{}}'
+      VDH_PRICING: '${VDH_PRICING:-{}}'
+      VDH_NOTIFICATIONS: '${VDH_NOTIFICATIONS:-{"enabled":false}}'
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-5-nano}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-}
+      CHAT_ID: ${CHAT_ID:-}
+    volumes:
+      - hunter-data:/data
+    read_only: true
+    tmpfs:
+      - /tmp:size=64m,mode=1777
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    init: true
+    restart: unless-stopped
+    stop_grace_period: 3m
+volumes:
+  hunter-data:

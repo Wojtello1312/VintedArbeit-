@@ -1,0 +1,1802 @@
+{
+  "description": "Fictional historical demo only. Prices, demand, receipts and outcomes are invented test fixtures, not production data.",
+  "evaluation_at": "2026-03-01T00:00:00Z",
+  "snapshots": [
+    {
+      "offer": {
+        "source_name": "demo-offers",
+        "is_demo": true,
+        "external_id": "DEMO-target-0",
+        "product_name": "DEMO sneaker 90",
+        "brand": "demo brand",
+        "size": "EU 42",
+        "condition": "good",
+        "currency": "PLN",
+        "asking_price": "40.00",
+        "published_at": "2026-01-10T11:00:00Z"
+      },
+      "available_at": "2026-01-10T12:00:00Z",
+      "costs": {
+        "currency": "PLN",
+        "buyer_fees": "2.00",
+        "inbound_shipping": "5.00",
+        "resale_fees": "2.00",
+        "outbound_shipping_subsidy": "1.00",
+        "other_costs": "0.00"
+      },
+      "model": "demo model 90",
+      "category": "sneakers",
+      "description": "DEMO fictional historical listing, no real seller.",
+      "photo_count": 3,
+      "demand": {
+        "score": "0.8",
+        "source_reference": "DEMO fictional demand evidence",
+        "observed_at": "2026-01-09T12:00:00Z",
+        "available_at": "2026-01-09T12:00:00Z"
+      }
+    },
+    {
+      "offer": {
+        "source_name": "demo-offers",
+        "is_demo": true,
+        "external_id": "DEMO-target-1",
+        "product_name": "DEMO sneaker 90",
+        "brand": "demo brand",
+        "size": "EU 42",
+        "condition": "good",
+        "currency": "PLN",
+        "asking_price": "40.00",
+        "published_at": "2026-01-11T11:00:00Z"
+      },
+      "available_at": "2026-01-11T12:00:00Z",
+      "costs": {
+        "currency": "PLN",
+        "buyer_fees": "2.00",
+        "inbound_shipping": "5.00",
+        "resale_fees": "2.00",
+        "outbound_shipping_subsidy": "1.00",
+        "other_costs": "0.00"
+      },
+      "model": "demo model 90",
+      "category": "sneakers",
+      "description": "DEMO fictional historical listing, no real seller.",
+      "photo_count": 3,
+      "demand": null
+    },
+    {
+      "offer": {
+        "source_name": "demo-offers",
+        "is_demo": true,
+        "external_id": "DEMO-target-2",
+        "product_name": "DEMO sneaker 90",
+        "brand": "demo brand",
+        "size": "EU 42",
+        "condition": "good",
+        "currency": "PLN",
+        "asking_price": "40.00",
+        "published_at": "2026-01-12T11:00:00Z"
+      },
+      "available_at": "2026-01-12T12:00:00Z",
+      "costs": {
+        "currency": "PLN",
+        "buyer_fees": null,
+        "inbound_shipping": "5.00",
+        "resale_fees": "2.00",
+        "outbound_shipping_subsidy": "1.00",
+        "other_costs": "0.00"
+      },
+      "model": "demo model 90",
+      "category": "sneakers",
+      "description": "DEMO fictional historical listing, no real seller.",
+      "photo_count": 3,
+      "demand": {
+        "score": "0.8",
+        "source_reference": "DEMO fictional demand evidence",
+        "observed_at": "2026-01-11T12:00:00Z",
+        "available_at": "2026-01-11T12:00:00Z"
+      }
+    },
+    {
+      "offer": {
+        "source_name": "demo-offers",
+        "is_demo": true,
+        "external_id": "DEMO-target-3",
+        "product_name": "DEMO sneaker 90",
+        "brand": "demo brand",
+        "size": "EU 42",
+        "condition": "good",
+        "currency": "PLN",
+        "asking_price": "170.00",
+        "published_at": "2026-01-13T11:00:00Z"
+      },
+      "available_at": "2026-01-13T12:00:00Z",
+      "costs": {
+        "currency": "PLN",
+        "buyer_fees": "2.00",
+        "inbound_shipping": "5.00",
+        "resale_fees": "2.00",
+        "outbound_shipping_subsidy": "1.00",
+        "other_costs": "0.00"
+      },
+      "model": "demo model 90",
+      "category": "sneakers",
+      "description": "DEMO fictional historical listing, no real seller.",
+      "photo_count": 3,
+      "demand": {
+        "score": "0.8",
+        "source_reference": "DEMO fictional demand evidence",
+        "observed_at": "2026-01-12T12:00:00Z",
+        "available_at": "2026-01-12T12:00:00Z"
+      }
+    },
+    {
+      "offer": {
+        "source_name": "demo-offers",
+        "is_demo": true,
+        "external_id": "DEMO-target-4",
+        "product_name": "DEMO sneaker 90",
+        "brand": "demo brand",
+        "size": "EU 42",
+        "condition": "good",
+        "currency": "PLN",
+        "asking_price": "40.00",
+        "published_at": "2026-01-14T11:00:00Z"
+      },
+      "available_at": "2026-01-14T12:00:00Z",
+      "costs": {
+        "currency": "PLN",
+        "buyer_fees": "2.00",
+        "inbound_shipping": "5.00",
+        "resale_fees": "2.00",
+        "outbound_shipping_subsidy": "1.00",
+        "other_costs": "0.00"
+      },
+      "model": "demo model ask",
+      "category": "sneakers",
+      "description": "DEMO fictional historical listing, no real seller.",
+      "photo_count": 3,
+      "demand": {
+        "score": "0.8",
+        "source_reference": "DEMO fictional demand evidence",
+        "observed_at": "2026-01-13T12:00:00Z",
+        "available_at": "2026-01-13T12:00:00Z"
+      }
+    },
+    {
+      "offer": {
+        "source_name": "demo-offers",
+        "is_demo": true,
+        "external_id": "DEMO-target-5",
+        "product_name": "DEMO sneaker 90",
+        "brand": "demo brand",
+        "size": "EU 42",
+        "condition": "good",
+        "currency": "PLN",
+        "asking_price": "40.00",
+        "published_at": "2026-01-15T11:00:00Z"
+      },
+      "available_at": "2026-01-15T12:00:00Z",
+      "costs": {
+        "currency": "PLN",
+        "buyer_fees": "2.00",
+        "inbound_shipping": "5.00",
+        "resale_fees": "2.00",
+        "outbound_shipping_subsidy": "1.00",
+        "other_costs": "0.00"
+      },
+      "model": "demo model few",
+      "category": "sneakers",
+      "description": "DEMO fictional historical listing, no real seller.",
+      "photo_count": 3,
+      "demand": {
+        "score": "0.8",
+        "source_reference": "DEMO fictional demand evidence",
+        "observed_at": "2026-01-14T12:00:00Z",
+        "available_at": "2026-01-14T12:00:00Z"
+      }
+    },
+    {
+      "offer": {
+        "source_name": "demo-offers",
+        "is_demo": true,
+        "external_id": "DEMO-target-6",
+        "product_name": "DEMO sneaker 90",
+        "brand": "demo brand",
+        "size": "EU 42",
+        "condition": "fair",
+        "currency": "PLN",
+        "asking_price": "40.00",
+        "published_at": "2026-01-16T11:00:00Z"
+      },
+      "available_at": "2026-01-16T12:00:00Z",
+      "costs": {
+        "currency": "PLN",
+        "buyer_fees": "2.00",
+        "inbound_shipping": "5.00",
+        "resale_fees": "2.00",
+        "outbound_shipping_subsidy": "1.00",
+        "other_costs": "0.00"
+      },
+      "model": "demo model 90",
+      "category": "sneakers",
+      "description": "DEMO fictional historical listing, no real seller.",
+      "photo_count": 3,
+      "demand": {
+        "score": "0.8",
+        "source_reference": "DEMO fictional demand evidence",
+        "observed_at": "2026-01-15T12:00:00Z",
+        "available_at": "2026-01-15T12:00:00Z"
+      }
+    },
+    {
+      "offer": {
+        "source_name": "demo-offers",
+        "is_demo": true,
+        "external_id": "DEMO-target-7",
+        "product_name": "DEMO sneaker 90",
+        "brand": "demo brand",
+        "size": "EU 42",
+        "condition": "good",
+        "currency": "PLN",
+        "asking_price": "1001.00",
+        "published_at": "2026-01-17T11:00:00Z"
+      },
+      "available_at": "2026-01-17T12:00:00Z",
+      "costs": {
+        "currency": "PLN",
+        "buyer_fees": "2.00",
+        "inbound_shipping": "5.00",
+        "resale_fees": "2.00",
+        "outbound_shipping_subsidy": "1.00",
+        "other_costs": "0.00"
+      },
+      "model": "demo model 90",
+      "category": "sneakers",
+      "description": "DEMO fictional historical listing, no real seller.",
+      "photo_count": 3,
+      "demand": {
+        "score": "0.8",
+        "source_reference": "DEMO fictional demand evidence",
+        "observed_at": "2026-01-16T12:00:00Z",
+        "available_at": "2026-01-16T12:00:00Z"
+      }
+    },
+    {
+      "offer": {
+        "source_name": "demo-offers",
+        "is_demo": true,
+        "external_id": "DEMO-target-8",
+        "product_name": "DEMO sneaker 90",
+        "brand": "demo brand",
+        "size": "EU 42",
+        "condition": "good",
+        "currency": "PLN",
+        "asking_price": "40.00",
+        "published_at": "2026-01-18T11:00:00Z"
+      },
+      "available_at": "2026-01-18T12:00:00Z",
+      "costs": {
+        "currency": "PLN",
+        "buyer_fees": "2.00",
+        "inbound_shipping": "5.00",
+        "resale_fees": "2.00",
+        "outbound_shipping_subsidy": "1.00",
+        "other_costs": "0.00"
+      },
+      "model": "demo model 90",
+      "category": "sneakers",
+      "description": "DEMO fictional historical listing, no real seller.",
+      "photo_count": 3,
+      "demand": {
+        "score": "0.8",
+        "source_reference": "DEMO fictional demand evidence",
+        "observed_at": "2025-12-18T12:00:00Z",
+        "available_at": "2025-12-18T12:00:00Z"
+      }
+    },
+    {
+      "offer": {
+        "source_name": "demo-offers",
+        "is_demo": true,
+        "external_id": "DEMO-target-9",
+        "product_name": "DEMO sneaker 90",
+        "brand": "demo brand",
+        "size": "EU 42",
+        "condition": "good",
+        "currency": "PLN",
+        "asking_price": "40.00",
+        "published_at": "2026-01-19T11:00:00Z"
+      },
+      "available_at": "2026-01-19T12:00:00Z",
+      "costs": {
+        "currency": "PLN",
+        "buyer_fees": "2.00",
+        "inbound_shipping": "5.00",
+        "resale_fees": "2.00",
+        "outbound_shipping_subsidy": "1.00",
+        "other_costs": "0.00"
+      },
+      "model": null,
+      "category": "sneakers",
+      "description": "DEMO fictional historical listing, no real seller.",
+      "photo_count": 3,
+      "demand": {
+        "score": "0.8",
+        "source_reference": "DEMO fictional demand evidence",
+        "observed_at": "2026-01-18T12:00:00Z",
+        "available_at": "2026-01-18T12:00:00Z"
+      }
+    },
+    {
+      "offer": {
+        "source_name": "demo-offers",
+        "is_demo": true,
+        "external_id": "DEMO-target-10",
+        "product_name": "DEMO sneaker 90",
+        "brand": "demo brand",
+        "size": "EU 42",
+        "condition": "good",
+        "currency": "PLN",
+        "asking_price": "40.00",
+        "published_at": "2026-01-20T11:00:00Z"
+      },
+      "available_at": "2026-01-20T12:00:00Z",
+      "costs": {
+        "currency": "PLN",
+        "buyer_fees": "2.00",
+        "inbound_shipping": "5.00",
+        "resale_fees": "2.00",
+        "outbound_shipping_subsidy": "1.00",
+        "other_costs": "0.00"
+      },
+      "model": "demo model 90",
+      "category": "sneakers",
+      "description": null,
+      "photo_count": null,
+      "demand": {
+        "score": "0.8",
+        "source_reference": "DEMO fictional demand evidence",
+        "observed_at": "2026-01-19T12:00:00Z",
+        "available_at": "2026-01-19T12:00:00Z"
+      }
+    },
+    {
+      "offer": {
+        "source_name": "demo-offers",
+        "is_demo": true,
+        "external_id": "DEMO-target-11",
+        "product_name": "DEMO sneaker 90",
+        "brand": "demo brand",
+        "size": "EU 42",
+        "condition": "good",
+        "currency": "PLN",
+        "asking_price": "40.00",
+        "published_at": "2026-01-21T11:00:00Z"
+      },
+      "available_at": "2026-01-21T12:00:00Z",
+      "costs": {
+        "currency": "PLN",
+        "buyer_fees": "2.00",
+        "inbound_shipping": "5.00",
+        "resale_fees": "2.00",
+        "outbound_shipping_subsidy": "1.00",
+        "other_costs": "0.00"
+      },
+      "model": "demo no comparisons",
+      "category": "sneakers",
+      "description": "DEMO fictional historical listing, no real seller.",
+      "photo_count": 3,
+      "demand": {
+        "score": "0.8",
+        "source_reference": "DEMO fictional demand evidence",
+        "observed_at": "2026-01-20T12:00:00Z",
+        "available_at": "2026-01-20T12:00:00Z"
+      }
+    }
+  ],
+  "observations": [
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-sold-0",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": "demo model 90",
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "198.00",
+        "currency": "PLN",
+        "price_type": "SOLD",
+        "observed_at": "2026-01-05T12:00:00Z",
+        "source_reliability": 0.95,
+        "is_demo": true,
+        "sale_confirmed": true,
+        "evidence_reference": "DEMO-fictional-receipt-sold-0",
+        "listing_disappeared": false
+      },
+      "available_at": "2026-01-05T12:00:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-sold-1",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": "demo model 90",
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "199.00",
+        "currency": "PLN",
+        "price_type": "SOLD",
+        "observed_at": "2026-01-05T11:59:00Z",
+        "source_reliability": 0.95,
+        "is_demo": true,
+        "sale_confirmed": true,
+        "evidence_reference": "DEMO-fictional-receipt-sold-1",
+        "listing_disappeared": false
+      },
+      "available_at": "2026-01-05T11:59:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-sold-2",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": "demo model 90",
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "200.00",
+        "currency": "PLN",
+        "price_type": "SOLD",
+        "observed_at": "2026-01-05T11:58:00Z",
+        "source_reliability": 0.95,
+        "is_demo": true,
+        "sale_confirmed": true,
+        "evidence_reference": "DEMO-fictional-receipt-sold-2",
+        "listing_disappeared": false
+      },
+      "available_at": "2026-01-05T11:58:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-sold-3",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": "demo model 90",
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "201.00",
+        "currency": "PLN",
+        "price_type": "SOLD",
+        "observed_at": "2026-01-05T11:57:00Z",
+        "source_reliability": 0.95,
+        "is_demo": true,
+        "sale_confirmed": true,
+        "evidence_reference": "DEMO-fictional-receipt-sold-3",
+        "listing_disappeared": false
+      },
+      "available_at": "2026-01-05T11:57:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-sold-4",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": "demo model 90",
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "202.00",
+        "currency": "PLN",
+        "price_type": "SOLD",
+        "observed_at": "2026-01-05T11:56:00Z",
+        "source_reliability": 0.95,
+        "is_demo": true,
+        "sale_confirmed": true,
+        "evidence_reference": "DEMO-fictional-receipt-sold-4",
+        "listing_disappeared": false
+      },
+      "available_at": "2026-01-05T11:56:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-sold-5",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": "demo model 90",
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "198.00",
+        "currency": "PLN",
+        "price_type": "SOLD",
+        "observed_at": "2026-01-05T11:55:00Z",
+        "source_reliability": 0.95,
+        "is_demo": true,
+        "sale_confirmed": true,
+        "evidence_reference": "DEMO-fictional-receipt-sold-5",
+        "listing_disappeared": false
+      },
+      "available_at": "2026-01-05T11:55:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-sold-6",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": "demo model 90",
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "199.00",
+        "currency": "PLN",
+        "price_type": "SOLD",
+        "observed_at": "2026-01-05T11:54:00Z",
+        "source_reliability": 0.95,
+        "is_demo": true,
+        "sale_confirmed": true,
+        "evidence_reference": "DEMO-fictional-receipt-sold-6",
+        "listing_disappeared": false
+      },
+      "available_at": "2026-01-05T11:54:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-sold-7",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": "demo model 90",
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "200.00",
+        "currency": "PLN",
+        "price_type": "SOLD",
+        "observed_at": "2026-01-05T11:53:00Z",
+        "source_reliability": 0.95,
+        "is_demo": true,
+        "sale_confirmed": true,
+        "evidence_reference": "DEMO-fictional-receipt-sold-7",
+        "listing_disappeared": false
+      },
+      "available_at": "2026-01-05T11:53:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-sold-8",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": "demo model 90",
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "201.00",
+        "currency": "PLN",
+        "price_type": "SOLD",
+        "observed_at": "2026-01-05T11:52:00Z",
+        "source_reliability": 0.95,
+        "is_demo": true,
+        "sale_confirmed": true,
+        "evidence_reference": "DEMO-fictional-receipt-sold-8",
+        "listing_disappeared": false
+      },
+      "available_at": "2026-01-05T11:52:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-sold-9",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": "demo model 90",
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "202.00",
+        "currency": "PLN",
+        "price_type": "SOLD",
+        "observed_at": "2026-01-05T11:51:00Z",
+        "source_reliability": 0.95,
+        "is_demo": true,
+        "sale_confirmed": true,
+        "evidence_reference": "DEMO-fictional-receipt-sold-9",
+        "listing_disappeared": false
+      },
+      "available_at": "2026-01-05T11:51:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-sold-10",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": "demo model 90",
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "198.00",
+        "currency": "PLN",
+        "price_type": "SOLD",
+        "observed_at": "2026-01-05T11:50:00Z",
+        "source_reliability": 0.95,
+        "is_demo": true,
+        "sale_confirmed": true,
+        "evidence_reference": "DEMO-fictional-receipt-sold-10",
+        "listing_disappeared": false
+      },
+      "available_at": "2026-01-05T11:50:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-sold-11",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": "demo model 90",
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "199.00",
+        "currency": "PLN",
+        "price_type": "SOLD",
+        "observed_at": "2026-01-05T11:49:00Z",
+        "source_reliability": 0.95,
+        "is_demo": true,
+        "sale_confirmed": true,
+        "evidence_reference": "DEMO-fictional-receipt-sold-11",
+        "listing_disappeared": false
+      },
+      "available_at": "2026-01-05T11:49:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-sold-12",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": "demo model 90",
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "200.00",
+        "currency": "PLN",
+        "price_type": "SOLD",
+        "observed_at": "2026-01-05T11:48:00Z",
+        "source_reliability": 0.95,
+        "is_demo": true,
+        "sale_confirmed": true,
+        "evidence_reference": "DEMO-fictional-receipt-sold-12",
+        "listing_disappeared": false
+      },
+      "available_at": "2026-01-05T11:48:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-sold-13",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": "demo model 90",
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "201.00",
+        "currency": "PLN",
+        "price_type": "SOLD",
+        "observed_at": "2026-01-05T11:47:00Z",
+        "source_reliability": 0.95,
+        "is_demo": true,
+        "sale_confirmed": true,
+        "evidence_reference": "DEMO-fictional-receipt-sold-13",
+        "listing_disappeared": false
+      },
+      "available_at": "2026-01-05T11:47:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-sold-14",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": "demo model 90",
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "202.00",
+        "currency": "PLN",
+        "price_type": "SOLD",
+        "observed_at": "2026-01-05T11:46:00Z",
+        "source_reliability": 0.95,
+        "is_demo": true,
+        "sale_confirmed": true,
+        "evidence_reference": "DEMO-fictional-receipt-sold-14",
+        "listing_disappeared": false
+      },
+      "available_at": "2026-01-05T11:46:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-sold-15",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": "demo model 90",
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "198.00",
+        "currency": "PLN",
+        "price_type": "SOLD",
+        "observed_at": "2026-01-05T11:45:00Z",
+        "source_reliability": 0.95,
+        "is_demo": true,
+        "sale_confirmed": true,
+        "evidence_reference": "DEMO-fictional-receipt-sold-15",
+        "listing_disappeared": false
+      },
+      "available_at": "2026-01-05T11:45:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-sold-16",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": "demo model 90",
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "199.00",
+        "currency": "PLN",
+        "price_type": "SOLD",
+        "observed_at": "2026-01-05T11:44:00Z",
+        "source_reliability": 0.95,
+        "is_demo": true,
+        "sale_confirmed": true,
+        "evidence_reference": "DEMO-fictional-receipt-sold-16",
+        "listing_disappeared": false
+      },
+      "available_at": "2026-01-05T11:44:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-sold-17",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": "demo model 90",
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "200.00",
+        "currency": "PLN",
+        "price_type": "SOLD",
+        "observed_at": "2026-01-05T11:43:00Z",
+        "source_reliability": 0.95,
+        "is_demo": true,
+        "sale_confirmed": true,
+        "evidence_reference": "DEMO-fictional-receipt-sold-17",
+        "listing_disappeared": false
+      },
+      "available_at": "2026-01-05T11:43:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-sold-18",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": "demo model 90",
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "201.00",
+        "currency": "PLN",
+        "price_type": "SOLD",
+        "observed_at": "2026-01-05T11:42:00Z",
+        "source_reliability": 0.95,
+        "is_demo": true,
+        "sale_confirmed": true,
+        "evidence_reference": "DEMO-fictional-receipt-sold-18",
+        "listing_disappeared": false
+      },
+      "available_at": "2026-01-05T11:42:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-sold-19",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": "demo model 90",
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "202.00",
+        "currency": "PLN",
+        "price_type": "SOLD",
+        "observed_at": "2026-01-05T11:41:00Z",
+        "source_reliability": 0.95,
+        "is_demo": true,
+        "sale_confirmed": true,
+        "evidence_reference": "DEMO-fictional-receipt-sold-19",
+        "listing_disappeared": false
+      },
+      "available_at": "2026-01-05T11:41:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-asking-0",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": "demo model ask",
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "198.00",
+        "currency": "PLN",
+        "price_type": "ASKING",
+        "observed_at": "2026-01-05T12:00:00Z",
+        "source_reliability": 0.95,
+        "is_demo": true,
+        "sale_confirmed": false,
+        "evidence_reference": null,
+        "listing_disappeared": false
+      },
+      "available_at": "2026-01-05T12:00:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-asking-1",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": "demo model ask",
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "199.00",
+        "currency": "PLN",
+        "price_type": "ASKING",
+        "observed_at": "2026-01-05T11:59:00Z",
+        "source_reliability": 0.95,
+        "is_demo": true,
+        "sale_confirmed": false,
+        "evidence_reference": null,
+        "listing_disappeared": false
+      },
+      "available_at": "2026-01-05T11:59:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-asking-2",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": "demo model ask",
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "200.00",
+        "currency": "PLN",
+        "price_type": "ASKING",
+        "observed_at": "2026-01-05T11:58:00Z",
+        "source_reliability": 0.95,
+        "is_demo": true,
+        "sale_confirmed": false,
+        "evidence_reference": null,
+        "listing_disappeared": false
+      },
+      "available_at": "2026-01-05T11:58:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-asking-3",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": "demo model ask",
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "201.00",
+        "currency": "PLN",
+        "price_type": "ASKING",
+        "observed_at": "2026-01-05T11:57:00Z",
+        "source_reliability": 0.95,
+        "is_demo": true,
+        "sale_confirmed": false,
+        "evidence_reference": null,
+        "listing_disappeared": false
+      },
+      "available_at": "2026-01-05T11:57:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-asking-4",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": "demo model ask",
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "202.00",
+        "currency": "PLN",
+        "price_type": "ASKING",
+        "observed_at": "2026-01-05T11:56:00Z",
+        "source_reliability": 0.95,
+        "is_demo": true,
+        "sale_confirmed": false,
+        "evidence_reference": null,
+        "listing_disappeared": false
+      },
+      "available_at": "2026-01-05T11:56:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-asking-5",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": "demo model ask",
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "198.00",
+        "currency": "PLN",
+        "price_type": "ASKING",
+        "observed_at": "2026-01-05T11:55:00Z",
+        "source_reliability": 0.95,
+        "is_demo": true,
+        "sale_confirmed": false,
+        "evidence_reference": null,
+        "listing_disappeared": false
+      },
+      "available_at": "2026-01-05T11:55:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-asking-6",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": "demo model ask",
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "199.00",
+        "currency": "PLN",
+        "price_type": "ASKING",
+        "observed_at": "2026-01-05T11:54:00Z",
+        "source_reliability": 0.95,
+        "is_demo": true,
+        "sale_confirmed": false,
+        "evidence_reference": null,
+        "listing_disappeared": false
+      },
+      "available_at": "2026-01-05T11:54:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-asking-7",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": "demo model ask",
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "200.00",
+        "currency": "PLN",
+        "price_type": "ASKING",
+        "observed_at": "2026-01-05T11:53:00Z",
+        "source_reliability": 0.95,
+        "is_demo": true,
+        "sale_confirmed": false,
+        "evidence_reference": null,
+        "listing_disappeared": false
+      },
+      "available_at": "2026-01-05T11:53:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-asking-8",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": "demo model ask",
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "201.00",
+        "currency": "PLN",
+        "price_type": "ASKING",
+        "observed_at": "2026-01-05T11:52:00Z",
+        "source_reliability": 0.95,
+        "is_demo": true,
+        "sale_confirmed": false,
+        "evidence_reference": null,
+        "listing_disappeared": false
+      },
+      "available_at": "2026-01-05T11:52:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-asking-9",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": "demo model ask",
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "202.00",
+        "currency": "PLN",
+        "price_type": "ASKING",
+        "observed_at": "2026-01-05T11:51:00Z",
+        "source_reliability": 0.95,
+        "is_demo": true,
+        "sale_confirmed": false,
+        "evidence_reference": null,
+        "listing_disappeared": false
+      },
+      "available_at": "2026-01-05T11:51:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-asking-10",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": "demo model ask",
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "198.00",
+        "currency": "PLN",
+        "price_type": "ASKING",
+        "observed_at": "2026-01-05T11:50:00Z",
+        "source_reliability": 0.95,
+        "is_demo": true,
+        "sale_confirmed": false,
+        "evidence_reference": null,
+        "listing_disappeared": false
+      },
+      "available_at": "2026-01-05T11:50:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-asking-11",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": "demo model ask",
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "199.00",
+        "currency": "PLN",
+        "price_type": "ASKING",
+        "observed_at": "2026-01-05T11:49:00Z",
+        "source_reliability": 0.95,
+        "is_demo": true,
+        "sale_confirmed": false,
+        "evidence_reference": null,
+        "listing_disappeared": false
+      },
+      "available_at": "2026-01-05T11:49:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-asking-12",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": "demo model ask",
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "200.00",
+        "currency": "PLN",
+        "price_type": "ASKING",
+        "observed_at": "2026-01-05T11:48:00Z",
+        "source_reliability": 0.95,
+        "is_demo": true,
+        "sale_confirmed": false,
+        "evidence_reference": null,
+        "listing_disappeared": false
+      },
+      "available_at": "2026-01-05T11:48:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-asking-13",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": "demo model ask",
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "201.00",
+        "currency": "PLN",
+        "price_type": "ASKING",
+        "observed_at": "2026-01-05T11:47:00Z",
+        "source_reliability": 0.95,
+        "is_demo": true,
+        "sale_confirmed": false,
+        "evidence_reference": null,
+        "listing_disappeared": false
+      },
+      "available_at": "2026-01-05T11:47:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-asking-14",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": "demo model ask",
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "202.00",
+        "currency": "PLN",
+        "price_type": "ASKING",
+        "observed_at": "2026-01-05T11:46:00Z",
+        "source_reliability": 0.95,
+        "is_demo": true,
+        "sale_confirmed": false,
+        "evidence_reference": null,
+        "listing_disappeared": false
+      },
+      "available_at": "2026-01-05T11:46:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-asking-15",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": "demo model ask",
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "198.00",
+        "currency": "PLN",
+        "price_type": "ASKING",
+        "observed_at": "2026-01-05T11:45:00Z",
+        "source_reliability": 0.95,
+        "is_demo": true,
+        "sale_confirmed": false,
+        "evidence_reference": null,
+        "listing_disappeared": false
+      },
+      "available_at": "2026-01-05T11:45:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-asking-16",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": "demo model ask",
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "199.00",
+        "currency": "PLN",
+        "price_type": "ASKING",
+        "observed_at": "2026-01-05T11:44:00Z",
+        "source_reliability": 0.95,
+        "is_demo": true,
+        "sale_confirmed": false,
+        "evidence_reference": null,
+        "listing_disappeared": false
+      },
+      "available_at": "2026-01-05T11:44:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-asking-17",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": "demo model ask",
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "200.00",
+        "currency": "PLN",
+        "price_type": "ASKING",
+        "observed_at": "2026-01-05T11:43:00Z",
+        "source_reliability": 0.95,
+        "is_demo": true,
+        "sale_confirmed": false,
+        "evidence_reference": null,
+        "listing_disappeared": false
+      },
+      "available_at": "2026-01-05T11:43:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-asking-18",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": "demo model ask",
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "201.00",
+        "currency": "PLN",
+        "price_type": "ASKING",
+        "observed_at": "2026-01-05T11:42:00Z",
+        "source_reliability": 0.95,
+        "is_demo": true,
+        "sale_confirmed": false,
+        "evidence_reference": null,
+        "listing_disappeared": false
+      },
+      "available_at": "2026-01-05T11:42:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-asking-19",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": "demo model ask",
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "202.00",
+        "currency": "PLN",
+        "price_type": "ASKING",
+        "observed_at": "2026-01-05T11:41:00Z",
+        "source_reliability": 0.95,
+        "is_demo": true,
+        "sale_confirmed": false,
+        "evidence_reference": null,
+        "listing_disappeared": false
+      },
+      "available_at": "2026-01-05T11:41:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-few-0",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": "demo model few",
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "198.00",
+        "currency": "PLN",
+        "price_type": "SOLD",
+        "observed_at": "2026-01-05T12:00:00Z",
+        "source_reliability": 0.95,
+        "is_demo": true,
+        "sale_confirmed": true,
+        "evidence_reference": "DEMO-fictional-receipt-few-0",
+        "listing_disappeared": false
+      },
+      "available_at": "2026-01-05T12:00:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-missing-model-0",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": null,
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "198.00",
+        "currency": "PLN",
+        "price_type": "SOLD",
+        "observed_at": "2026-01-05T12:00:00Z",
+        "source_reliability": 0.95,
+        "is_demo": true,
+        "sale_confirmed": true,
+        "evidence_reference": "DEMO-fictional-receipt-missing-model-0",
+        "listing_disappeared": false
+      },
+      "available_at": "2026-01-05T12:00:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-missing-model-1",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": null,
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "199.00",
+        "currency": "PLN",
+        "price_type": "SOLD",
+        "observed_at": "2026-01-05T11:59:00Z",
+        "source_reliability": 0.95,
+        "is_demo": true,
+        "sale_confirmed": true,
+        "evidence_reference": "DEMO-fictional-receipt-missing-model-1",
+        "listing_disappeared": false
+      },
+      "available_at": "2026-01-05T11:59:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-missing-model-2",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": null,
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "200.00",
+        "currency": "PLN",
+        "price_type": "SOLD",
+        "observed_at": "2026-01-05T11:58:00Z",
+        "source_reliability": 0.95,
+        "is_demo": true,
+        "sale_confirmed": true,
+        "evidence_reference": "DEMO-fictional-receipt-missing-model-2",
+        "listing_disappeared": false
+      },
+      "available_at": "2026-01-05T11:58:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-missing-model-3",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": null,
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "201.00",
+        "currency": "PLN",
+        "price_type": "SOLD",
+        "observed_at": "2026-01-05T11:57:00Z",
+        "source_reliability": 0.95,
+        "is_demo": true,
+        "sale_confirmed": true,
+        "evidence_reference": "DEMO-fictional-receipt-missing-model-3",
+        "listing_disappeared": false
+      },
+      "available_at": "2026-01-05T11:57:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-missing-model-4",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": null,
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "202.00",
+        "currency": "PLN",
+        "price_type": "SOLD",
+        "observed_at": "2026-01-05T11:56:00Z",
+        "source_reliability": 0.95,
+        "is_demo": true,
+        "sale_confirmed": true,
+        "evidence_reference": "DEMO-fictional-receipt-missing-model-4",
+        "listing_disappeared": false
+      },
+      "available_at": "2026-01-05T11:56:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-missing-model-5",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": null,
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "198.00",
+        "currency": "PLN",
+        "price_type": "SOLD",
+        "observed_at": "2026-01-05T11:55:00Z",
+        "source_reliability": 0.95,
+        "is_demo": true,
+        "sale_confirmed": true,
+        "evidence_reference": "DEMO-fictional-receipt-missing-model-5",
+        "listing_disappeared": false
+      },
+      "available_at": "2026-01-05T11:55:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-missing-model-6",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": null,
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "199.00",
+        "currency": "PLN",
+        "price_type": "SOLD",
+        "observed_at": "2026-01-05T11:54:00Z",
+        "source_reliability": 0.95,
+        "is_demo": true,
+        "sale_confirmed": true,
+        "evidence_reference": "DEMO-fictional-receipt-missing-model-6",
+        "listing_disappeared": false
+      },
+      "available_at": "2026-01-05T11:54:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-missing-model-7",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": null,
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "200.00",
+        "currency": "PLN",
+        "price_type": "SOLD",
+        "observed_at": "2026-01-05T11:53:00Z",
+        "source_reliability": 0.95,
+        "is_demo": true,
+        "sale_confirmed": true,
+        "evidence_reference": "DEMO-fictional-receipt-missing-model-7",
+        "listing_disappeared": false
+      },
+      "available_at": "2026-01-05T11:53:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-missing-model-8",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": null,
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "201.00",
+        "currency": "PLN",
+        "price_type": "SOLD",
+        "observed_at": "2026-01-05T11:52:00Z",
+        "source_reliability": 0.95,
+        "is_demo": true,
+        "sale_confirmed": true,
+        "evidence_reference": "DEMO-fictional-receipt-missing-model-8",
+        "listing_disappeared": false
+      },
+      "available_at": "2026-01-05T11:52:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-missing-model-9",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": null,
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "202.00",
+        "currency": "PLN",
+        "price_type": "SOLD",
+        "observed_at": "2026-01-05T11:51:00Z",
+        "source_reliability": 0.95,
+        "is_demo": true,
+        "sale_confirmed": true,
+        "evidence_reference": "DEMO-fictional-receipt-missing-model-9",
+        "listing_disappeared": false
+      },
+      "available_at": "2026-01-05T11:51:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-hidden-0",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": "demo model 90",
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "10000.00",
+        "currency": "PLN",
+        "price_type": "SOLD",
+        "observed_at": "2026-01-02T12:00:00Z",
+        "source_reliability": 0.99,
+        "is_demo": true,
+        "sale_confirmed": true,
+        "evidence_reference": "DEMO-future-receipt-0",
+        "listing_disappeared": false
+      },
+      "available_at": "2026-02-14T12:00:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-hidden-1",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": "demo model 90",
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "10000.00",
+        "currency": "PLN",
+        "price_type": "SOLD",
+        "observed_at": "2026-01-02T12:00:00Z",
+        "source_reliability": 0.99,
+        "is_demo": true,
+        "sale_confirmed": true,
+        "evidence_reference": "DEMO-future-receipt-1",
+        "listing_disappeared": false
+      },
+      "available_at": "2026-02-14T12:00:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-hidden-2",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": "demo model 90",
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "10000.00",
+        "currency": "PLN",
+        "price_type": "SOLD",
+        "observed_at": "2026-01-02T12:00:00Z",
+        "source_reliability": 0.99,
+        "is_demo": true,
+        "sale_confirmed": true,
+        "evidence_reference": "DEMO-future-receipt-2",
+        "listing_disappeared": false
+      },
+      "available_at": "2026-02-14T12:00:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-hidden-3",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": "demo model 90",
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "10000.00",
+        "currency": "PLN",
+        "price_type": "SOLD",
+        "observed_at": "2026-02-09T12:00:00Z",
+        "source_reliability": 0.99,
+        "is_demo": true,
+        "sale_confirmed": true,
+        "evidence_reference": "DEMO-future-receipt-3",
+        "listing_disappeared": false
+      },
+      "available_at": "2026-02-14T12:00:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-hidden-4",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": "demo model 90",
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "10000.00",
+        "currency": "PLN",
+        "price_type": "SOLD",
+        "observed_at": "2026-02-09T12:00:00Z",
+        "source_reliability": 0.99,
+        "is_demo": true,
+        "sale_confirmed": true,
+        "evidence_reference": "DEMO-future-receipt-4",
+        "listing_disappeared": false
+      },
+      "available_at": "2026-02-14T12:00:00Z"
+    },
+    {
+      "observation": {
+        "source_name": "demo-market",
+        "external_id": "DEMO-hidden-5",
+        "features": {
+          "product_name": "demo sneaker 90",
+          "brand": "demo brand",
+          "model": "demo model 90",
+          "size": "eu 42",
+          "condition": "good"
+        },
+        "price": "10000.00",
+        "currency": "PLN",
+        "price_type": "SOLD",
+        "observed_at": "2026-02-09T12:00:00Z",
+        "source_reliability": 0.99,
+        "is_demo": true,
+        "sale_confirmed": true,
+        "evidence_reference": "DEMO-future-receipt-5",
+        "listing_disappeared": false
+      },
+      "available_at": "2026-02-14T12:00:00Z"
+    }
+  ],
+  "outcomes": [
+    {
+      "source_name": "demo-offers",
+      "external_id": "DEMO-target-0",
+      "sale_price": "210",
+      "currency": "PLN",
+      "costs": {
+        "currency": "PLN",
+        "buyer_fees": "2.00",
+        "inbound_shipping": "5.00",
+        "resale_fees": "2.00",
+        "outbound_shipping_subsidy": "1.00",
+        "other_costs": "0.00"
+      },
+      "sold_at": "2026-01-25T12:00:00Z",
+      "available_at": "2026-01-26T12:00:00Z",
+      "evidence_reference": "DEMO-fictional-heldout-outcome-0",
+      "is_demo": true
+    },
+    {
+      "source_name": "demo-offers",
+      "external_id": "DEMO-target-1",
+      "sale_price": "209",
+      "currency": "PLN",
+      "costs": {
+        "currency": "PLN",
+        "buyer_fees": "2.00",
+        "inbound_shipping": "5.00",
+        "resale_fees": "2.00",
+        "outbound_shipping_subsidy": "1.00",
+        "other_costs": "0.00"
+      },
+      "sold_at": "2026-01-26T12:00:00Z",
+      "available_at": "2026-04-01T00:00:00Z",
+      "evidence_reference": "DEMO-fictional-heldout-outcome-1",
+      "is_demo": true
+    },
+    {
+      "source_name": "demo-offers",
+      "external_id": "DEMO-target-3",
+      "sale_price": "207",
+      "currency": "PLN",
+      "costs": {
+        "currency": "PLN",
+        "buyer_fees": "2.00",
+        "inbound_shipping": "5.00",
+        "resale_fees": "2.00",
+        "outbound_shipping_subsidy": "1.00",
+        "other_costs": "0.00"
+      },
+      "sold_at": "2026-01-28T12:00:00Z",
+      "available_at": "2026-01-29T12:00:00Z",
+      "evidence_reference": "DEMO-fictional-heldout-outcome-3",
+      "is_demo": true
+    },
+    {
+      "source_name": "demo-offers",
+      "external_id": "DEMO-target-8",
+      "sale_price": "202",
+      "currency": "PLN",
+      "costs": {
+        "currency": "PLN",
+        "buyer_fees": "2.00",
+        "inbound_shipping": "5.00",
+        "resale_fees": "2.00",
+        "outbound_shipping_subsidy": "1.00",
+        "other_costs": "0.00"
+      },
+      "sold_at": "2026-02-02T12:00:00Z",
+      "available_at": "2026-02-03T12:00:00Z",
+      "evidence_reference": "DEMO-fictional-heldout-outcome-8",
+      "is_demo": true
+    },
+    {
+      "source_name": "demo-offers",
+      "external_id": "DEMO-target-10",
+      "sale_price": "200",
+      "currency": "PLN",
+      "costs": {
+        "currency": "PLN",
+        "buyer_fees": "2.00",
+        "inbound_shipping": "5.00",
+        "resale_fees": "2.00",
+        "outbound_shipping_subsidy": "1.00",
+        "other_costs": "0.00"
+      },
+      "sold_at": "2026-02-04T12:00:00Z",
+      "available_at": "2026-02-05T12:00:00Z",
+      "evidence_reference": "DEMO-fictional-heldout-outcome-10",
+      "is_demo": true
+    }
+  ]
+}

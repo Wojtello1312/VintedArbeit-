@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="htmx-config" content='{"allowEval":false,"allowScriptTags":false,"includeIndicatorStyles":false,"historyCacheSize":0,"historyRestoreAsHxRequest":false,"selfRequestsOnly":true}'>
+  <title>{{ title|default('Logowanie') }} · Vinted Deal Hunter</title>
+  <link rel="stylesheet" href="/admin/static/admin.css">
+  <script src="/admin/static/htmx.min.js" defer></script>
+  <script src="/admin/static/admin.js" defer></script>
+</head>
+<body>
+<a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:bg-white focus:p-4">Przejdź do treści</a>
+<header class="border-b border-slate-200 bg-paper">
+  <div class="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-5 sm:px-8">
+    <a href="/admin" class="flex items-center gap-3 font-semibold tracking-tight text-ink">
+      <span aria-hidden="true" class="flex h-10 w-10 items-center justify-center rounded-xl bg-ink text-lg text-white">DH</span>
+      <span>Deal Hunter<span class="block text-xs font-normal tracking-normal text-slate-500">Panel administracyjny</span></span>
+    </a>
+    {% if path != '/admin/login' %}<form action="/admin/logout" method="post"><input type="hidden" name="csrf" value="{{ csrf }}"><button class="secondary" type="submit">Wyloguj</button></form>{% endif %}
+  </div>
+  {% if path != '/admin/login' %}
+  <nav aria-label="Nawigacja główna" class="mx-auto flex max-w-7xl gap-1 overflow-x-auto px-4 pb-3 sm:px-8">
+    {% for url,name in [('/admin','Przegląd'),('/admin/offers','Oferty'),('/admin/deals','Okazje'),('/admin/research','Badanie cen'),('/admin/settings','Ustawienia'),('/admin/system','System')] %}
+      <a href="{{ url }}" class="navlink" {% if path == url or (url == '/admin/offers' and path.startswith('/admin/offers/')) %}aria-current="page"{% endif %}>{{ name }}</a>
+    {% endfor %}
+  </nav>{% endif %}
+</header>
+<main id="main" class="mx-auto max-w-7xl space-y-6 px-4 py-7 sm:px-8 sm:py-10">
+{% block content %}{% endblock %}
+</main>
+<footer class="mx-auto max-w-7xl px-4 pb-8 text-xs text-slate-500 sm:px-8">Vinted Deal Hunter · Daty w UTC · Dane demo są oznaczone</footer>
+</body></html>

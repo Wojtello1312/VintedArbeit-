@@ -1,0 +1,1 @@
+{"private":true,"scripts":{"build:css":"tailwindcss -i frontend/admin.css -o src/app/admin/static/admin.css --minify","build":"npm run build:css && cp node_modules/htmx.org/dist/htmx.min.js src/app/admin/static/htmx.min.js && cp node_modules/htmx.org/LICENSE src/app/admin/static/HTMX-LICENSE"},"dependencies":{"htmx.org":"2.0.8"},"devDependencies":{"tailwindcss":"3.4.19"}}

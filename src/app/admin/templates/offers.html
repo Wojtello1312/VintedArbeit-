@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<div><h1>{{ title }}</h1><p class="mt-2 text-slate-500">{% if deals %}Zakwalifikowane oferty, uporządkowane według Twoich kryteriów.{% else %}Wyszukuj oferty i sprawdzaj ich ostatnią ocenę.{% endif %}</p></div>
+<form action="{{ path }}" method="get" hx-get="{{ path }}" hx-target="#results" hx-swap="outerHTML" hx-push-url="true" hx-trigger="submit, change delay:300ms" class="card grid gap-4 p-5 sm:grid-cols-2 lg:grid-cols-4">
+<label class="sm:col-span-2">Wyszukaj ofertę<input id="search" name="q" value="{{ filters.q }}" placeholder="Nazwa produktu lub identyfikator" maxlength="200"></label>
+<label>Marka<input name="brand" value="{{ filters.brand }}" placeholder="Wszystkie marki" maxlength="200"></label>
+<label>Waluta<select name="currency">{% for currency in currencies %}<option {% if filters.currency == currency %}selected{% endif %}>{{ currency }}</option>{% endfor %}</select></label>
+<label>Cena od<input name="min_price" type="number" min="0" step="0.01" value="{{ filters.min_price if filters.min_price is not none else '' }}"></label>
+<label>Cena do<input name="max_price" type="number" min="0" step="0.01" value="{{ filters.max_price if filters.max_price is not none else '' }}"></label>
+<label>Scoring od<input name="min_score" type="number" min="0" max="100" step="0.01" value="{{ filters.min_score if filters.min_score is not none else '' }}"></label>
+<label>Ryzyko<select name="risk"><option value="">Każdy poziom</option>{% for risk,name in [('LOW','Niskie'),('MEDIUM','Średnie'),('HIGH','Wysokie'),('unknown','Nieznane')] %}<option value="{{ risk }}" {% if filters.risk == risk %}selected{% endif %}>{{ name }}</option>{% endfor %}</select></label>
+<label>Potencjalny zysk od<input name="min_profit" type="number" step="0.01" value="{{ filters.min_profit if filters.min_profit is not none else '' }}"></label>
+<label>Moja ocena<select name="label"><option value="">Wszystkie</option>{% for value,name in labels.items() %}<option value="{{ value }}" {% if filters.label == value %}selected{% endif %}>{{ name }}</option>{% endfor %}</select></label>
+<label>Dane<select name="mode">{% for value,name in [('all','Wszystkie'),('demo','Tylko demo'),('production','Tylko rzeczywiste')] %}<option value="{{ value }}" {% if filters.mode == value %}selected{% endif %}>{{ name }}</option>{% endfor %}</select></label>
+<label>Sortowanie<select name="sort">{% for value,name in [('newest','Najnowsze'),('price_asc','Cena rosnąco'),('price_desc','Cena malejąco'),('score','Najwyższy scoring'),('profit','Najwyższy zysk'),('name','Nazwa A–Z')] %}<option value="{{ value }}" {% if filters.sort == value %}selected{% endif %}>{{ name }}</option>{% endfor %}</select></label>
+<div class="flex items-end gap-3 sm:col-span-2 lg:col-span-4"><button class="button" type="submit">Zastosuj filtry</button><a class="secondary" href="{{ path }}">Wyczyść</a><span class="htmx-indicator text-sm" role="status">Wczytywanie…</span></div>
+</form>
+<p id="request-error" class="error" role="alert" hidden></p>
+{% include 'offer_table.html' %}
+{% endblock %}

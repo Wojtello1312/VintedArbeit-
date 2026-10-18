@@ -1,0 +1,1302 @@
+[
+  {
+    "external_id": "DEMO-0000",
+    "product_name": "  DEMO fikcyjny produkt 0  ",
+    "brand": " NIKE ",
+    "size": "m",
+    "condition": "bardzo dobry",
+    "currency": "pln",
+    "asking_price": "10,00",
+    "published_at": ""
+  },
+  {
+    "external_id": "DEMO-0001",
+    "product_name": "  DEMO fikcyjny produkt 1  ",
+    "brand": "adidas",
+    "size": " EU 38 ",
+    "condition": "good",
+    "currency": "EUR",
+    "asking_price": "13,01",
+    "published_at": "2026-01-02T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0002",
+    "product_name": "  DEMO fikcyjny produkt 2  ",
+    "brand": "H & M",
+    "size": "42",
+    "condition": "new_with_tags",
+    "currency": "GBP",
+    "asking_price": "16,02",
+    "published_at": "2026-01-03T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0003",
+    "product_name": "  DEMO fikcyjny produkt 3  ",
+    "brand": "Marka fikcyjna",
+    "size": "One size",
+    "condition": "unknown",
+    "currency": "USD",
+    "asking_price": "19,03",
+    "published_at": "2026-01-04T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0004",
+    "product_name": "  DEMO fikcyjny produkt 4  ",
+    "brand": "",
+    "size": "",
+    "condition": "",
+    "currency": "pln",
+    "asking_price": "22,04",
+    "published_at": "2026-01-05T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0005",
+    "product_name": "  DEMO fikcyjny produkt 5  ",
+    "brand": " NIKE ",
+    "size": "m",
+    "condition": "bardzo dobry",
+    "currency": "EUR",
+    "asking_price": "25,05",
+    "published_at": "2026-01-06T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0006",
+    "product_name": "  DEMO fikcyjny produkt 6  ",
+    "brand": "adidas",
+    "size": " EU 38 ",
+    "condition": "good",
+    "currency": "GBP",
+    "asking_price": "28,06",
+    "published_at": "2026-01-07T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0007",
+    "product_name": "  DEMO fikcyjny produkt 7  ",
+    "brand": "H & M",
+    "size": "42",
+    "condition": "new_with_tags",
+    "currency": "USD",
+    "asking_price": "31,07",
+    "published_at": "2026-01-08T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0008",
+    "product_name": "  DEMO fikcyjny produkt 8  ",
+    "brand": "Marka fikcyjna",
+    "size": "One size",
+    "condition": "unknown",
+    "currency": "pln",
+    "asking_price": "34,08",
+    "published_at": "2026-01-09T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0009",
+    "product_name": "  DEMO fikcyjny produkt 9  ",
+    "brand": "",
+    "size": "",
+    "condition": "",
+    "currency": "EUR",
+    "asking_price": "37,09",
+    "published_at": ""
+  },
+  {
+    "external_id": "DEMO-0010",
+    "product_name": "  DEMO fikcyjny produkt 10  ",
+    "brand": " NIKE ",
+    "size": "m",
+    "condition": "bardzo dobry",
+    "currency": "GBP",
+    "asking_price": "40,10",
+    "published_at": "2026-01-11T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0011",
+    "product_name": "  DEMO fikcyjny produkt 11  ",
+    "brand": "adidas",
+    "size": " EU 38 ",
+    "condition": "good",
+    "currency": "USD",
+    "asking_price": "43,11",
+    "published_at": "2026-01-12T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0012",
+    "product_name": "  DEMO fikcyjny produkt 12  ",
+    "brand": "H & M",
+    "size": "42",
+    "condition": "new_with_tags",
+    "currency": "pln",
+    "asking_price": "46,12",
+    "published_at": "2026-01-13T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0013",
+    "product_name": "  DEMO fikcyjny produkt 13  ",
+    "brand": "Marka fikcyjna",
+    "size": "One size",
+    "condition": "unknown",
+    "currency": "EUR",
+    "asking_price": "49,13",
+    "published_at": "2026-01-14T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0014",
+    "product_name": "  DEMO fikcyjny produkt 14  ",
+    "brand": "",
+    "size": "",
+    "condition": "",
+    "currency": "GBP",
+    "asking_price": "52,14",
+    "published_at": "2026-01-15T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0015",
+    "product_name": "  DEMO fikcyjny produkt 15  ",
+    "brand": " NIKE ",
+    "size": "m",
+    "condition": "bardzo dobry",
+    "currency": "USD",
+    "asking_price": "55,15",
+    "published_at": "2026-01-16T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0016",
+    "product_name": "  DEMO fikcyjny produkt 16  ",
+    "brand": "adidas",
+    "size": " EU 38 ",
+    "condition": "good",
+    "currency": "pln",
+    "asking_price": "58,16",
+    "published_at": "2026-01-17T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0017",
+    "product_name": "  DEMO fikcyjny produkt 17  ",
+    "brand": "H & M",
+    "size": "42",
+    "condition": "new_with_tags",
+    "currency": "EUR",
+    "asking_price": "61,17",
+    "published_at": "2026-01-18T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0018",
+    "product_name": "  DEMO fikcyjny produkt 18  ",
+    "brand": "Marka fikcyjna",
+    "size": "One size",
+    "condition": "unknown",
+    "currency": "GBP",
+    "asking_price": "64,18",
+    "published_at": ""
+  },
+  {
+    "external_id": "DEMO-0019",
+    "product_name": "  DEMO fikcyjny produkt 19  ",
+    "brand": "",
+    "size": "",
+    "condition": "",
+    "currency": "USD",
+    "asking_price": "67,19",
+    "published_at": "2026-01-20T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0020",
+    "product_name": "  DEMO fikcyjny produkt 20  ",
+    "brand": " NIKE ",
+    "size": "m",
+    "condition": "bardzo dobry",
+    "currency": "pln",
+    "asking_price": "70,20",
+    "published_at": "2026-01-21T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0021",
+    "product_name": "  DEMO fikcyjny produkt 21  ",
+    "brand": "adidas",
+    "size": " EU 38 ",
+    "condition": "good",
+    "currency": "EUR",
+    "asking_price": "73,21",
+    "published_at": "2026-01-22T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0022",
+    "product_name": "  DEMO fikcyjny produkt 22  ",
+    "brand": "H & M",
+    "size": "42",
+    "condition": "new_with_tags",
+    "currency": "GBP",
+    "asking_price": "76,22",
+    "published_at": "2026-01-23T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0023",
+    "product_name": "  DEMO fikcyjny produkt 23  ",
+    "brand": "Marka fikcyjna",
+    "size": "One size",
+    "condition": "unknown",
+    "currency": "USD",
+    "asking_price": "79,23",
+    "published_at": "2026-01-24T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0024",
+    "product_name": "  DEMO fikcyjny produkt 24  ",
+    "brand": "",
+    "size": "",
+    "condition": "",
+    "currency": "pln",
+    "asking_price": "82,24",
+    "published_at": "2026-01-25T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0025",
+    "product_name": "  DEMO fikcyjny produkt 25  ",
+    "brand": " NIKE ",
+    "size": "m",
+    "condition": "bardzo dobry",
+    "currency": "EUR",
+    "asking_price": "85,25",
+    "published_at": "2026-01-26T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0026",
+    "product_name": "  DEMO fikcyjny produkt 26  ",
+    "brand": "adidas",
+    "size": " EU 38 ",
+    "condition": "good",
+    "currency": "GBP",
+    "asking_price": "88,26",
+    "published_at": "2026-01-27T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0027",
+    "product_name": "  DEMO fikcyjny produkt 27  ",
+    "brand": "H & M",
+    "size": "42",
+    "condition": "new_with_tags",
+    "currency": "USD",
+    "asking_price": "91,27",
+    "published_at": ""
+  },
+  {
+    "external_id": "DEMO-0028",
+    "product_name": "  DEMO fikcyjny produkt 28  ",
+    "brand": "Marka fikcyjna",
+    "size": "One size",
+    "condition": "unknown",
+    "currency": "pln",
+    "asking_price": "94,28",
+    "published_at": "2026-01-01T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0029",
+    "product_name": "  DEMO fikcyjny produkt 29  ",
+    "brand": "",
+    "size": "",
+    "condition": "",
+    "currency": "EUR",
+    "asking_price": "97,29",
+    "published_at": "2026-01-02T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0030",
+    "product_name": "  DEMO fikcyjny produkt 30  ",
+    "brand": " NIKE ",
+    "size": "m",
+    "condition": "bardzo dobry",
+    "currency": "GBP",
+    "asking_price": "100,30",
+    "published_at": "2026-01-03T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0031",
+    "product_name": "  DEMO fikcyjny produkt 31  ",
+    "brand": "adidas",
+    "size": " EU 38 ",
+    "condition": "good",
+    "currency": "USD",
+    "asking_price": "103,31",
+    "published_at": "2026-01-04T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0032",
+    "product_name": "  DEMO fikcyjny produkt 32  ",
+    "brand": "H & M",
+    "size": "42",
+    "condition": "new_with_tags",
+    "currency": "pln",
+    "asking_price": "106,32",
+    "published_at": "2026-01-05T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0033",
+    "product_name": "  DEMO fikcyjny produkt 33  ",
+    "brand": "Marka fikcyjna",
+    "size": "One size",
+    "condition": "unknown",
+    "currency": "EUR",
+    "asking_price": "109,33",
+    "published_at": "2026-01-06T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0034",
+    "product_name": "  DEMO fikcyjny produkt 34  ",
+    "brand": "",
+    "size": "",
+    "condition": "",
+    "currency": "GBP",
+    "asking_price": "112,34",
+    "published_at": "2026-01-07T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0035",
+    "product_name": "  DEMO fikcyjny produkt 35  ",
+    "brand": " NIKE ",
+    "size": "m",
+    "condition": "bardzo dobry",
+    "currency": "USD",
+    "asking_price": "115,35",
+    "published_at": "2026-01-08T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0036",
+    "product_name": "  DEMO fikcyjny produkt 36  ",
+    "brand": "adidas",
+    "size": " EU 38 ",
+    "condition": "good",
+    "currency": "pln",
+    "asking_price": "118,36",
+    "published_at": ""
+  },
+  {
+    "external_id": "DEMO-0037",
+    "product_name": "  DEMO fikcyjny produkt 37  ",
+    "brand": "H & M",
+    "size": "42",
+    "condition": "new_with_tags",
+    "currency": "EUR",
+    "asking_price": "121,37",
+    "published_at": "2026-01-10T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0038",
+    "product_name": "  DEMO fikcyjny produkt 38  ",
+    "brand": "Marka fikcyjna",
+    "size": "One size",
+    "condition": "unknown",
+    "currency": "GBP",
+    "asking_price": "124,38",
+    "published_at": "2026-01-11T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0039",
+    "product_name": "  DEMO fikcyjny produkt 39  ",
+    "brand": "",
+    "size": "",
+    "condition": "",
+    "currency": "USD",
+    "asking_price": "127,39",
+    "published_at": "2026-01-12T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0040",
+    "product_name": "  DEMO fikcyjny produkt 40  ",
+    "brand": " NIKE ",
+    "size": "m",
+    "condition": "bardzo dobry",
+    "currency": "pln",
+    "asking_price": "130,40",
+    "published_at": "2026-01-13T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0041",
+    "product_name": "  DEMO fikcyjny produkt 41  ",
+    "brand": "adidas",
+    "size": " EU 38 ",
+    "condition": "good",
+    "currency": "EUR",
+    "asking_price": "133,41",
+    "published_at": "2026-01-14T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0042",
+    "product_name": "  DEMO fikcyjny produkt 42  ",
+    "brand": "H & M",
+    "size": "42",
+    "condition": "new_with_tags",
+    "currency": "GBP",
+    "asking_price": "136,42",
+    "published_at": "2026-01-15T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0043",
+    "product_name": "  DEMO fikcyjny produkt 43  ",
+    "brand": "Marka fikcyjna",
+    "size": "One size",
+    "condition": "unknown",
+    "currency": "USD",
+    "asking_price": "139,43",
+    "published_at": "2026-01-16T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0044",
+    "product_name": "  DEMO fikcyjny produkt 44  ",
+    "brand": "",
+    "size": "",
+    "condition": "",
+    "currency": "pln",
+    "asking_price": "142,44",
+    "published_at": "2026-01-17T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0045",
+    "product_name": "  DEMO fikcyjny produkt 45  ",
+    "brand": " NIKE ",
+    "size": "m",
+    "condition": "bardzo dobry",
+    "currency": "EUR",
+    "asking_price": "145,45",
+    "published_at": ""
+  },
+  {
+    "external_id": "DEMO-0046",
+    "product_name": "  DEMO fikcyjny produkt 46  ",
+    "brand": "adidas",
+    "size": " EU 38 ",
+    "condition": "good",
+    "currency": "GBP",
+    "asking_price": "148,46",
+    "published_at": "2026-01-19T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0047",
+    "product_name": "  DEMO fikcyjny produkt 47  ",
+    "brand": "H & M",
+    "size": "42",
+    "condition": "new_with_tags",
+    "currency": "USD",
+    "asking_price": "151,47",
+    "published_at": "2026-01-20T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0048",
+    "product_name": "  DEMO fikcyjny produkt 48  ",
+    "brand": "Marka fikcyjna",
+    "size": "One size",
+    "condition": "unknown",
+    "currency": "pln",
+    "asking_price": "154,48",
+    "published_at": "2026-01-21T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0049",
+    "product_name": "  DEMO fikcyjny produkt 49  ",
+    "brand": "",
+    "size": "",
+    "condition": "",
+    "currency": "EUR",
+    "asking_price": "157,49",
+    "published_at": "2026-01-22T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0050",
+    "product_name": "  DEMO fikcyjny produkt 50  ",
+    "brand": " NIKE ",
+    "size": "m",
+    "condition": "bardzo dobry",
+    "currency": "GBP",
+    "asking_price": "160,50",
+    "published_at": "2026-01-23T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0051",
+    "product_name": "  DEMO fikcyjny produkt 51  ",
+    "brand": "adidas",
+    "size": " EU 38 ",
+    "condition": "good",
+    "currency": "USD",
+    "asking_price": "163,51",
+    "published_at": "2026-01-24T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0052",
+    "product_name": "  DEMO fikcyjny produkt 52  ",
+    "brand": "H & M",
+    "size": "42",
+    "condition": "new_with_tags",
+    "currency": "pln",
+    "asking_price": "166,52",
+    "published_at": "2026-01-25T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0053",
+    "product_name": "  DEMO fikcyjny produkt 53  ",
+    "brand": "Marka fikcyjna",
+    "size": "One size",
+    "condition": "unknown",
+    "currency": "EUR",
+    "asking_price": "169,53",
+    "published_at": "2026-01-26T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0054",
+    "product_name": "  DEMO fikcyjny produkt 54  ",
+    "brand": "",
+    "size": "",
+    "condition": "",
+    "currency": "GBP",
+    "asking_price": "172,54",
+    "published_at": ""
+  },
+  {
+    "external_id": "DEMO-0055",
+    "product_name": "  DEMO fikcyjny produkt 55  ",
+    "brand": " NIKE ",
+    "size": "m",
+    "condition": "bardzo dobry",
+    "currency": "USD",
+    "asking_price": "175,55",
+    "published_at": "2026-01-28T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0056",
+    "product_name": "  DEMO fikcyjny produkt 56  ",
+    "brand": "adidas",
+    "size": " EU 38 ",
+    "condition": "good",
+    "currency": "pln",
+    "asking_price": "178,56",
+    "published_at": "2026-01-01T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0057",
+    "product_name": "  DEMO fikcyjny produkt 57  ",
+    "brand": "H & M",
+    "size": "42",
+    "condition": "new_with_tags",
+    "currency": "EUR",
+    "asking_price": "181,57",
+    "published_at": "2026-01-02T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0058",
+    "product_name": "  DEMO fikcyjny produkt 58  ",
+    "brand": "Marka fikcyjna",
+    "size": "One size",
+    "condition": "unknown",
+    "currency": "GBP",
+    "asking_price": "184,58",
+    "published_at": "2026-01-03T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0059",
+    "product_name": "  DEMO fikcyjny produkt 59  ",
+    "brand": "",
+    "size": "",
+    "condition": "",
+    "currency": "USD",
+    "asking_price": "187,59",
+    "published_at": "2026-01-04T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0060",
+    "product_name": "  DEMO fikcyjny produkt 60  ",
+    "brand": " NIKE ",
+    "size": "m",
+    "condition": "bardzo dobry",
+    "currency": "pln",
+    "asking_price": "190,60",
+    "published_at": "2026-01-05T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0061",
+    "product_name": "  DEMO fikcyjny produkt 61  ",
+    "brand": "adidas",
+    "size": " EU 38 ",
+    "condition": "good",
+    "currency": "EUR",
+    "asking_price": "193,61",
+    "published_at": "2026-01-06T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0062",
+    "product_name": "  DEMO fikcyjny produkt 62  ",
+    "brand": "H & M",
+    "size": "42",
+    "condition": "new_with_tags",
+    "currency": "GBP",
+    "asking_price": "196,62",
+    "published_at": "2026-01-07T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0063",
+    "product_name": "  DEMO fikcyjny produkt 63  ",
+    "brand": "Marka fikcyjna",
+    "size": "One size",
+    "condition": "unknown",
+    "currency": "USD",
+    "asking_price": "199,63",
+    "published_at": ""
+  },
+  {
+    "external_id": "DEMO-0064",
+    "product_name": "  DEMO fikcyjny produkt 64  ",
+    "brand": "",
+    "size": "",
+    "condition": "",
+    "currency": "pln",
+    "asking_price": "202,64",
+    "published_at": "2026-01-09T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0065",
+    "product_name": "  DEMO fikcyjny produkt 65  ",
+    "brand": " NIKE ",
+    "size": "m",
+    "condition": "bardzo dobry",
+    "currency": "EUR",
+    "asking_price": "205,65",
+    "published_at": "2026-01-10T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0066",
+    "product_name": "  DEMO fikcyjny produkt 66  ",
+    "brand": "adidas",
+    "size": " EU 38 ",
+    "condition": "good",
+    "currency": "GBP",
+    "asking_price": "208,66",
+    "published_at": "2026-01-11T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0067",
+    "product_name": "  DEMO fikcyjny produkt 67  ",
+    "brand": "H & M",
+    "size": "42",
+    "condition": "new_with_tags",
+    "currency": "USD",
+    "asking_price": "211,67",
+    "published_at": "2026-01-12T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0068",
+    "product_name": "  DEMO fikcyjny produkt 68  ",
+    "brand": "Marka fikcyjna",
+    "size": "One size",
+    "condition": "unknown",
+    "currency": "pln",
+    "asking_price": "214,68",
+    "published_at": "2026-01-13T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0069",
+    "product_name": "  DEMO fikcyjny produkt 69  ",
+    "brand": "",
+    "size": "",
+    "condition": "",
+    "currency": "EUR",
+    "asking_price": "217,69",
+    "published_at": "2026-01-14T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0070",
+    "product_name": "  DEMO fikcyjny produkt 70  ",
+    "brand": " NIKE ",
+    "size": "m",
+    "condition": "bardzo dobry",
+    "currency": "GBP",
+    "asking_price": "220,70",
+    "published_at": "2026-01-15T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0071",
+    "product_name": "  DEMO fikcyjny produkt 71  ",
+    "brand": "adidas",
+    "size": " EU 38 ",
+    "condition": "good",
+    "currency": "USD",
+    "asking_price": "223,71",
+    "published_at": "2026-01-16T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0072",
+    "product_name": "  DEMO fikcyjny produkt 72  ",
+    "brand": "H & M",
+    "size": "42",
+    "condition": "new_with_tags",
+    "currency": "pln",
+    "asking_price": "226,72",
+    "published_at": ""
+  },
+  {
+    "external_id": "DEMO-0073",
+    "product_name": "  DEMO fikcyjny produkt 73  ",
+    "brand": "Marka fikcyjna",
+    "size": "One size",
+    "condition": "unknown",
+    "currency": "EUR",
+    "asking_price": "229,73",
+    "published_at": "2026-01-18T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0074",
+    "product_name": "  DEMO fikcyjny produkt 74  ",
+    "brand": "",
+    "size": "",
+    "condition": "",
+    "currency": "GBP",
+    "asking_price": "232,74",
+    "published_at": "2026-01-19T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0075",
+    "product_name": "  DEMO fikcyjny produkt 75  ",
+    "brand": " NIKE ",
+    "size": "m",
+    "condition": "bardzo dobry",
+    "currency": "USD",
+    "asking_price": "235,75",
+    "published_at": "2026-01-20T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0076",
+    "product_name": "  DEMO fikcyjny produkt 76  ",
+    "brand": "adidas",
+    "size": " EU 38 ",
+    "condition": "good",
+    "currency": "pln",
+    "asking_price": "238,76",
+    "published_at": "2026-01-21T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0077",
+    "product_name": "  DEMO fikcyjny produkt 77  ",
+    "brand": "H & M",
+    "size": "42",
+    "condition": "new_with_tags",
+    "currency": "EUR",
+    "asking_price": "241,77",
+    "published_at": "2026-01-22T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0078",
+    "product_name": "  DEMO fikcyjny produkt 78  ",
+    "brand": "Marka fikcyjna",
+    "size": "One size",
+    "condition": "unknown",
+    "currency": "GBP",
+    "asking_price": "244,78",
+    "published_at": "2026-01-23T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0079",
+    "product_name": "  DEMO fikcyjny produkt 79  ",
+    "brand": "",
+    "size": "",
+    "condition": "",
+    "currency": "USD",
+    "asking_price": "247,79",
+    "published_at": "2026-01-24T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0080",
+    "product_name": "  DEMO fikcyjny produkt 80  ",
+    "brand": " NIKE ",
+    "size": "m",
+    "condition": "bardzo dobry",
+    "currency": "pln",
+    "asking_price": "250,80",
+    "published_at": "2026-01-25T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0081",
+    "product_name": "  DEMO fikcyjny produkt 81  ",
+    "brand": "adidas",
+    "size": " EU 38 ",
+    "condition": "good",
+    "currency": "EUR",
+    "asking_price": "253,81",
+    "published_at": ""
+  },
+  {
+    "external_id": "DEMO-0082",
+    "product_name": "  DEMO fikcyjny produkt 82  ",
+    "brand": "H & M",
+    "size": "42",
+    "condition": "new_with_tags",
+    "currency": "GBP",
+    "asking_price": "256,82",
+    "published_at": "2026-01-27T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0083",
+    "product_name": "  DEMO fikcyjny produkt 83  ",
+    "brand": "Marka fikcyjna",
+    "size": "One size",
+    "condition": "unknown",
+    "currency": "USD",
+    "asking_price": "259,83",
+    "published_at": "2026-01-28T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0084",
+    "product_name": "  DEMO fikcyjny produkt 84  ",
+    "brand": "",
+    "size": "",
+    "condition": "",
+    "currency": "pln",
+    "asking_price": "262,84",
+    "published_at": "2026-01-01T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0085",
+    "product_name": "  DEMO fikcyjny produkt 85  ",
+    "brand": " NIKE ",
+    "size": "m",
+    "condition": "bardzo dobry",
+    "currency": "EUR",
+    "asking_price": "265,85",
+    "published_at": "2026-01-02T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0086",
+    "product_name": "  DEMO fikcyjny produkt 86  ",
+    "brand": "adidas",
+    "size": " EU 38 ",
+    "condition": "good",
+    "currency": "GBP",
+    "asking_price": "268,86",
+    "published_at": "2026-01-03T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0087",
+    "product_name": "  DEMO fikcyjny produkt 87  ",
+    "brand": "H & M",
+    "size": "42",
+    "condition": "new_with_tags",
+    "currency": "USD",
+    "asking_price": "271,87",
+    "published_at": "2026-01-04T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0088",
+    "product_name": "  DEMO fikcyjny produkt 88  ",
+    "brand": "Marka fikcyjna",
+    "size": "One size",
+    "condition": "unknown",
+    "currency": "pln",
+    "asking_price": "274,88",
+    "published_at": "2026-01-05T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0089",
+    "product_name": "  DEMO fikcyjny produkt 89  ",
+    "brand": "",
+    "size": "",
+    "condition": "",
+    "currency": "EUR",
+    "asking_price": "277,89",
+    "published_at": "2026-01-06T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0090",
+    "product_name": "  DEMO fikcyjny produkt 90  ",
+    "brand": " NIKE ",
+    "size": "m",
+    "condition": "bardzo dobry",
+    "currency": "GBP",
+    "asking_price": "280,90",
+    "published_at": ""
+  },
+  {
+    "external_id": "DEMO-0091",
+    "product_name": "  DEMO fikcyjny produkt 91  ",
+    "brand": "adidas",
+    "size": " EU 38 ",
+    "condition": "good",
+    "currency": "USD",
+    "asking_price": "283,91",
+    "published_at": "2026-01-08T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0092",
+    "product_name": "  DEMO fikcyjny produkt 92  ",
+    "brand": "H & M",
+    "size": "42",
+    "condition": "new_with_tags",
+    "currency": "pln",
+    "asking_price": "286,92",
+    "published_at": "2026-01-09T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0093",
+    "product_name": "  DEMO fikcyjny produkt 93  ",
+    "brand": "Marka fikcyjna",
+    "size": "One size",
+    "condition": "unknown",
+    "currency": "EUR",
+    "asking_price": "289,93",
+    "published_at": "2026-01-10T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0094",
+    "product_name": "  DEMO fikcyjny produkt 94  ",
+    "brand": "",
+    "size": "",
+    "condition": "",
+    "currency": "GBP",
+    "asking_price": "292,94",
+    "published_at": "2026-01-11T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0095",
+    "product_name": "  DEMO fikcyjny produkt 95  ",
+    "brand": " NIKE ",
+    "size": "m",
+    "condition": "bardzo dobry",
+    "currency": "USD",
+    "asking_price": "295,95",
+    "published_at": "2026-01-12T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0096",
+    "product_name": "  DEMO fikcyjny produkt 96  ",
+    "brand": "adidas",
+    "size": " EU 38 ",
+    "condition": "good",
+    "currency": "pln",
+    "asking_price": "298,96",
+    "published_at": "2026-01-13T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0097",
+    "product_name": "  DEMO fikcyjny produkt 97  ",
+    "brand": "H & M",
+    "size": "42",
+    "condition": "new_with_tags",
+    "currency": "EUR",
+    "asking_price": "301,97",
+    "published_at": "2026-01-14T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0098",
+    "product_name": "  DEMO fikcyjny produkt 98  ",
+    "brand": "Marka fikcyjna",
+    "size": "One size",
+    "condition": "unknown",
+    "currency": "GBP",
+    "asking_price": "304,98",
+    "published_at": "2026-01-15T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0099",
+    "product_name": "  DEMO fikcyjny produkt 99  ",
+    "brand": "",
+    "size": "",
+    "condition": "",
+    "currency": "USD",
+    "asking_price": "307,99",
+    "published_at": ""
+  },
+  {
+    "external_id": "DEMO-0100",
+    "product_name": "  DEMO fikcyjny produkt 100  ",
+    "brand": " NIKE ",
+    "size": "m",
+    "condition": "bardzo dobry",
+    "currency": "pln",
+    "asking_price": "310,00",
+    "published_at": "2026-01-17T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0101",
+    "product_name": "  DEMO fikcyjny produkt 101  ",
+    "brand": "adidas",
+    "size": " EU 38 ",
+    "condition": "good",
+    "currency": "EUR",
+    "asking_price": "313,01",
+    "published_at": "2026-01-18T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0102",
+    "product_name": "  DEMO fikcyjny produkt 102  ",
+    "brand": "H & M",
+    "size": "42",
+    "condition": "new_with_tags",
+    "currency": "GBP",
+    "asking_price": "316,02",
+    "published_at": "2026-01-19T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0103",
+    "product_name": "  DEMO fikcyjny produkt 103  ",
+    "brand": "Marka fikcyjna",
+    "size": "One size",
+    "condition": "unknown",
+    "currency": "USD",
+    "asking_price": "319,03",
+    "published_at": "2026-01-20T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0104",
+    "product_name": "  DEMO fikcyjny produkt 104  ",
+    "brand": "",
+    "size": "",
+    "condition": "",
+    "currency": "pln",
+    "asking_price": "322,04",
+    "published_at": "2026-01-21T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0105",
+    "product_name": "  DEMO fikcyjny produkt 105  ",
+    "brand": " NIKE ",
+    "size": "m",
+    "condition": "bardzo dobry",
+    "currency": "EUR",
+    "asking_price": "325,05",
+    "published_at": "2026-01-22T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0106",
+    "product_name": "  DEMO fikcyjny produkt 106  ",
+    "brand": "adidas",
+    "size": " EU 38 ",
+    "condition": "good",
+    "currency": "GBP",
+    "asking_price": "328,06",
+    "published_at": "2026-01-23T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0107",
+    "product_name": "  DEMO fikcyjny produkt 107  ",
+    "brand": "H & M",
+    "size": "42",
+    "condition": "new_with_tags",
+    "currency": "USD",
+    "asking_price": "331,07",
+    "published_at": "2026-01-24T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0108",
+    "product_name": "  DEMO fikcyjny produkt 108  ",
+    "brand": "Marka fikcyjna",
+    "size": "One size",
+    "condition": "unknown",
+    "currency": "pln",
+    "asking_price": "334,08",
+    "published_at": ""
+  },
+  {
+    "external_id": "DEMO-0109",
+    "product_name": "  DEMO fikcyjny produkt 109  ",
+    "brand": "",
+    "size": "",
+    "condition": "",
+    "currency": "EUR",
+    "asking_price": "337,09",
+    "published_at": "2026-01-26T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0000",
+    "product_name": "  DEMO fikcyjny produkt 0  ",
+    "brand": " NIKE ",
+    "size": "m",
+    "condition": "bardzo dobry",
+    "currency": "pln",
+    "asking_price": "10,00",
+    "published_at": ""
+  },
+  {
+    "external_id": "DEMO-0001",
+    "product_name": "  DEMO fikcyjny produkt 1  ",
+    "brand": "adidas",
+    "size": " EU 38 ",
+    "condition": "good",
+    "currency": "EUR",
+    "asking_price": "13,01",
+    "published_at": "2026-01-02T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0002",
+    "product_name": "  DEMO fikcyjny produkt 2  ",
+    "brand": "H & M",
+    "size": "42",
+    "condition": "new_with_tags",
+    "currency": "GBP",
+    "asking_price": "16,02",
+    "published_at": "2026-01-03T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0003",
+    "product_name": "  DEMO fikcyjny produkt 3  ",
+    "brand": "Marka fikcyjna",
+    "size": "One size",
+    "condition": "unknown",
+    "currency": "USD",
+    "asking_price": "19,03",
+    "published_at": "2026-01-04T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0004",
+    "product_name": "  DEMO fikcyjny produkt 4  ",
+    "brand": "",
+    "size": "",
+    "condition": "",
+    "currency": "pln",
+    "asking_price": "22,04",
+    "published_at": "2026-01-05T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0005",
+    "product_name": "  DEMO fikcyjny produkt 5  ",
+    "brand": " NIKE ",
+    "size": "m",
+    "condition": "bardzo dobry",
+    "currency": "EUR",
+    "asking_price": "25,05",
+    "published_at": "2026-01-06T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0006",
+    "product_name": "  DEMO fikcyjny produkt 6  ",
+    "brand": "adidas",
+    "size": " EU 38 ",
+    "condition": "good",
+    "currency": "GBP",
+    "asking_price": "28,06",
+    "published_at": "2026-01-07T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0007",
+    "product_name": "  DEMO fikcyjny produkt 7  ",
+    "brand": "H & M",
+    "size": "42",
+    "condition": "new_with_tags",
+    "currency": "USD",
+    "asking_price": "31,07",
+    "published_at": "2026-01-08T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0008",
+    "product_name": "  DEMO fikcyjny produkt 8  ",
+    "brand": "Marka fikcyjna",
+    "size": "One size",
+    "condition": "unknown",
+    "currency": "pln",
+    "asking_price": "34,08",
+    "published_at": "2026-01-09T12:00:00+02:00"
+  },
+  {
+    "external_id": "DEMO-0009",
+    "product_name": "  DEMO fikcyjny produkt 9  ",
+    "brand": "",
+    "size": "",
+    "condition": "",
+    "currency": "EUR",
+    "asking_price": "37,09",
+    "published_at": ""
+  },
+  {
+    "external_id": "DEMO-INVALID-120",
+    "product_name": "  DEMO fikcyjny produkt 0  ",
+    "brand": " NIKE ",
+    "size": "m",
+    "condition": "bardzo dobry",
+    "currency": "pln",
+    "asking_price": "free",
+    "published_at": ""
+  },
+  {
+    "external_id": "DEMO-INVALID-121",
+    "product_name": "  DEMO fikcyjny produkt 0  ",
+    "brand": " NIKE ",
+    "size": "m",
+    "condition": "bardzo dobry",
+    "currency": "pln",
+    "asking_price": "-1",
+    "published_at": ""
+  },
+  {
+    "external_id": "DEMO-INVALID-122",
+    "product_name": "  DEMO fikcyjny produkt 0  ",
+    "brand": " NIKE ",
+    "size": "m",
+    "condition": "bardzo dobry",
+    "currency": "XYZ",
+    "asking_price": "10,00",
+    "published_at": ""
+  },
+  {
+    "external_id": "DEMO-INVALID-123",
+    "product_name": "  DEMO fikcyjny produkt 0  ",
+    "brand": " NIKE ",
+    "size": "m",
+    "condition": "bardzo dobry",
+    "currency": "pln",
+    "asking_price": "10,00",
+    "published_at": "2026-01-01"
+  },
+  {
+    "external_id": "DEMO-INVALID-124",
+    "product_name": "  DEMO fikcyjny produkt 0  ",
+    "brand": " NIKE ",
+    "size": "m",
+    "condition": "perfect probably",
+    "currency": "pln",
+    "asking_price": "10,00",
+    "published_at": ""
+  },
+  {
+    "external_id": "",
+    "product_name": "  DEMO fikcyjny produkt 0  ",
+    "brand": " NIKE ",
+    "size": "m",
+    "condition": "bardzo dobry",
+    "currency": "pln",
+    "asking_price": "10,00",
+    "published_at": ""
+  },
+  {
+    "external_id": "DEMO-INVALID-126",
+    "product_name": " ",
+    "brand": " NIKE ",
+    "size": "m",
+    "condition": "bardzo dobry",
+    "currency": "pln",
+    "asking_price": "10,00",
+    "published_at": ""
+  },
+  {
+    "external_id": "DEMO-INVALID-127",
+    "product_name": "  DEMO fikcyjny produkt 0  ",
+    "brand": " NIKE ",
+    "size": "m",
+    "condition": "bardzo dobry",
+    "currency": "pln",
+    "asking_price": "12.345",
+    "published_at": ""
+  },
+  {
+    "external_id": "DEMO-INVALID-128",
+    "product_name": "  DEMO fikcyjny produkt 0  ",
+    "brand": " NIKE ",
+    "size": "m",
+    "condition": "bardzo dobry",
+    "currency": "",
+    "asking_price": "10,00",
+    "published_at": ""
+  },
+  {
+    "external_id": "DEMO-INVALID-129",
+    "product_name": "  DEMO fikcyjny produkt 0  ",
+    "brand": " NIKE ",
+    "size": "m",
+    "condition": "bardzo dobry",
+    "currency": "pln",
+    "asking_price": "10,00",
+    "published_at": "not a date"
+  }
+]

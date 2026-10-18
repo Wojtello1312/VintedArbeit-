@@ -1,0 +1,131 @@
+external_id,product_name,brand,size,condition,currency,asking_price,published_at
+DEMO-0000,  DEMO fikcyjny produkt 0  , NIKE ,m,bardzo dobry,pln,"10,00",
+DEMO-0001,  DEMO fikcyjny produkt 1  ,adidas, EU 38 ,good,EUR,"13,01",2026-01-02T12:00:00+02:00
+DEMO-0002,  DEMO fikcyjny produkt 2  ,H & M,42,new_with_tags,GBP,"16,02",2026-01-03T12:00:00+02:00
+DEMO-0003,  DEMO fikcyjny produkt 3  ,Marka fikcyjna,One size,unknown,USD,"19,03",2026-01-04T12:00:00+02:00
+DEMO-0004,  DEMO fikcyjny produkt 4  ,,,,pln,"22,04",2026-01-05T12:00:00+02:00
+DEMO-0005,  DEMO fikcyjny produkt 5  , NIKE ,m,bardzo dobry,EUR,"25,05",2026-01-06T12:00:00+02:00
+DEMO-0006,  DEMO fikcyjny produkt 6  ,adidas, EU 38 ,good,GBP,"28,06",2026-01-07T12:00:00+02:00
+DEMO-0007,  DEMO fikcyjny produkt 7  ,H & M,42,new_with_tags,USD,"31,07",2026-01-08T12:00:00+02:00
+DEMO-0008,  DEMO fikcyjny produkt 8  ,Marka fikcyjna,One size,unknown,pln,"34,08",2026-01-09T12:00:00+02:00
+DEMO-0009,  DEMO fikcyjny produkt 9  ,,,,EUR,"37,09",
+DEMO-0010,  DEMO fikcyjny produkt 10  , NIKE ,m,bardzo dobry,GBP,"40,10",2026-01-11T12:00:00+02:00
+DEMO-0011,  DEMO fikcyjny produkt 11  ,adidas, EU 38 ,good,USD,"43,11",2026-01-12T12:00:00+02:00
+DEMO-0012,  DEMO fikcyjny produkt 12  ,H & M,42,new_with_tags,pln,"46,12",2026-01-13T12:00:00+02:00
+DEMO-0013,  DEMO fikcyjny produkt 13  ,Marka fikcyjna,One size,unknown,EUR,"49,13",2026-01-14T12:00:00+02:00
+DEMO-0014,  DEMO fikcyjny produkt 14  ,,,,GBP,"52,14",2026-01-15T12:00:00+02:00
+DEMO-0015,  DEMO fikcyjny produkt 15  , NIKE ,m,bardzo dobry,USD,"55,15",2026-01-16T12:00:00+02:00
+DEMO-0016,  DEMO fikcyjny produkt 16  ,adidas, EU 38 ,good,pln,"58,16",2026-01-17T12:00:00+02:00
+DEMO-0017,  DEMO fikcyjny produkt 17  ,H & M,42,new_with_tags,EUR,"61,17",2026-01-18T12:00:00+02:00
+DEMO-0018,  DEMO fikcyjny produkt 18  ,Marka fikcyjna,One size,unknown,GBP,"64,18",
+DEMO-0019,  DEMO fikcyjny produkt 19  ,,,,USD,"67,19",2026-01-20T12:00:00+02:00
+DEMO-0020,  DEMO fikcyjny produkt 20  , NIKE ,m,bardzo dobry,pln,"70,20",2026-01-21T12:00:00+02:00
+DEMO-0021,  DEMO fikcyjny produkt 21  ,adidas, EU 38 ,good,EUR,"73,21",2026-01-22T12:00:00+02:00
+DEMO-0022,  DEMO fikcyjny produkt 22  ,H & M,42,new_with_tags,GBP,"76,22",2026-01-23T12:00:00+02:00
+DEMO-0023,  DEMO fikcyjny produkt 23  ,Marka fikcyjna,One size,unknown,USD,"79,23",2026-01-24T12:00:00+02:00
+DEMO-0024,  DEMO fikcyjny produkt 24  ,,,,pln,"82,24",2026-01-25T12:00:00+02:00
+DEMO-0025,  DEMO fikcyjny produkt 25  , NIKE ,m,bardzo dobry,EUR,"85,25",2026-01-26T12:00:00+02:00
+DEMO-0026,  DEMO fikcyjny produkt 26  ,adidas, EU 38 ,good,GBP,"88,26",2026-01-27T12:00:00+02:00
+DEMO-0027,  DEMO fikcyjny produkt 27  ,H & M,42,new_with_tags,USD,"91,27",
+DEMO-0028,  DEMO fikcyjny produkt 28  ,Marka fikcyjna,One size,unknown,pln,"94,28",2026-01-01T12:00:00+02:00
+DEMO-0029,  DEMO fikcyjny produkt 29  ,,,,EUR,"97,29",2026-01-02T12:00:00+02:00
+DEMO-0030,  DEMO fikcyjny produkt 30  , NIKE ,m,bardzo dobry,GBP,"100,30",2026-01-03T12:00:00+02:00
+DEMO-0031,  DEMO fikcyjny produkt 31  ,adidas, EU 38 ,good,USD,"103,31",2026-01-04T12:00:00+02:00
+DEMO-0032,  DEMO fikcyjny produkt 32  ,H & M,42,new_with_tags,pln,"106,32",2026-01-05T12:00:00+02:00
+DEMO-0033,  DEMO fikcyjny produkt 33  ,Marka fikcyjna,One size,unknown,EUR,"109,33",2026-01-06T12:00:00+02:00
+DEMO-0034,  DEMO fikcyjny produkt 34  ,,,,GBP,"112,34",2026-01-07T12:00:00+02:00
+DEMO-0035,  DEMO fikcyjny produkt 35  , NIKE ,m,bardzo dobry,USD,"115,35",2026-01-08T12:00:00+02:00
+DEMO-0036,  DEMO fikcyjny produkt 36  ,adidas, EU 38 ,good,pln,"118,36",
+DEMO-0037,  DEMO fikcyjny produkt 37  ,H & M,42,new_with_tags,EUR,"121,37",2026-01-10T12:00:00+02:00
+DEMO-0038,  DEMO fikcyjny produkt 38  ,Marka fikcyjna,One size,unknown,GBP,"124,38",2026-01-11T12:00:00+02:00
+DEMO-0039,  DEMO fikcyjny produkt 39  ,,,,USD,"127,39",2026-01-12T12:00:00+02:00
+DEMO-0040,  DEMO fikcyjny produkt 40  , NIKE ,m,bardzo dobry,pln,"130,40",2026-01-13T12:00:00+02:00
+DEMO-0041,  DEMO fikcyjny produkt 41  ,adidas, EU 38 ,good,EUR,"133,41",2026-01-14T12:00:00+02:00
+DEMO-0042,  DEMO fikcyjny produkt 42  ,H & M,42,new_with_tags,GBP,"136,42",2026-01-15T12:00:00+02:00
+DEMO-0043,  DEMO fikcyjny produkt 43  ,Marka fikcyjna,One size,unknown,USD,"139,43",2026-01-16T12:00:00+02:00
+DEMO-0044,  DEMO fikcyjny produkt 44  ,,,,pln,"142,44",2026-01-17T12:00:00+02:00
+DEMO-0045,  DEMO fikcyjny produkt 45  , NIKE ,m,bardzo dobry,EUR,"145,45",
+DEMO-0046,  DEMO fikcyjny produkt 46  ,adidas, EU 38 ,good,GBP,"148,46",2026-01-19T12:00:00+02:00
+DEMO-0047,  DEMO fikcyjny produkt 47  ,H & M,42,new_with_tags,USD,"151,47",2026-01-20T12:00:00+02:00
+DEMO-0048,  DEMO fikcyjny produkt 48  ,Marka fikcyjna,One size,unknown,pln,"154,48",2026-01-21T12:00:00+02:00
+DEMO-0049,  DEMO fikcyjny produkt 49  ,,,,EUR,"157,49",2026-01-22T12:00:00+02:00
+DEMO-0050,  DEMO fikcyjny produkt 50  , NIKE ,m,bardzo dobry,GBP,"160,50",2026-01-23T12:00:00+02:00
+DEMO-0051,  DEMO fikcyjny produkt 51  ,adidas, EU 38 ,good,USD,"163,51",2026-01-24T12:00:00+02:00
+DEMO-0052,  DEMO fikcyjny produkt 52  ,H & M,42,new_with_tags,pln,"166,52",2026-01-25T12:00:00+02:00
+DEMO-0053,  DEMO fikcyjny produkt 53  ,Marka fikcyjna,One size,unknown,EUR,"169,53",2026-01-26T12:00:00+02:00
+DEMO-0054,  DEMO fikcyjny produkt 54  ,,,,GBP,"172,54",
+DEMO-0055,  DEMO fikcyjny produkt 55  , NIKE ,m,bardzo dobry,USD,"175,55",2026-01-28T12:00:00+02:00
+DEMO-0056,  DEMO fikcyjny produkt 56  ,adidas, EU 38 ,good,pln,"178,56",2026-01-01T12:00:00+02:00
+DEMO-0057,  DEMO fikcyjny produkt 57  ,H & M,42,new_with_tags,EUR,"181,57",2026-01-02T12:00:00+02:00
+DEMO-0058,  DEMO fikcyjny produkt 58  ,Marka fikcyjna,One size,unknown,GBP,"184,58",2026-01-03T12:00:00+02:00
+DEMO-0059,  DEMO fikcyjny produkt 59  ,,,,USD,"187,59",2026-01-04T12:00:00+02:00
+DEMO-0060,  DEMO fikcyjny produkt 60  , NIKE ,m,bardzo dobry,pln,"190,60",2026-01-05T12:00:00+02:00
+DEMO-0061,  DEMO fikcyjny produkt 61  ,adidas, EU 38 ,good,EUR,"193,61",2026-01-06T12:00:00+02:00
+DEMO-0062,  DEMO fikcyjny produkt 62  ,H & M,42,new_with_tags,GBP,"196,62",2026-01-07T12:00:00+02:00
+DEMO-0063,  DEMO fikcyjny produkt 63  ,Marka fikcyjna,One size,unknown,USD,"199,63",
+DEMO-0064,  DEMO fikcyjny produkt 64  ,,,,pln,"202,64",2026-01-09T12:00:00+02:00
+DEMO-0065,  DEMO fikcyjny produkt 65  , NIKE ,m,bardzo dobry,EUR,"205,65",2026-01-10T12:00:00+02:00
+DEMO-0066,  DEMO fikcyjny produkt 66  ,adidas, EU 38 ,good,GBP,"208,66",2026-01-11T12:00:00+02:00
+DEMO-0067,  DEMO fikcyjny produkt 67  ,H & M,42,new_with_tags,USD,"211,67",2026-01-12T12:00:00+02:00
+DEMO-0068,  DEMO fikcyjny produkt 68  ,Marka fikcyjna,One size,unknown,pln,"214,68",2026-01-13T12:00:00+02:00
+DEMO-0069,  DEMO fikcyjny produkt 69  ,,,,EUR,"217,69",2026-01-14T12:00:00+02:00
+DEMO-0070,  DEMO fikcyjny produkt 70  , NIKE ,m,bardzo dobry,GBP,"220,70",2026-01-15T12:00:00+02:00
+DEMO-0071,  DEMO fikcyjny produkt 71  ,adidas, EU 38 ,good,USD,"223,71",2026-01-16T12:00:00+02:00
+DEMO-0072,  DEMO fikcyjny produkt 72  ,H & M,42,new_with_tags,pln,"226,72",
+DEMO-0073,  DEMO fikcyjny produkt 73  ,Marka fikcyjna,One size,unknown,EUR,"229,73",2026-01-18T12:00:00+02:00
+DEMO-0074,  DEMO fikcyjny produkt 74  ,,,,GBP,"232,74",2026-01-19T12:00:00+02:00
+DEMO-0075,  DEMO fikcyjny produkt 75  , NIKE ,m,bardzo dobry,USD,"235,75",2026-01-20T12:00:00+02:00
+DEMO-0076,  DEMO fikcyjny produkt 76  ,adidas, EU 38 ,good,pln,"238,76",2026-01-21T12:00:00+02:00
+DEMO-0077,  DEMO fikcyjny produkt 77  ,H & M,42,new_with_tags,EUR,"241,77",2026-01-22T12:00:00+02:00
+DEMO-0078,  DEMO fikcyjny produkt 78  ,Marka fikcyjna,One size,unknown,GBP,"244,78",2026-01-23T12:00:00+02:00
+DEMO-0079,  DEMO fikcyjny produkt 79  ,,,,USD,"247,79",2026-01-24T12:00:00+02:00
+DEMO-0080,  DEMO fikcyjny produkt 80  , NIKE ,m,bardzo dobry,pln,"250,80",2026-01-25T12:00:00+02:00
+DEMO-0081,  DEMO fikcyjny produkt 81  ,adidas, EU 38 ,good,EUR,"253,81",
+DEMO-0082,  DEMO fikcyjny produkt 82  ,H & M,42,new_with_tags,GBP,"256,82",2026-01-27T12:00:00+02:00
+DEMO-0083,  DEMO fikcyjny produkt 83  ,Marka fikcyjna,One size,unknown,USD,"259,83",2026-01-28T12:00:00+02:00
+DEMO-0084,  DEMO fikcyjny produkt 84  ,,,,pln,"262,84",2026-01-01T12:00:00+02:00
+DEMO-0085,  DEMO fikcyjny produkt 85  , NIKE ,m,bardzo dobry,EUR,"265,85",2026-01-02T12:00:00+02:00
+DEMO-0086,  DEMO fikcyjny produkt 86  ,adidas, EU 38 ,good,GBP,"268,86",2026-01-03T12:00:00+02:00
+DEMO-0087,  DEMO fikcyjny produkt 87  ,H & M,42,new_with_tags,USD,"271,87",2026-01-04T12:00:00+02:00
+DEMO-0088,  DEMO fikcyjny produkt 88  ,Marka fikcyjna,One size,unknown,pln,"274,88",2026-01-05T12:00:00+02:00
+DEMO-0089,  DEMO fikcyjny produkt 89  ,,,,EUR,"277,89",2026-01-06T12:00:00+02:00
+DEMO-0090,  DEMO fikcyjny produkt 90  , NIKE ,m,bardzo dobry,GBP,"280,90",
+DEMO-0091,  DEMO fikcyjny produkt 91  ,adidas, EU 38 ,good,USD,"283,91",2026-01-08T12:00:00+02:00
+DEMO-0092,  DEMO fikcyjny produkt 92  ,H & M,42,new_with_tags,pln,"286,92",2026-01-09T12:00:00+02:00
+DEMO-0093,  DEMO fikcyjny produkt 93  ,Marka fikcyjna,One size,unknown,EUR,"289,93",2026-01-10T12:00:00+02:00
+DEMO-0094,  DEMO fikcyjny produkt 94  ,,,,GBP,"292,94",2026-01-11T12:00:00+02:00
+DEMO-0095,  DEMO fikcyjny produkt 95  , NIKE ,m,bardzo dobry,USD,"295,95",2026-01-12T12:00:00+02:00
+DEMO-0096,  DEMO fikcyjny produkt 96  ,adidas, EU 38 ,good,pln,"298,96",2026-01-13T12:00:00+02:00
+DEMO-0097,  DEMO fikcyjny produkt 97  ,H & M,42,new_with_tags,EUR,"301,97",2026-01-14T12:00:00+02:00
+DEMO-0098,  DEMO fikcyjny produkt 98  ,Marka fikcyjna,One size,unknown,GBP,"304,98",2026-01-15T12:00:00+02:00
+DEMO-0099,  DEMO fikcyjny produkt 99  ,,,,USD,"307,99",
+DEMO-0100,  DEMO fikcyjny produkt 100  , NIKE ,m,bardzo dobry,pln,"310,00",2026-01-17T12:00:00+02:00
+DEMO-0101,  DEMO fikcyjny produkt 101  ,adidas, EU 38 ,good,EUR,"313,01",2026-01-18T12:00:00+02:00
+DEMO-0102,  DEMO fikcyjny produkt 102  ,H & M,42,new_with_tags,GBP,"316,02",2026-01-19T12:00:00+02:00
+DEMO-0103,  DEMO fikcyjny produkt 103  ,Marka fikcyjna,One size,unknown,USD,"319,03",2026-01-20T12:00:00+02:00
+DEMO-0104,  DEMO fikcyjny produkt 104  ,,,,pln,"322,04",2026-01-21T12:00:00+02:00
+DEMO-0105,  DEMO fikcyjny produkt 105  , NIKE ,m,bardzo dobry,EUR,"325,05",2026-01-22T12:00:00+02:00
+DEMO-0106,  DEMO fikcyjny produkt 106  ,adidas, EU 38 ,good,GBP,"328,06",2026-01-23T12:00:00+02:00
+DEMO-0107,  DEMO fikcyjny produkt 107  ,H & M,42,new_with_tags,USD,"331,07",2026-01-24T12:00:00+02:00
+DEMO-0108,  DEMO fikcyjny produkt 108  ,Marka fikcyjna,One size,unknown,pln,"334,08",
+DEMO-0109,  DEMO fikcyjny produkt 109  ,,,,EUR,"337,09",2026-01-26T12:00:00+02:00
+DEMO-0000,  DEMO fikcyjny produkt 0  , NIKE ,m,bardzo dobry,pln,"10,00",
+DEMO-0001,  DEMO fikcyjny produkt 1  ,adidas, EU 38 ,good,EUR,"13,01",2026-01-02T12:00:00+02:00
+DEMO-0002,  DEMO fikcyjny produkt 2  ,H & M,42,new_with_tags,GBP,"16,02",2026-01-03T12:00:00+02:00
+DEMO-0003,  DEMO fikcyjny produkt 3  ,Marka fikcyjna,One size,unknown,USD,"19,03",2026-01-04T12:00:00+02:00
+DEMO-0004,  DEMO fikcyjny produkt 4  ,,,,pln,"22,04",2026-01-05T12:00:00+02:00
+DEMO-0005,  DEMO fikcyjny produkt 5  , NIKE ,m,bardzo dobry,EUR,"25,05",2026-01-06T12:00:00+02:00
+DEMO-0006,  DEMO fikcyjny produkt 6  ,adidas, EU 38 ,good,GBP,"28,06",2026-01-07T12:00:00+02:00
+DEMO-0007,  DEMO fikcyjny produkt 7  ,H & M,42,new_with_tags,USD,"31,07",2026-01-08T12:00:00+02:00
+DEMO-0008,  DEMO fikcyjny produkt 8  ,Marka fikcyjna,One size,unknown,pln,"34,08",2026-01-09T12:00:00+02:00
+DEMO-0009,  DEMO fikcyjny produkt 9  ,,,,EUR,"37,09",
+DEMO-INVALID-120,  DEMO fikcyjny produkt 0  , NIKE ,m,bardzo dobry,pln,free,
+DEMO-INVALID-121,  DEMO fikcyjny produkt 0  , NIKE ,m,bardzo dobry,pln,-1,
+DEMO-INVALID-122,  DEMO fikcyjny produkt 0  , NIKE ,m,bardzo dobry,XYZ,"10,00",
+DEMO-INVALID-123,  DEMO fikcyjny produkt 0  , NIKE ,m,bardzo dobry,pln,"10,00",2026-01-01
+DEMO-INVALID-124,  DEMO fikcyjny produkt 0  , NIKE ,m,perfect probably,pln,"10,00",
+,  DEMO fikcyjny produkt 0  , NIKE ,m,bardzo dobry,pln,"10,00",
+DEMO-INVALID-126, , NIKE ,m,bardzo dobry,pln,"10,00",
+DEMO-INVALID-127,  DEMO fikcyjny produkt 0  , NIKE ,m,bardzo dobry,pln,12.345,
+DEMO-INVALID-128,  DEMO fikcyjny produkt 0  , NIKE ,m,bardzo dobry,,"10,00",
+DEMO-INVALID-129,  DEMO fikcyjny produkt 0  , NIKE ,m,bardzo dobry,pln,"10,00",not a date

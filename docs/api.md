@@ -21,7 +21,7 @@ formularzem wymaga CSRF. Szczegóły: [admin.md](admin.md).
 | --- | --- |
 | `GET /health/live` | 200 `{"status":"alive"}`: proces obsługuje żądania. Bez autoryzacji. |
 | `GET /health/ready` | 200 `{"status":"ready"}` lub 503 `{"status":"unavailable"}`. Sprawdza cztery bazy, wersje migracji, tabele i możliwość transakcji zapisu. Bez sekretów i ścieżek; nie wywołuje AI/Telegram. |
-| `POST /imports` | Import całego pliku JSON/CSV; zapis ofert bez uruchamiania analizy. |
+| `POST /imports` | Import całego pliku JSON/CSV lub ręcznie zapisanego HTML; zapis ofert bez uruchamiania analizy. |
 | `GET /offers` | Lista ofert z najnowszym stanem, scoringiem, zyskiem, ryzykiem i oceną ręczną. |
 | `GET /offers/{key}` | Oferta oraz pełna najnowsza analiza z wyceną, powodami i historią stanów. Klucz pochodzi z listy. 404 przy braku. |
 | `GET /jobs/status` | Scheduler, źródło, poprzedni cykl, liczniki i stan konfiguracji powiadomień. |
@@ -31,9 +31,13 @@ formularzem wymaga CSRF. Szczegóły: [admin.md](admin.md).
 
 ### Import
 
-Query: `format=json|csv`, `source_name=demo`, `is_demo=true` (wartości domyślne).
+Query: `format=json|csv|html`, `source_name=demo`, `is_demo=true` (wartości domyślne).
 Body to tablica rekordów JSON (`Content-Type: application/json`) albo tekst CSV
-(`Content-Type: text/csv`), bez multipart i bez ścieżek serwera.
+(`Content-Type: text/csv`). Format HTML wymaga `Content-Type: text/html` i
+przyjmuje stronę zapisaną lokalnie przez użytkownika. Serwer nie pobiera URL,
+nie uruchamia JavaScriptu i nie korzysta z prywatnych endpointów. Odczytuje
+standardowe JSON-LD `Product`/`Offer` lub metadane Open Graph. Wszystkie formaty
+są przesyłane bez multipart i bez ścieżek serwera.
 Kontrakt pól i normalizacji: [README](../README.md#kontrakt-wejścia-i-normalizacja).
 
 200 oznacza zakończony import; zawsze sprawdź `new`, `skipped`, `errors`,
@@ -64,6 +68,8 @@ Invoke-RestMethod 'http://127.0.0.1:8000/health/ready'
 Invoke-RestMethod 'http://127.0.0.1:8000/imports?source_name=demo-readiness' `
   -Method Post -Headers $headers -ContentType 'application/json' `
   -InFile '.\src\app\data\readiness_demo.json'
+Invoke-RestMethod 'http://127.0.0.1:8000/imports?format=html&source_name=vinted-manual&is_demo=false' `
+  -Method Post -Headers $headers -ContentType 'text/html' -InFile '.\oferta.html'
 Invoke-RestMethod 'http://127.0.0.1:8000/offers?min_score=65&sort=score' -Headers $headers
 Invoke-RestMethod 'http://127.0.0.1:8000/jobs/run' -Method Post `
   -Headers $headers -ContentType 'application/json' -Body '{"run_id":"manual-001"}'

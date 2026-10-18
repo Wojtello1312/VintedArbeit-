@@ -75,6 +75,24 @@ uv run --frozen deal-hunter --format csv --file src/vinted_deal_hunter/data/demo
 uv run --frozen deal-hunter --format json --file src/vinted_deal_hunter/data/demo_offers.json
 ```
 
+### Ręczny test zapisanej oferty HTML
+
+Aplikacja nie pobiera stron Vinted i nie automatyzuje przeglądarki. Pojedynczą
+ofertę, którą użytkownik otworzył zgodnie ze swoimi uprawnieniami, można zapisać
+w przeglądarce jako plik HTML i zaimportować lokalnie:
+
+```powershell
+uv run --frozen deal-hunter --format html --file .\oferta.html `
+  --source-name vinted-manual --no-is-demo
+```
+
+Parser nie wykonuje JavaScriptu ani żądań sieciowych. Odczytuje wyłącznie
+JSON-LD typu `Product`/`Offer`, a w drugiej kolejności metadane Open Graph.
+Jeżeli zapisana strona nie zawiera ceny, waluty, nazwy i stabilnego
+identyfikatora, import kończy się jawnym błędem. Nieznany stan produktu jest
+oznaczany jako `unknown`. Import tego samego pliku ponownie jest deduplikowany.
+To narzędzie służy do ręcznej walidacji; nie jest crawlerem wyszukiwarki.
+
 Domyślnie źródło to `demo`, dane są oznaczone `is_demo=true`, a baza powstaje
 w `.data/offers.sqlite3`. `--db /ścieżka/do/bazy.sqlite3` wybiera inną bazę.
 Równoważny punkt wejścia: `python -m vinted_deal_hunter` w aktywnym środowisku.
@@ -110,6 +128,10 @@ curl --fail-with-body -X POST 'http://127.0.0.1:8000/imports?format=json&source_
 curl --fail-with-body -X POST 'http://127.0.0.1:8000/imports?format=csv&source_name=demo&is_demo=true' \
   -H "Authorization: Bearer $JOBS_API_TOKEN" \
   -H 'Content-Type: text/csv' --data-binary @src/vinted_deal_hunter/data/demo_offers.csv
+curl --fail-with-body -X POST \
+  'http://127.0.0.1:8000/imports?format=html&source_name=vinted-manual&is_demo=false' \
+  -H "Authorization: Bearer $JOBS_API_TOKEN" \
+  -H 'Content-Type: text/html' --data-binary @oferta.html
 ```
 
 Body zawiera cały plik, bez multipart i bez ścieżki do pliku na serwerze.

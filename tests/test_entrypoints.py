@@ -125,6 +125,47 @@ def test_cli_clean_import(
     assert json.loads(capsys.readouterr().out)["errors"] == 0
 
 
+def test_saved_html_cli_and_api_import_are_idempotent(
+    settings: Settings, tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    content = b"""
+    <html><head>
+      <meta property="og:title" content="Manual test offer">
+      <meta property="og:url" content="https://www.vinted.pl/items/123456789-test">
+      <meta property="product:price:amount" content="125.50">
+      <meta property="product:price:currency" content="PLN">
+    </head></html>
+    """
+    path = tmp_path / "offer.html"
+    path.write_bytes(content)
+    cli_db = tmp_path / "html-cli.sqlite3"
+    args = [
+        "--format",
+        "html",
+        "--file",
+        str(path),
+        "--source-name",
+        "vinted-manual",
+        "--no-is-demo",
+        "--db",
+        str(cli_db),
+    ]
+    assert main(args) == 0
+    assert json.loads(capsys.readouterr().out)["new"] == 1
+    assert main(args) == 0
+    assert json.loads(capsys.readouterr().out)["skipped"] == 1
+
+    with TestClient(create_app(settings)) as client:
+        client.headers["Authorization"] = "Bearer " + settings.jobs_api_token.get_secret_value()
+        url = "/imports?format=html&source_name=vinted-manual&is_demo=false"
+        first = client.post(url, content=content, headers={"Content-Type": "text/html"})
+        second = client.post(url, content=content, headers={"Content-Type": "text/html"})
+        assert first.status_code == 200
+        assert (first.json()["new"], first.json()["errors"]) == (1, 0)
+        assert second.status_code == 200
+        assert second.json()["skipped"] == 1
+
+
 def test_settings_environment_validation(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("VDH_MAX_IMPORT_RECORDS", "5")
     assert Settings.from_env().max_import_records == 5

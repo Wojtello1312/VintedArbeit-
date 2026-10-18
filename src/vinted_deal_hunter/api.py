@@ -24,7 +24,13 @@ from app.storage.migrations import ensure_database
 from vinted_deal_hunter.config import Settings
 from vinted_deal_hunter.db import SQLiteOfferRepository
 from vinted_deal_hunter.ingestion import ImportReport, import_offers
-from vinted_deal_hunter.sources import CSVOfferSource, JSONOfferSource, OfferSource, SourceError
+from vinted_deal_hunter.sources import (
+    CSVOfferSource,
+    JSONOfferSource,
+    OfferSource,
+    SavedHTMLOfferSource,
+    SourceError,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -100,10 +106,15 @@ def create_app(
     async def post_import(
         request: Request,
         source_name: Annotated[str, Query(min_length=1, max_length=100)] = "demo",
-        source_format: Annotated[Literal["csv", "json"], Query(alias="format")] = "json",
+        source_format: Annotated[Literal["csv", "html", "json"], Query(alias="format")] = "json",
         is_demo: bool = True,
     ) -> ImportReport:
-        expected = "application/json" if source_format == "json" else "text/csv"
+        media_types = {
+            "csv": "text/csv",
+            "html": "text/html",
+            "json": "application/json",
+        }
+        expected = media_types[source_format]
         content_type = request.headers.get("content-type", "").split(";", 1)[0].strip()
         if content_type != expected:
             raise HTTPException(415, f"Content-Type must be {expected}")
@@ -112,11 +123,22 @@ def create_app(
             if len(content) + len(chunk) > config.max_import_bytes:
                 raise HTTPException(413, "Import exceeds the byte limit")
             content.extend(chunk)
-        adapter = JSONOfferSource if source_format == "json" else CSVOfferSource
-        source = adapter(bytes(content), source_name=source_name, is_demo=is_demo)
+        imported_source: OfferSource
+        if source_format == "csv":
+            imported_source = CSVOfferSource(
+                bytes(content), source_name=source_name, is_demo=is_demo
+            )
+        elif source_format == "html":
+            imported_source = SavedHTMLOfferSource(
+                bytes(content), source_name=source_name, is_demo=is_demo
+            )
+        else:
+            imported_source = JSONOfferSource(
+                bytes(content), source_name=source_name, is_demo=is_demo
+            )
         repository = cast(SQLiteOfferRepository, request.app.state.repository)
         try:
-            return await run_in_threadpool(import_offers, source, repository, config)
+            return await run_in_threadpool(import_offers, imported_source, repository, config)
         except SourceError as exc:
             raise HTTPException(422, str(exc)) from exc
         except SQLAlchemyError as exc:

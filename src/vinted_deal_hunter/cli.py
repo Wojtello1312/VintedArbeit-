@@ -14,6 +14,7 @@ from vinted_deal_hunter.sources import (
     JSONOfferSource,
     MockOfferSource,
     OfferSource,
+    SavedHTMLOfferSource,
     SourceError,
     read_local_file,
 )
@@ -21,7 +22,7 @@ from vinted_deal_hunter.sources import (
 
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Offline offer import; default: bundled demo data")
-    parser.add_argument("--format", choices=["csv", "json", "mock"], default="mock")
+    parser.add_argument("--format", choices=["csv", "html", "json", "mock"], default="mock")
     parser.add_argument("--file", type=Path)
     parser.add_argument("--source-name", default="demo")
     parser.add_argument("--is-demo", action=argparse.BooleanOptionalAction, default=True)
@@ -42,8 +43,16 @@ def main(argv: Sequence[str] | None = None) -> int:
             source = MockOfferSource()
         else:
             content = read_local_file(args.file, max_bytes=settings.max_import_bytes)
-            adapter = CSVOfferSource if args.format == "csv" else JSONOfferSource
-            source = adapter(content, source_name=args.source_name, is_demo=args.is_demo)
+            if args.format == "csv":
+                source = CSVOfferSource(content, source_name=args.source_name, is_demo=args.is_demo)
+            elif args.format == "html":
+                source = SavedHTMLOfferSource(
+                    content, source_name=args.source_name, is_demo=args.is_demo
+                )
+            else:
+                source = JSONOfferSource(
+                    content, source_name=args.source_name, is_demo=args.is_demo
+                )
         repository = SQLiteOfferRepository(settings.db_path)
         report = import_offers(source, repository, settings)
         print(report.model_dump_json(indent=2))

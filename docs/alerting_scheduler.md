@@ -115,8 +115,9 @@ zawarty w URL Telegram. Nie wykonuj rzeczywistych prób wysyłki w zwykłych tes
 
 `create_app(settings, source=adapter, context=provider)` jest punktem kompozycji.
 `adapter` realizuje istniejący `OfferSource` (dla źródeł produkcyjnych preferuj
-rozszerzenie `AuthorizedOfferSource`). Aplikacja nie dostarcza połączenia z Vinted,
-scrapera ani nowych uprawnień do danych. Adapter musi przestrzegać swoich limitów
+rozszerzenie `AuthorizedOfferSource`). Testowy scraper publicznych HTML Vinted PL
+ma osobne CLI opisane w [vinted_scraper.md](vinted_scraper.md); nie jest domyślnym
+źródłem schedulera. Adapter musi przestrzegać swoich limitów
 i timeoutów; odczyt i obliczenia odbywają się poza pętlą zdarzeń.
 
 `AnalysisContextProvider.prepare(offer, as_of) -> AnalysisRequest` uzupełnia

@@ -1,5 +1,14 @@
 # Architektura Vinted Deal Hunter
 
+Rozszerzenie testowe: `vinted_deal_hunter/vinted.py` implementuje `OfferSource`
+przez publiczne HTML Vinted PL, a `vinted_scraper.py` jest jawnym wejściem CLI.
+Warstwa HTTP sprawdza robots.txt, ogranicza rozmiar, liczbę i tempo żądań,
+zatrzymuje się przy blokadach i przekazuje metadane do istniejącego parsera HTML.
+CLI wykorzystuje wspólny importer i repozytorium SQLite. Raport zawiera źródłowy
+URL, czas obserwacji UTC oraz ceny ASKING; nie tworzy dowodów SOLD.
+API i domyślny scheduler nie uruchamiają scrapera. Szczegóły i ograniczenia:
+[vinted_scraper.md](vinted_scraper.md).
+
 Bieżąca implementacja ETAPU 6: [alerting_scheduler.md](alerting_scheduler.md).
 `app/notifications` realizuje trwały outbox i transport Telegram;
 `app/scheduler` odpowiada za cykle, blokadę, raporty i chronione sterowanie.

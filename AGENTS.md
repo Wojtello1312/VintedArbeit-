@@ -2,8 +2,9 @@
 
 ## Cel i zakres
 
-Budujemy produkcyjnie zaprojektowane MVP analizujące oferty z autoryzowanych
-źródeł, wykrywające potencjalne okazje i wysyłające wybrane wyniki na Telegram.
+Budujemy testowe, niekomercyjne MVP analizujące oferty, wykrywające potencjalne
+okazje i wysyłające wybrane wyniki na Telegram. Zachowujemy standardy jakości
+opisane poniżej; deklaracja celu testowego nie stanowi gwarancji prawnej.
 Domyślny tryb działa w pełni offline na jawnie oznaczonych danych demonstracyjnych.
 Nie implementuj kolejnych etapów bez wyraźnego polecenia. Architektura i kolejność
 prac znajdują się w `docs/architecture.md` i `docs/implementation_plan.md`.
@@ -11,10 +12,14 @@ prac znajdują się w `docs/architecture.md` i `docs/implementation_plan.md`.
 ## Granice funkcjonalne i dostęp do danych
 
 - Nie automatyzuj zakupów ani wiadomości do sprzedających.
-- Nie implementuj nieautoryzowanego scrapingu Vinted, prywatnych endpointów,
-  przechwytywania tokenów, obchodzenia CAPTCHA ani zabezpieczeń antybotowych.
-- Każdy rzeczywisty adapter wymaga udokumentowanego uprawnienia do korzystania
-  ze źródła oraz przestrzegania jego warunków i limitów.
+- Na zlecenie właściciela projektu dopuszczamy jawnie uruchamiany scraper
+  publicznych stron HTML Vinted PL do zbierania cen ofertowych. Zasady tego
+  rozszerzenia i ograniczenia opisuje `docs/vinted_scraper.md`.
+- Nie używaj prywatnych endpointów, przechwyconych tokenów, obchodzenia CAPTCHA
+  ani zabezpieczeń antybotowych. Zatrzymuj pobieranie przy blokadach dostępu.
+- Źródła sieciowe muszą mieć opisany sposób dostępu, limity, timeouty i obsługę
+  robots.txt. Użytkownik odpowiada za weryfikację warunków źródła; nie deklaruj,
+  że niekomercyjny lub testowy charakter automatycznie pozwala na każdy dostęp.
 - Oferty pobieraj przez wspólny interfejs źródeł. Dane demonstracyjne nie mogą
   udawać danych produkcyjnych ani trafiać do rzeczywistych alertów.
 - Brak klucza OpenAI nie może blokować analizy, API ani pracy offline.

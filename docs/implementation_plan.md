@@ -8,7 +8,10 @@ Outbox, Telegram, cykle i kontrola dostępu: [alerting_scheduler.md](alerting_sc
 Opis integracji AI,
 limitów i testów: [ai_reviewer.md](ai_reviewer.md). Zakres został rozszerzony w ETAPIE 8 o Docker Compose, migracje Alembic, healthcheck,
 chronione API ofert i test E2E: [readiness.md](readiness.md). Integracja rzeczywistego
-źródła danych pozostaje planem.
+źródła danych została rozszerzona o eksperymentalny scraper publicznych HTML
+Vinted PL uruchamiany przez osobne CLI. Testy transportu korzystają z mocków;
+dostępność rzeczywistych stron nie jest gwarantowana. Patrz
+[vinted_scraper.md](vinted_scraper.md).
 Repozytorium na początku prac nie zawierało aplikacji.
 Każdy etap wymaga osobnego polecenia; zakończenie etapu nie upoważnia do
 automatycznego rozpoczęcia następnego. Wszystkie etapy respektują `AGENTS.md`.
@@ -122,8 +125,9 @@ i odtworzenie bazy oraz ograniczenia SQLite i dostarczania powiadomień.
 
 ## 10. Autoryzowane źródło i przegląd gotowości MVP
 
-Dopiero po wskazaniu źródła i potwierdzeniu uprawnień dodać rzeczywisty adapter.
-Udokumentować legalny sposób dostępu, zakres danych, wymagane zmienne, limity,
+Na zlecenie użytkownika dodano testowy adapter publicznych HTML Vinted PL.
+Użytkownik deklaruje wcześniejszą konsultację przedsięwzięcia; nie stanowi to
+potwierdzenia prawnego po stronie projektu. Dokumentować sposób dostępu, limity,
 retencję i pochodzenie dowodów transakcyjnych. Brak źródła nie blokuje demo.
 Nie zakładać istnienia publicznego API Vinted ani stosować obejść.
 

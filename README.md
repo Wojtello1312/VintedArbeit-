@@ -5,7 +5,9 @@ i deterministyczny Deal Engine z opcjonalnym AI Reviewerem, schedulerem, alertam
 Import obsługuje CSV, JSON i mock, normalizację, deduplikację
 SQLite, raport, CLI oraz `POST /imports`. Wycena wykorzystuje RapidFuzz, medianę,
 IQR i jawne dowody ASKING/SOLD. AI i Telegram są domyślnie wyłączone.
-Scheduler działa offline na MockOfferSource. Nie ma połączeń z Vinted ani scrapera.
+Scheduler działa offline na MockOfferSource. Osobne, jawnie uruchamiane CLI
+zbiera ceny z publicznych stron HTML Vinted PL: [scraper](docs/vinted_scraper.md).
+Projekt ma charakter testowy i niekomercyjny; domyślny start pozostaje offline.
 
 Metodologia, konfiguracja i uruchamialny przykład wyceny:
 [docs/pricing.md](docs/pricing.md). Moduły `app/core` i `app/schemas` znajdują
@@ -49,7 +51,8 @@ docker compose exec app python -m app.demo
 
 Panel działa pod `/admin`; healthcheck: `/health/ready`. Zwykłe `docker compose down`
 zachowuje dane w wolumenie. API importu, odczytu ofert i jobów wymaga teraz
-Bearer `JOBS_API_TOKEN`. Nie ma połączenia z Vinted. Demo i testy są offline.
+Bearer `JOBS_API_TOKEN`. Demo i testy są offline. Scraper Vinted wymaga osobnego
+uruchomienia i połączenia z siecią.
 
 ## Instalacja i kontrole
 
@@ -77,7 +80,7 @@ uv run --frozen deal-hunter --format json --file src/vinted_deal_hunter/data/dem
 
 ### Ręczny test zapisanej oferty HTML
 
-Aplikacja nie pobiera stron Vinted i nie automatyzuje przeglądarki. Pojedynczą
+Lokalny importer HTML nie wykonuje żądań sieciowych. Pojedynczą
 ofertę, którą użytkownik otworzył zgodnie ze swoimi uprawnieniami, można zapisać
 w przeglądarce jako plik HTML i zaimportować lokalnie:
 
@@ -91,7 +94,8 @@ JSON-LD typu `Product`/`Offer`, a w drugiej kolejności metadane Open Graph.
 Jeżeli zapisana strona nie zawiera ceny, waluty, nazwy i stabilnego
 identyfikatora, import kończy się jawnym błędem. Nieznany stan produktu jest
 oznaczany jako `unknown`. Import tego samego pliku ponownie jest deduplikowany.
-To narzędzie służy do ręcznej walidacji; nie jest crawlerem wyszukiwarki.
+To narzędzie służy do ręcznej walidacji. Pobieranie publicznych stron opisuje
+[instrukcja scrapera](docs/vinted_scraper.md).
 
 Domyślnie źródło to `demo`, dane są oznaczone `is_demo=true`, a baza powstaje
 w `.data/offers.sqlite3`. `--db /ścieżka/do/bazy.sqlite3` wybiera inną bazę.

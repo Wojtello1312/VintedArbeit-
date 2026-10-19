@@ -111,9 +111,10 @@ Zniknięcie oferty, 404 i oznaczenie niedostępności nigdy nie tworzą ceny SOL
   zatrzymuje przebieg. Uwzględniane są Allow/Disallow, wildcard `*`, końcowe `$`,
   Crawl-delay i Request-rate. Robots.txt nie jest zgodą prawną na przetwarzanie.
 - Domyślnie: 10 stron, 25 żądań łącznie z robots/retry, 5 sekund odstępu,
-  timeout HTTP 15 sekund na operację, maksymalnie 2 MB rozpakowanej odpowiedzi.
+  timeout HTTP 15 sekund na operację, maksymalnie 10 MB rozpakowanej odpowiedzi.
   Ustawienia CLI: `--max-pages`, `--max-requests`, `--interval`, `--timeout`.
-  Limit treści pochodzi z `VDH_MAX_IMPORT_BYTES` (maks. 10 MB dla scrapera).
+  Limit wyrenderowanej treści jest niezależny od limitu plików importu. Domyślnie
+  wynosi 10 MB i można go zmniejszyć opcją `--max-response-bytes` (maks. 10 MB).
 - `VintedScrapeConfig` pozwala też ustawić `retries` (domyślnie 1, maks. 3)
   i `backoff_seconds` (domyślnie 2). Błędy transportu i HTTP 5xx mają ograniczone
   ponowienia z rosnącym opóźnieniem. HTTP 401/403/429 zatrzymują przebieg bez retry.

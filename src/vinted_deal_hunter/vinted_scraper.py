@@ -32,6 +32,12 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--max-requests", type=int, default=25)
     parser.add_argument("--interval", type=float, default=5)
     parser.add_argument("--timeout", type=float, default=15)
+    parser.add_argument(
+        "--max-response-bytes",
+        type=int,
+        default=10_000_000,
+        help="Maximum rendered HTML size per page (default: 10000000)",
+    )
     parser.add_argument("--engine", choices=["http", "playwright"], default="playwright")
     parser.add_argument(
         "--headed", action="store_true", help="Show Chromium; does not bypass access challenges"
@@ -56,7 +62,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             "max_requests": args.max_requests,
             "interval_seconds": args.interval,
             "timeout_seconds": args.timeout,
-            "max_response_bytes": settings.max_import_bytes,
+            "max_response_bytes": args.max_response_bytes,
         }
         if args.engine == "playwright":
             browser_config = VintedPlaywrightConfig(

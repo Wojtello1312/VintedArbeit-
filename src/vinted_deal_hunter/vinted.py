@@ -29,7 +29,7 @@ class VintedScrapeConfig(BaseModel):
     max_requests: int = Field(default=25, ge=2, le=250)
     interval_seconds: float = Field(default=5, ge=1, le=300)
     timeout_seconds: float = Field(default=15, gt=0, le=60)
-    max_response_bytes: int = Field(default=2_000_000, ge=1, le=10_000_000)
+    max_response_bytes: int = Field(default=10_000_000, ge=1, le=10_000_000)
     retries: int = Field(default=1, ge=0, le=3)
     backoff_seconds: float = Field(default=2, ge=1, le=30)
 

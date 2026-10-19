@@ -246,6 +246,34 @@ def test_playwright_cli_is_default_and_emits_engine_report(tmp_path, capsys, mon
     assert payload["import"]["new"] == 1
 
 
+def test_cli_uses_browser_response_limit_independent_of_import_file_limit(
+    tmp_path, capsys, monkeypatch
+):
+    captured = None
+    browser = FakeBrowser({ITEM_123: [document(ITEM_123, html=item_html("123"))]})
+
+    def offline(urls, config):
+        nonlocal captured
+        captured = config
+        return VintedPlaywrightOfferSource(
+            urls,
+            config,
+            robots_transport=robots_transport(),
+            session_factory=lambda _: browser,
+            sleep=lambda _: None,
+        )
+
+    monkeypatch.setenv("VDH_MAX_IMPORT_BYTES", "20")
+    monkeypatch.setattr(vinted_scraper, "VintedPlaywrightOfferSource", offline)
+
+    result = vinted_scraper.main(["--url", ITEM_123, "--db", str(tmp_path / "offers.sqlite3")])
+
+    assert result == 0
+    assert captured is not None
+    assert captured.max_response_bytes == 10_000_000
+    assert json.loads(capsys.readouterr().out)["import"]["new"] == 1
+
+
 def test_http_only_options_are_rejected(capsys):
     with pytest.raises(SystemExit) as exc:
         vinted_scraper.main(["--url", ITEM_123, "--engine", "http", "--headed"])

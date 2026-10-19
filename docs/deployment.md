@@ -4,6 +4,10 @@ Wymagania lokalne: Python 3.12+ i uv. Docker: Docker Engine / Docker Desktop
 z Compose v2 i obsługą linuksowych kontenerów. Jeden worker aplikacji/schedulera,
 lokalny dysk SQLite. Nie umieszczaj baz na współdzielonym dysku NFS/SMB.
 
+Opcjonalny scraper Playwright jest przeznaczony do natywnego uruchomienia po
+`uv sync --locked --extra browser`. Bazowy obraz Compose nie instaluje Chromium
+ani dodatku `browser`; pozostaje offline i używa MockOfferSource.
+
 ## Windows PowerShell — uruchomienie natywne
 
 W katalogu repozytorium:

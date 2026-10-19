@@ -6,7 +6,8 @@ Import obsługuje CSV, JSON i mock, normalizację, deduplikację
 SQLite, raport, CLI oraz `POST /imports`. Wycena wykorzystuje RapidFuzz, medianę,
 IQR i jawne dowody ASKING/SOLD. AI i Telegram są domyślnie wyłączone.
 Scheduler działa offline na MockOfferSource. Osobne, jawnie uruchamiane CLI
-zbiera ceny z publicznych stron HTML Vinted PL: [scraper](docs/vinted_scraper.md).
+automatyzuje Chromium przez Playwright i zbiera ceny z publicznych stron Vinted PL:
+[scraper](docs/vinted_scraper.md).
 Projekt ma charakter testowy i niekomercyjny; domyślny start pozostaje offline.
 
 Metodologia, konfiguracja i uruchamialny przykład wyceny:

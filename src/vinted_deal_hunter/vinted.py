@@ -45,6 +45,7 @@ class PageResult(BaseModel):
 
 class CollectionReport(BaseModel):
     source_name: str = "vinted-public-pl"
+    engine: Literal["http", "playwright"] = "http"
     started_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
     finished_at: datetime | None = None
     requests: int = 0
@@ -55,6 +56,20 @@ class CollectionReport(BaseModel):
 
 class CollectionStopped(SourceError):
     """Stop the whole run on access restrictions or exhausted request budgets."""
+
+
+def challenge_detected(content: bytes, title: str = "") -> bool:
+    lowered = content.lower()
+    normalized_title = title.strip().casefold()
+    return normalized_title in {"just a moment...", "access denied", "captcha"} or any(
+        marker in lowered
+        for marker in (
+            b"captcha-delivery.com",
+            b"<title>just a moment",
+            b"<title>access denied",
+            b"<title>captcha",
+        )
+    )
 
 
 def public_url(value: str) -> str:
@@ -82,6 +97,24 @@ def public_url(value: str) -> str:
 
 def search_url(query: str) -> str:
     return f"{ORIGIN}/catalog?{urlencode({'search_text': query})}"
+
+
+def parse_offer_html(content: bytes, url: str) -> OfferInput:
+    rows = SavedHTMLOfferSource(content, source_name="vinted-public-pl", is_demo=False).read(
+        max_records=10
+    )
+    match = ITEM_PATH.fullmatch(urlsplit(url).path)
+    if match is None:
+        raise SourceError("not_an_item_url")
+    matching = [row for row in rows if isinstance(row, dict) and row.get("external_id") == match[1]]
+    if len(matching) != 1:
+        raise SourceError("ambiguous_or_mismatched_product_metadata")
+    try:
+        return OfferInput.model_validate(
+            {**matching[0], "source_name": "vinted-public-pl", "is_demo": False}
+        )
+    except ValidationError as exc:
+        raise SourceError("invalid_offer_metadata") from exc
 
 
 def robots_allowed(document: str, url: str) -> bool:
@@ -256,22 +289,7 @@ class VintedOfferSource:
         return text
 
     def _offer(self, body: bytes, url: str) -> OfferInput:
-        rows = SavedHTMLOfferSource(body, source_name=self.source_name, is_demo=False).read(
-            max_records=10
-        )
-        match = ITEM_PATH.fullmatch(urlsplit(url).path)
-        assert match is not None
-        matching = [
-            row for row in rows if isinstance(row, dict) and row.get("external_id") == match[1]
-        ]
-        if len(matching) != 1:
-            raise SourceError("ambiguous_or_mismatched_product_metadata")
-        try:
-            return OfferInput.model_validate(
-                {**matching[0], "source_name": self.source_name, "is_demo": False}
-            )
-        except ValidationError as exc:
-            raise SourceError("invalid_offer_metadata") from exc
+        return parse_offer_html(body, url)
 
     def read(self, *, max_records: int) -> list[object]:
         if max_records < 1:
@@ -307,16 +325,7 @@ class VintedOfferSource:
                         raise CollectionStopped("robots_disallowed")
                     try:
                         body = self._request(client, url)
-                        lowered = body.lower()
-                        if any(
-                            marker in lowered
-                            for marker in (
-                                b"captcha-delivery.com",
-                                b"<title>just a moment",
-                                b"<title>access denied",
-                                b"<title>captcha",
-                            )
-                        ):
+                        if challenge_detected(body):
                             raise CollectionStopped("challenge_requires_manual_review")
                         if match:
                             offer = self._offer(body, url)

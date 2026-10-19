@@ -4,29 +4,56 @@ Projekt jest przeznaczony do testów i zastosowań niekomercyjnych. Użytkownik
 deklaruje konsultację dopuszczalności przedsięwzięcia. Dokumentacja nie traktuje
 tego jako gwarancji prawnej ani uprawnienia do obchodzenia ograniczeń serwisu.
 
-`VintedOfferSource` pobiera publiczne HTML z `https://www.vinted.pl`, odczytuje
-JSON-LD `Product`/`Offer` albo Open Graph i importuje ceny **ASKING** do SQLite.
-Obsługuje linki ofert oraz pierwszą stronę katalogu, z której zbiera linki ofert.
-Nie wykonuje JavaScriptu; metadane i linki muszą znajdować się w odpowiedzi HTML.
+Domyślny `VintedPlaywrightOfferSource` otwiera publiczne strony
+`https://www.vinted.pl` w świeżym kontekście Chromium, renderuje katalog,
+wykonuje ograniczoną liczbę przewinięć, zbiera widoczne linki i przechodzi po
+ofertach. Wyrenderowane JSON-LD `Product`/`Offer` lub Open Graph trafia do tej
+samej walidacji i importu cen **ASKING** do SQLite. Alternatywny
+`VintedOfferSource` (`--engine http`) czyta wyłącznie odpowiedź HTML bez JS.
 Brak obsługiwanej struktury daje jawny błąd w raporcie, nie wymyśloną cenę.
 
 ## Uruchomienie w Windows PowerShell
 
-W katalogu projektu, po `uv sync --locked`, otwórz drugi terminal i wykonaj:
+W katalogu projektu zainstaluj opcjonalną bibliotekę i Chromium:
+
+```powershell
+uv sync --locked --extra browser
+uv run --extra browser playwright install chromium
+```
+
+Następnie otwórz drugi terminal i wykonaj:
 
 ```powershell
 # Jeden publiczny link skopiowany z przeglądarki:
 $urlOferty = Read-Host 'Wklej link do oferty Vinted PL'
-uv run --frozen python -m vinted_deal_hunter.vinted_scraper --url $urlOferty
+uv run --frozen --extra browser vinted-scraper --url $urlOferty
 
-# Wyszukiwanie: katalog plus maksymalnie cztery strony ofert, odstęp 5 sekund:
-uv run --frozen python -m vinted_deal_hunter.vinted_scraper `
-  --search 'Nike Air Max 90' --max-pages 5 --max-requests 12 --interval 5
+# Automatyczne wyszukiwanie i przejście po ofertach:
+uv run --frozen --extra browser vinted-scraper `
+  --search 'Nike Air Max 90' --max-pages 10 --max-requests 15 `
+  --interval 5 --scroll-rounds 3
 ```
+
+Chromium działa domyślnie bez okna. `--headed` pokazuje przebieg. Jeśli pobranie
+Chromium jest niedostępne, a Windows ma Edge, można użyć zainstalowanej przeglądarki:
+
+```powershell
+uv run --frozen --extra browser vinted-scraper `
+  --search 'Nike Air Max 90' --browser-channel msedge --headed
+```
+
+Obsługiwane kanały to `chromium`, `chrome` i `msedge`. Opcja kanału nie używa
+profilu użytkownika: Playwright nadal tworzy świeży, nietrwały kontekst bez
+zalogowanej sesji. Brak dodatku `browser` albo pliku wykonywalnego przeglądarki
+kończy się kodem 2 i wskazówką instalacji.
+Zaawansowany fallback `--browser-executable C:\ścieżka\do\chrome.exe` wskazuje
+lokalny plik wykonywalny i ma pierwszeństwo przed `--browser-channel`.
 
 Przekazanie kilku `--url` zbiera wskazane oferty w jednym przebiegu. Możesz
 przekazać URL `/catalog?...` z filtrami ustawionymi w przeglądarce. `--search`
 i `--url` są wzajemnie wykluczające. Nie ma automatycznej paginacji katalogu.
+`--engine playwright` jest domyślny; `--engine http` zachowuje wcześniejszy tryb
+bez przeglądarki. `--scroll-rounds` określa 0–20 przewinięć katalogu.
 
 Baza domyślna to `.data/offers.sqlite3`, zgodna z domyślną aplikacją.
 Przy własnej bazie serwera wskaż ją przez `--db .\moja-baza\offers.sqlite3`
@@ -47,6 +74,9 @@ Kody wyjścia: 0 — import bez błędów (może być ucięty przez jawny limit)
 1 — częściowe błędy stron/rekordów, 2 — przerwany przebieg lub błąd konfiguracji/DB.
 Przy przerwaniu pobierania nie są zapisywane nawet wcześniej zebrane oferty;
 `import=null`. Raport zbierania może zawierać ich dane do diagnostyki.
+Pole `collection.engine` wskazuje `playwright` albo `http`. W trybie Playwright
+`collection.requests` liczy robots.txt i nawigacje głównego dokumentu; zasoby
+strony nie są osobnymi pozycjami raportu.
 
 Źródło ma stałą nazwę `vinted-public-pl` i `is_demo=false`. Identyfikator
 metadanych musi zgadzać się z ID w pobieranym URL, aby nie pobrać ceny produktu
@@ -69,8 +99,14 @@ Zniknięcie oferty, 404 i oznaczenie niedostępności nigdy nie tworzą ceny SOL
 - Dozwolone adresy: HTTPS Vinted PL, `/items/<id>...` i `/catalog`.
   Prywatne API, adresy innych hostów, dane logowania i niestandardowe porty
   są odrzucane przed żądaniem. Przekierowania zatrzymują cały przebieg.
-- Identyfikacja klienta: `VintedDealHunterTest/0.1`. Brak logowania i przenoszenia
-  cookies przeglądarki; cookies z odpowiedzi są usuwane przed kolejnym żądaniem.
+- Identyfikacja klienta: `VintedDealHunterTest/0.1`. Brak logowania i importu
+  cookies użytkownika. Silnik HTTP usuwa cookies przed kolejnym żądaniem.
+  Playwright może zachować cookies strony w jednym przebiegu, po czym cały
+  nietrwały kontekst jest usuwany.
+- Playwright uruchamia świeży kontekst bez profilu użytkownika i service workerów.
+  Blokuje zasoby hostów zewnętrznych, XHR/fetch, WebSocket, obrazy, media, fonty
+  oraz ścieżki `/api/`. Nie używa stealth ani przechwytywania odpowiedzi
+  prywatnych endpointów.
 - Robots.txt jest pobierany na początku przebiegu. Brak możliwości jego odczytu
   zatrzymuje przebieg. Uwzględniane są Allow/Disallow, wildcard `*`, końcowe `$`,
   Crawl-delay i Request-rate. Robots.txt nie jest zgodą prawną na przetwarzanie.
@@ -87,27 +123,55 @@ Zniknięcie oferty, 404 i oznaczenie niedostępności nigdy nie tworzą ceny SOL
   Wykrywanie stron blokad jest heurystyczne. Inne HTML bez danych jest zgłaszane
   jako błąd parsowania, nigdy jako poprawnie zebrana cena.
 - Nie uruchamiaj równoległych scraperów. Limitowanie działa w obrębie instancji,
-  nie jest trwałym limitem wielu procesów ani dziennym limitem globalnym.
+  nie jest dziennym limitem globalnym. CLI zakłada blokadę
+  `<baza>.vinted.lock`; równoległy przebieg dla tej samej bazy kończy się kodem 2.
+
+Jedno wywołanie wykonuje jeden ograniczony przebieg. Cykliczne uruchamianie można
+skonfigurować w Harmonogramie zadań Windows, wskazując powyższe polecenie i katalog
+repozytorium. Ustaw interwał dłuższy od najgorszego czasu przebiegu; blokada bazy
+zabezpiecza przed nałożeniem.
+
+Alternatywnie scheduler aplikacji może używać Playwright. W terminalu, w którym
+uruchamiasz FastAPI, ustaw konfigurację i włącz harmonogram:
+
+```powershell
+$env:VDH_VINTED = '{"enabled":true,"search":"Nike Air Max 90","browser":{"max_pages":10,"max_requests":15,"interval_seconds":5,"browser_channel":"msedge"}}'
+$env:VDH_SCHEDULER = '{"enabled":true,"interval_seconds":1800}'
+uv run --frozen --extra browser uvicorn vinted_deal_hunter.api:create_app `
+  --factory --host 127.0.0.1 --port 8000
+```
+
+`VDH_VINTED` przyjmuje `engine` (`playwright` lub `http`), dokładnie jedno z
+`search` albo `urls`, oraz zagnieżdżony obiekt `browser` zgodny z limitami CLI.
+Bez `enabled=true` aplikacja używa MockOfferSource. Scheduler ma własną trwałą
+blokadę cyklu i `max_instances=1`, więc nie nakłada przebiegów. Ustawienia panelu
+mogą zmienić interwał i pauzę, ale nie edytują adresów źródła.
 
 API `/imports` nadal przyjmuje treść pliku, nie zlecenia pobierania adresów.
-Scheduler domyślnie używa MockOfferSource. Ten etap dodaje samodzielny kolektor;
-automatyczna ciągła obserwacja i historia cen pozostają osobnym rozszerzeniem.
+Scheduler domyślnie używa MockOfferSource, a `VDH_VINTED` jawnie wybiera kolektor.
+Historia zmian cen pozostaje osobnym rozszerzeniem.
 
 ## Weryfikacja
 
 ```powershell
-uv run --frozen pytest tests/test_vinted.py -q
+uv run --frozen pytest tests/test_vinted.py tests/test_vinted_playwright.py -q
 uv run --frozen ruff check .
 uv run --frozen ruff format --check .
 uv run --frozen mypy src backtest.py
 ```
 
-Testy używają wyłącznie syntetycznych HTML i `httpx.MockTransport`. Sprawdzają
-kwoty, deduplikację, robots.txt, limity, timeout/retry, blokady, przekierowania,
-błędy metadanych oraz CLI. Przejście testów nie potwierdza dostępności Vinted
-z konkretnego łącza ani zgodności parsera z każdą wersją strony.
+Testy używają wyłącznie syntetycznych HTML, `httpx.MockTransport` i fałszywej
+sesji przeglądarki. Sprawdzają kwoty, renderowane linki, deduplikację, robots.txt,
+limity, timeout/retry, blokady, przekierowania, błędy metadanych oraz CLI.
+Przejście testów nie potwierdza dostępności Vinted z konkretnego łącza ani
+zgodności parsera z każdą wersją strony.
 
 Próba rzeczywistego odczytu z tego środowiska 2026-10-19 zakończyła się błędem
 DNS (`Temporary failure in name resolution`) dla `www.vinted.pl`, również po
 ponowieniu poza sandboxem. Nie udało się pobrać robots.txt ani żadnej oferty.
 Zgodność z bieżącym HTML Vinted i dostęp z łącza użytkownika wymagają weryfikacji.
+Instalacja biblioteki Playwright w chmurze powiodła się, ale pobranie Chromium
+z `cdn.playwright.dev` zwróciło `403 Domain forbidden`, również po ponowieniu
+poza sandboxem. Wrapper uruchomiono z systemowym `/usr/bin/chromium`: nawigacja
+do lokalnego HTML zwróciła 200, poprawny tytuł i link oferty. Pełnego testu
+przeglądarki z prawdziwym Vinted nie wykonano z powodu opisanego błędu DNS.

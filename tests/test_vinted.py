@@ -306,7 +306,7 @@ def test_cli_import_report_and_deduplication(tmp_path, capsys, monkeypatch):
 
     monkeypatch.setattr(vinted_scraper, "VintedOfferSource", offline)
     db = tmp_path / "offers.sqlite3"
-    args = ["--url", ITEM, "--db", str(db)]
+    args = ["--url", ITEM, "--engine", "http", "--db", str(db)]
     assert vinted_scraper.main(args) == 0
     first = json.loads(capsys.readouterr().out)
     assert first["collection"]["pages"][0]["offer"]["asking_price"] == "12.30"
@@ -322,7 +322,10 @@ def test_cli_failure_report_does_not_claim_success(tmp_path, capsys, monkeypatch
         return original(urls, config, transport=httpx.MockTransport(lambda r: httpx.Response(403)))
 
     monkeypatch.setattr(vinted_scraper, "VintedOfferSource", offline)
-    assert vinted_scraper.main(["--url", ITEM, "--db", str(tmp_path / "offers")]) == 2
+    assert (
+        vinted_scraper.main(["--url", ITEM, "--engine", "http", "--db", str(tmp_path / "offers")])
+        == 2
+    )
     result = json.loads(capsys.readouterr().out)
     assert result["import"] is None
     assert result["collection"]["stopped_reason"] == "access_restricted_http_403"

@@ -16,6 +16,7 @@ from app.storage.sqlite import SQLiteAnalysisStore
 from vinted_deal_hunter.config import Settings
 from vinted_deal_hunter.db import OfferRepository
 from vinted_deal_hunter.sources import OfferSource
+from vinted_deal_hunter.vinted_playwright import configured_vinted_source
 
 
 class JobRuntime:
@@ -47,8 +48,11 @@ class JobRuntime:
         )
         outbox = AlertOutbox(settings.jobs_db_path, settings.notifications)
         notifications = NotificationService(outbox, pipeline, self.telegram, destination)
+        selected_source = (
+            source if source is not None else configured_vinted_source(settings.vinted)
+        )
         cycle = DealCycle(
-            settings, repository, processor, notifications, source=source, context=context
+            settings, repository, processor, notifications, source=selected_source, context=context
         )
         self.manager = JobManager(cycle, JobStore(settings.jobs_db_path), settings.scheduler)
         self.manager.before_run = self.refresh_policy

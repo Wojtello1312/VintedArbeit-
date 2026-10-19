@@ -9,7 +9,9 @@ Opis integracji AI,
 limitów i testów: [ai_reviewer.md](ai_reviewer.md). Zakres został rozszerzony w ETAPIE 8 o Docker Compose, migracje Alembic, healthcheck,
 chronione API ofert i test E2E: [readiness.md](readiness.md). Integracja rzeczywistego
 źródła danych została rozszerzona o eksperymentalny scraper publicznych HTML
-Vinted PL uruchamiany przez osobne CLI. Testy transportu korzystają z mocków;
+Vinted PL uruchamiany przez osobne CLI. Domyślny silnik automatyzuje świeży
+kontekst Chromium przez Playwright; zachowano ograniczony fallback HTTP.
+Testy transportu i przeglądarki korzystają z mocków;
 dostępność rzeczywistych stron nie jest gwarantowana. Patrz
 [vinted_scraper.md](vinted_scraper.md).
 Repozytorium na początku prac nie zawierało aplikacji.

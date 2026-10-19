@@ -21,8 +21,12 @@ dependencies = [
   "uvicorn>=0.34,<1",
 ]
 
+[project.optional-dependencies]
+browser = ["playwright>=1.51,<2"]
+
 [project.scripts]
 deal-hunter = "vinted_deal_hunter.cli:main"
+vinted-scraper = "vinted_deal_hunter.vinted_scraper:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/vinted_deal_hunter", "src/app"]

@@ -2,6 +2,12 @@
 
 Rozszerzenie testowe: `vinted_deal_hunter/vinted.py` implementuje `OfferSource`
 przez publiczne HTML Vinted PL, a `vinted_scraper.py` jest jawnym wejściem CLI.
+`vinted_deal_hunter/vinted_playwright.py` dodaje domyślny silnik przeglądarkowy:
+izolowany kontekst Chromium, renderowanie katalogu, ograniczone przewijanie,
+zbieranie widocznych linków i przejście po stronach ofert. XHR/fetch, obrazy,
+media, fonty, WebSocket, hosty zewnętrzne i ścieżki `/api/` są blokowane;
+kolektor czyta DOM/HTML,
+nie odpowiedzi prywatnych endpointów. Silnik HTTP pozostaje opcjonalnym fallbackiem.
 Warstwa HTTP sprawdza robots.txt, ogranicza rozmiar, liczbę i tempo żądań,
 zatrzymuje się przy blokadach i przekazuje metadane do istniejącego parsera HTML.
 CLI wykorzystuje wspólny importer i repozytorium SQLite. Raport zawiera źródłowy

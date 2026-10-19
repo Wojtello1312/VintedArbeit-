@@ -12,6 +12,7 @@ from app.config import PricingConfig
 from app.deal_config import DealConfig
 from app.notifications.config import NotificationConfig
 from app.scheduler.config import SchedulerConfig
+from vinted_deal_hunter.vinted_playwright import VintedAutomationConfig
 
 
 class Settings(BaseModel):
@@ -26,6 +27,7 @@ class Settings(BaseModel):
     ai: AIConfig = Field(default_factory=AIConfig)
     notifications: NotificationConfig = Field(default_factory=NotificationConfig)
     scheduler: SchedulerConfig = Field(default_factory=SchedulerConfig)
+    vinted: VintedAutomationConfig = Field(default_factory=VintedAutomationConfig)
     telegram_bot_token: SecretStr | None = Field(default=None, exclude=True, repr=False)
     chat_id: SecretStr | None = Field(default=None, exclude=True, repr=False)
     jobs_api_token: SecretStr | None = Field(default=None, exclude=True, repr=False, min_length=32)
@@ -89,6 +91,13 @@ class Settings(BaseModel):
     @classmethod
     def parse_scheduler(cls, value: object) -> object:
         return SchedulerConfig.model_validate_json(value) if isinstance(value, str) else value
+
+    @field_validator("vinted", mode="before")
+    @classmethod
+    def parse_vinted(cls, value: object) -> object:
+        return (
+            VintedAutomationConfig.model_validate_json(value) if isinstance(value, str) else value
+        )
 
     @property
     def jobs_db_path(self) -> Path:

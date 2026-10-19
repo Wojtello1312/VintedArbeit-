@@ -6,6 +6,7 @@ import logging
 from collections.abc import Sequence
 from pathlib import Path
 
+import portalocker
 from pydantic import ValidationError
 from sqlalchemy.exc import SQLAlchemyError
 
@@ -14,6 +15,10 @@ from vinted_deal_hunter.db import SQLiteOfferRepository
 from vinted_deal_hunter.ingestion import import_offers
 from vinted_deal_hunter.sources import SourceError
 from vinted_deal_hunter.vinted import VintedOfferSource, VintedScrapeConfig, search_url
+from vinted_deal_hunter.vinted_playwright import (
+    VintedPlaywrightConfig,
+    VintedPlaywrightOfferSource,
+)
 
 
 def main(argv: Sequence[str] | None = None) -> int:
@@ -27,25 +32,55 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--max-requests", type=int, default=25)
     parser.add_argument("--interval", type=float, default=5)
     parser.add_argument("--timeout", type=float, default=15)
+    parser.add_argument("--engine", choices=["http", "playwright"], default="playwright")
+    parser.add_argument(
+        "--headed", action="store_true", help="Show Chromium; does not bypass access challenges"
+    )
+    parser.add_argument("--scroll-rounds", type=int, default=3)
+    parser.add_argument(
+        "--browser-channel", choices=["chromium", "chrome", "msedge"], default="chromium"
+    )
+    parser.add_argument("--browser-executable", type=Path)
     parser.add_argument("--db", type=Path)
     args = parser.parse_args(argv)
     if args.search is not None and not args.search.strip():
         parser.error("--search must contain a nonempty query")
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
-    source: VintedOfferSource | None = None
+    source: VintedOfferSource | VintedPlaywrightOfferSource | None = None
     repository: SQLiteOfferRepository | None = None
     try:
         settings = Settings.from_env()
-        config = VintedScrapeConfig(
-            max_pages=args.max_pages,
-            max_requests=args.max_requests,
-            interval_seconds=args.interval,
-            timeout_seconds=args.timeout,
-            max_response_bytes=settings.max_import_bytes,
-        )
-        source = VintedOfferSource([search_url(args.search)] if args.search else args.url, config)
-        repository = SQLiteOfferRepository(args.db or settings.db_path)
-        imported = import_offers(source, repository, settings)
+        urls = [search_url(args.search)] if args.search else args.url
+        common = {
+            "max_pages": args.max_pages,
+            "max_requests": args.max_requests,
+            "interval_seconds": args.interval,
+            "timeout_seconds": args.timeout,
+            "max_response_bytes": settings.max_import_bytes,
+        }
+        if args.engine == "playwright":
+            browser_config = VintedPlaywrightConfig(
+                **common,
+                headless=not args.headed,
+                scroll_rounds=args.scroll_rounds,
+                browser_channel=args.browser_channel,
+                browser_executable=args.browser_executable,
+            )
+            source = VintedPlaywrightOfferSource(urls, browser_config)
+        else:
+            if (
+                args.headed
+                or args.scroll_rounds != 3
+                or args.browser_channel != "chromium"
+                or args.browser_executable is not None
+            ):
+                parser.error("browser options require --engine playwright")
+            source = VintedOfferSource(urls, VintedScrapeConfig(**common))
+        db_path = args.db or settings.db_path
+        db_path.parent.mkdir(parents=True, exist_ok=True)
+        with portalocker.Lock(str(db_path) + ".vinted.lock", mode="a", timeout=0):
+            repository = SQLiteOfferRepository(db_path)
+            imported = import_offers(source, repository, settings)
         print(
             json.dumps(
                 {
@@ -57,7 +92,13 @@ def main(argv: Sequence[str] | None = None) -> int:
             )
         )
         return 1 if imported.errors or any(p.status == "error" for p in source.report.pages) else 0
-    except (SourceError, ValidationError, OSError, SQLAlchemyError):
+    except (
+        SourceError,
+        ValidationError,
+        OSError,
+        SQLAlchemyError,
+        portalocker.exceptions.LockException,
+    ):
         logging.error("Collection/import failed; inspect the collection report when available")
         print(
             json.dumps(

@@ -5,7 +5,7 @@ i deterministyczny Deal Engine z opcjonalnym AI Reviewerem, schedulerem, alertam
 Import obsługuje CSV, JSON i mock, normalizację, deduplikację
 SQLite, raport, CLI oraz `POST /imports`. Wycena wykorzystuje RapidFuzz, medianę,
 IQR i jawne dowody ASKING/SOLD. AI i Telegram są domyślnie wyłączone.
-Scheduler działa offline na MockOfferSource. Osobne, jawnie uruchamiane CLI
+Scheduler domyślnie działa offline na MockOfferSource. Osobne, jawnie uruchamiane CLI
 automatyzuje Chromium przez Playwright i zbiera ceny z publicznych stron Vinted PL:
 [scraper](docs/vinted_scraper.md).
 Projekt ma charakter testowy i niekomercyjny; domyślny start pozostaje offline.
@@ -35,6 +35,18 @@ ETAP 7 — dashboard, oferty, okazje, historia cen, ustawienia i monitoring:
 generowanego przez `uv run --frozen python -m app.admin.password`. Sesje i CSRF
 chronią formularze; HTMX i Tailwind są dostarczane lokalnie.
 
+Panel **System → Konfiguracja pobierania** pozwala włączyć źródło Vinted,
+ustawić frazę lub link katalogu, walutę, zakres cen, stan, kategorię, markę,
+rozmiar, przeglądarkę i limit stron. Zapisane ustawienia działają także po
+restarcie. **Uruchom cykl** rozpoczyna pracę w tle; animacja i liczniki pokazują
+rzeczywisty postęp. Wymagany dodatek `browser` i zainstalowana przeglądarka.
+
+Lista domyślnie pokazuje **rzeczywiste oferty we wszystkich walutach**. Linki
+Vinted mają postać `https://www.vinted.pl/items/NUMEROFERTY`, także przed analizą.
+Dostępne są filtry, sortowanie i lokalne usuwanie; przycisk **Usuń dane demo**
+usuwa demonstracyjne wpisy. Usunięte identyfikatory są pamiętane, aby kolejne
+cykle ich nie przywracały. Szczegóły: [panel](docs/admin.md#cykl-pobierania-i-zarządzanie-ofertami).
+
 ## ETAP 8 — uruchomienie i weryfikacja
 
 Dockerfile, Compose, healthcheck, wersjonowane migracje Alembic oraz pełne demo
@@ -53,7 +65,7 @@ docker compose exec app python -m app.demo
 Panel działa pod `/admin`; healthcheck: `/health/ready`. Zwykłe `docker compose down`
 zachowuje dane w wolumenie. API importu, odczytu ofert i jobów wymaga teraz
 Bearer `JOBS_API_TOKEN`. Demo i testy są offline. Scraper Vinted wymaga osobnego
-uruchomienia i połączenia z siecią.
+włączenia w panelu lub uruchomienia CLI oraz połączenia z siecią.
 
 ## Instalacja i kontrole
 
@@ -159,6 +171,7 @@ dziesiętnym trzeba w CSV ująć w cudzysłów. Nie odgadujemy separatora.
 | `external_id` | Wymagany tekst lub całkowity numer w JSON. Obcięcie skrajnych spacji i NFC; zachowujemy wielkość liter i zera wiodące. |
 | `product_name` | Wymagana niepusta nazwa; NFKC i scalenie odstępów. |
 | `brand` | Opcjonalna, pusta → null; NFKC, odstępy, casefold i jawne aliasy H&M. Nieznane nazwy pozostają nieznanymi nazwami. |
+| `category` | Opcjonalna nazwa lub ścieżka kategorii z danych źródłowych; maks. 200 znaków, pusta → null. Bez wnioskowania z nazwy produktu. |
 | `size` | Opcjonalny tekst, pusta → null, NFKC i wielkie litery; bez zgadywania systemu rozmiarów. |
 | `condition` | Opcjonalny; `new_with_tags`, `new_without_tags`, `very_good`, `good`, `fair`, `unknown`; jawne polskie odpowiedniki w kodzie. Nieznana etykieta powoduje błąd. |
 | `currency` | Wymagany kod ISO, wielkie litery. Obsługiwane PLN, EUR, USD, GBP, CHF, CZK, SEK, DKK, NOK (2 miejsca) oraz JPY (0). Inne kody są odrzucane. |

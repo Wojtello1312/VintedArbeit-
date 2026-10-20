@@ -5,6 +5,7 @@ from typing import Self
 
 from pydantic import Field, model_validator
 
+from app.admin.collection import CollectionPolicy
 from app.ai.config import AIConfig
 from app.deal_config import DealConfig
 from app.schemas.pricing import FrozenSchema
@@ -21,6 +22,7 @@ class PanelPolicy(FrozenSchema):
     interval_seconds: int = Field(ge=1, le=86400)
     ai_enabled: bool
     ai_daily_budget_usd: Decimal = Field(ge=0, le=1000000)
+    collection: CollectionPolicy | None = None
 
     @model_validator(mode="after")
     def coherent(self) -> Self:
@@ -68,4 +70,7 @@ class PanelPolicy(FrozenSchema):
         scheduler = settings.scheduler.model_copy(
             update={"enabled": self.scheduler_enabled, "interval_seconds": self.interval_seconds}
         )
-        return settings.model_copy(update={"deal": deal, "ai": ai, "scheduler": scheduler})
+        vinted = self.collection.apply(settings.vinted) if self.collection else settings.vinted
+        return settings.model_copy(
+            update={"deal": deal, "ai": ai, "scheduler": scheduler, "vinted": vinted}
+        )

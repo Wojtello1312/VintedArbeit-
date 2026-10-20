@@ -121,8 +121,8 @@ def test_100_offers_full_pipeline_persistence_restart_and_no_duplicate_calls(set
             == 200
         )
         dashboard = client.get("/admin")
-        assert "100 ofert demo" in dashboard.text and "DEMO Runner" in dashboard.text
-        assert "80" in client.get("/admin/deals").text
+        assert "100 ofert demo" in dashboard.text and "DEMO Runner" not in dashboard.text
+        assert "80" in client.get("/admin/deals?mode=demo").text
         assert len(rt.manager.cycle.notifications.outbox.unreconciled()) == 0
     with TestClient(create_app(settings), headers=auth) as restarted:
         assert restarted.get("/health/ready").status_code == 200

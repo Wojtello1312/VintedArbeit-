@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="flex flex-wrap items-start justify-between gap-4"><div><p class="mb-2 text-sm text-slate-500">Twoje centrum decyzji</p><h1>Przegląd</h1><p class="mt-2 text-slate-500">Aktualny stan ofert i pracy systemu.</p></div><a href="/admin/deals?sort=score" class="button">Przeglądaj okazje <span aria-hidden="true">↗</span></a></div>
-{% if stats.demo_count %}<div class="notice"><strong>{{ stats.demo_count }} ofert demo.</strong> Wyniki demonstracyjne są fikcyjne i oznaczone na listach.</div>{% endif %}
+{% if stats.demo_count %}<div class="notice"><strong>{{ stats.demo_count }} ofert demo.</strong> Są ukryte w tym przeglądzie. Możesz je usunąć w zakładce Oferty.</div>{% endif %}
 <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
 {% for name,value,caption in [('Nowe oferty',stats.new,'Oferty bez rozpoczętej analizy'),('Odrzucone',stats.rejected,'Według ostatniej oceny'),('Okazje',stats.deals,'Zatwierdzone lub powiadomione'),('Średni scoring',('%.2f'|format(stats.avg_score) if stats.avg_score is not none else '—'),'Ostatnie wyniki · skala 0–100')] %}
 <div class="card p-5"><p class="text-sm text-slate-500">{{ name }}</p><p class="my-3 text-4xl font-semibold tracking-tight text-ink">{{ value }}</p><p class="text-xs text-slate-500">{{ caption }}</p></div>{% endfor %}

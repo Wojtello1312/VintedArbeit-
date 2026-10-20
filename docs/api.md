@@ -48,7 +48,7 @@ Klucz idempotencji: `(source_name, external_id)`.
 
 ### Lista ofert
 
-Query: `q` (nazwa/ID), `brand`, `currency` (domyślnie PLN), `min_price`,
+Query: `q` (nazwa/ID), `brand`, `category`, `condition`, `currency` (domyślnie PLN), `min_price`,
 `max_price`, `min_score`, `min_profit`, `risk=LOW|MEDIUM|HIGH|unknown`,
 `label=good_deal|bad_deal|purchased|ignored`, `mode=all|demo|production`,
 `sort=newest|price_asc|price_desc|score|profit|name`, `page` (od 1).
@@ -79,3 +79,23 @@ Import nie tworzy cen porównawczych. Do jawnie fikcyjnego pełnego scenariusza
 użyj `python -m app.demo`, opisanego w [deployment.md](deployment.md).
 Zwykły scheduler nadal stosuje MockOfferSource i nieznane koszty/wycenę,
 jeżeli nie wstrzyknięto autoryzowanego źródła i kontekstu porównań.
+
+### Interaktywny panel cyklu
+
+Poniższe endpointy wymagają sesji administratora; POST wymaga formularza
+`application/x-www-form-urlencoded` z `csrf`. Token REST nie zastępuje sesji.
+
+| Metoda / ścieżka | Działanie |
+| --- | --- |
+| `POST /admin/collection` | Trwała konfiguracja pobierania; rewizja, enabled, search albo catalog_url, max_pages, browser_channel, currency, min_price, max_price, condition, category, brand, size. 303 po zapisie, 422 dla błędnych pól, 409 podczas cyklu/starej rewizji. |
+| `POST /admin/jobs/run` | Uruchomienie w tle. Dla HTMX: 202 i fragment postępu; dla formularza: 303 do System. 409 gdy cykl już trwa. |
+| `GET /admin/jobs/progress` | Fragment HTML ze stanem i licznikami, odpytywany co 2 s. |
+| `POST /admin/offers/{key}/delete` | Usunięcie lokalnej oferty i zapis tożsamości blokujący ponowny import. 404 przy braku. |
+| `POST /admin/offers/demo/delete` | Usunięcie lokalnych ofert demo, z zachowaniem pozostałych danych. |
+
+`POST /jobs/run` REST nadal czeka na zakończenie i zwraca raport JSON.
+Raport zawiera dodatkowo `phase`, `pages`, `excluded`, `collection_errors`
+i `exclusion_reasons`. Liczniki trwającego cyklu są utrwalane w bazie jobów.
+Panel domyślnie wybiera `mode=production`, `currency=all`; API REST zachowuje
+wcześniejsze wartości domyślne. `currency=all` grupuje sortowanie cen po walucie;
+filtry kwotowe wymagają konkretnej waluty.

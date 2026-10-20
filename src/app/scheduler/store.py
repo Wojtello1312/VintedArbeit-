@@ -28,6 +28,11 @@ class CycleReport(FrozenSchema):
     states: dict[str, int] = Field(default_factory=dict)
     alerts: dict[str, int] = Field(default_factory=dict)
     error_type: str | None = None
+    phase: str = "collecting"
+    pages: int = 0
+    excluded: int = 0
+    collection_errors: int = 0
+    exclusion_reasons: dict[str, int] = Field(default_factory=dict)
 
 
 class JobStore(OperationsStore):
@@ -86,6 +91,7 @@ class JobStore(OperationsStore):
                 report = old.model_copy(
                     update={
                         "status": "interrupted",
+                        "phase": "interrupted",
                         "finished_at": now,
                         "error_type": "InterruptedCycle",
                     }

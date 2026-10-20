@@ -246,6 +246,7 @@ def _product_records(product: dict[str, object]) -> list[dict[str, object]]:
         }
         optional: dict[str, object | None] = {
             "brand": _brand(product.get("brand")),
+            "category": _text(product.get("category")),
             "size": _text(product.get("size")),
             "condition": _condition(raw_offer.get("itemCondition") or product.get("itemCondition")),
             "published_at": _text(

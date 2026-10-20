@@ -10,7 +10,7 @@ from app.storage.migrations import HEAD
 from vinted_deal_hunter.config import Settings
 
 REQUIRED = {
-    "offers": ("offers",),
+    "offers": ("offers", "deleted_offers"),
     "analyses": ("deal_analyses",),
     "operations": (
         "job_runs",

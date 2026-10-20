@@ -146,10 +146,12 @@ uv run --frozen --extra browser uvicorn vinted_deal_hunter.api:create_app `
 `search` albo `urls`, oraz zagnieżdżony obiekt `browser` zgodny z limitami CLI.
 Bez `enabled=true` aplikacja używa MockOfferSource. Scheduler ma własną trwałą
 blokadę cyklu i `max_instances=1`, więc nie nakłada przebiegów. Ustawienia panelu
-mogą zmienić interwał i pauzę, ale nie edytują adresów źródła.
+pozwalają zmienić interwał i pauzę, a sekcja System pozwala ustawić wyszukiwanie
+lub publiczny adres katalogu oraz warunki pobierania.
 
 API `/imports` nadal przyjmuje treść pliku, nie zlecenia pobierania adresów.
-Scheduler domyślnie używa MockOfferSource, a `VDH_VINTED` jawnie wybiera kolektor.
+Scheduler domyślnie używa MockOfferSource. `VDH_VINTED` lub zapisana konfiguracja
+pobierania w panelu jawnie wybierają kolektor.
 Historia zmian cen pozostaje osobnym rozszerzeniem.
 
 ## Weryfikacja
@@ -176,3 +178,15 @@ z `cdn.playwright.dev` zwróciło `403 Domain forbidden`, również po ponowieni
 poza sandboxem. Wrapper uruchomiono z systemowym `/usr/bin/chromium`: nawigacja
 do lokalnego HTML zwróciła 200, poprawny tytuł i link oferty. Pełnego testu
 przeglądarki z prawdziwym Vinted nie wykonano z powodu opisanego błędu DNS.
+
+## Konfiguracja cyklu w panelu
+
+Źródło można teraz skonfigurować bez ustawiania JSON w terminalu:
+**System → Konfiguracja pobierania**. Opis warunków, postępu, usuwania i migracji:
+[admin.md](admin.md#cykl-pobierania-i-zarządzanie-ofertami).
+`VDH_VINTED.filters` przyjmuje `currency`, `min_price`, `max_price`, `condition`,
+`category`, `brand`, `size`. Brak `filters` zachowuje dotychczasowe pobieranie bez
+filtrowania. Zapis panelu ma pierwszeństwo przed konfiguracją środowiska.
+Warunki dotyczą cykli aplikacji; osobny CLI nadal używa własnych argumentów.
+Pominięta oferta ma w raporcie strony `status=excluded` i kod przyczyny.
+Link do ogłoszenia w panelu jest dostępny również dla wcześniej pobranych ofert.

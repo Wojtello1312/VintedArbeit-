@@ -127,6 +127,9 @@ uv run --frozen python -m app.migrate
 Alembic: `0001_baseline` tworzy schemat lub bez utraty danych przejmuje zgodne
 bazy etapów 2–7; porównuje kolumny starego schematu przed przypisaniem wersji.
 `0002_indexes` dodaje indeksy historii analiz, jobów, alertów i ocen ręcznych.
+`0003_offer_management` dodaje czas importu i rejestr lokalnie usuniętych ofert,
+który zapobiega ich ponownemu pojawieniu się po imporcie. Istniejące dane zostają
+zachowane; starsze rekordy nie otrzymują wymyślonego czasu importu.
 Każdy plik ma `alembic_version` i `database_role`. Migracje są serializowane
 blokadą pliku, działają transakcyjnie i są powtarzalne. Nieznany schemat lub
 wersja blokują aktualizację. Przerwanie między bazami można ponowić: każda rola

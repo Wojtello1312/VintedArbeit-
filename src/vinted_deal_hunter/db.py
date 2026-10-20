@@ -2,11 +2,22 @@
 
 import hashlib
 from collections.abc import Sequence
+from datetime import UTC, datetime
 from enum import StrEnum
 from pathlib import Path
 from typing import Protocol
 
-from sqlalchemy import BigInteger, Boolean, CheckConstraint, String, Text, create_engine, select
+from sqlalchemy import (
+    BigInteger,
+    Boolean,
+    CheckConstraint,
+    String,
+    Text,
+    create_engine,
+    delete,
+    select,
+    text,
+)
 from sqlalchemy.dialects.sqlite import insert
 from sqlalchemy.engine import URL
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
@@ -29,6 +40,7 @@ class OfferRow(Base):
     price_minor: Mapped[int] = mapped_column(BigInteger, nullable=False)
     fingerprint: Mapped[str] = mapped_column(String(64), nullable=False)
     payload: Mapped[str] = mapped_column(Text, nullable=False)
+    imported_at: Mapped[str | None] = mapped_column(Text)
 
 
 class Disposition(StrEnum):
@@ -36,6 +48,7 @@ class Disposition(StrEnum):
     DUPLICATE = "duplicate"
     CHANGED_EXISTING = "changed_existing"
     PROVENANCE_CONFLICT = "provenance_conflict"
+    DELETED = "deleted"
 
 
 class OfferRepository(Protocol):
@@ -56,6 +69,15 @@ class SQLiteOfferRepository:
         results: list[Disposition] = []
         with self.engine.begin() as connection:
             for offer in offers:
+                if connection.execute(
+                    text(
+                        "SELECT 1 FROM deleted_offers WHERE source_name=:source "
+                        "AND external_id=:external"
+                    ),
+                    {"source": offer.source_name, "external": offer.external_id},
+                ).first():
+                    results.append(Disposition.DELETED)
+                    continue
                 payload = offer.model_dump_json()
                 fingerprint = hashlib.sha256(payload.encode()).hexdigest()
                 statement = (
@@ -67,6 +89,7 @@ class SQLiteOfferRepository:
                         price_minor=offer.price_minor,
                         fingerprint=fingerprint,
                         payload=payload,
+                        imported_at=datetime.now(UTC).isoformat(),
                     )
                     .on_conflict_do_nothing(index_elements=["source_name", "external_id"])
                 )
@@ -75,18 +98,47 @@ class SQLiteOfferRepository:
                     results.append(Disposition.NEW)
                     continue
                 existing = connection.execute(
-                    select(OfferRow.is_demo, OfferRow.fingerprint).where(
+                    select(OfferRow.is_demo, OfferRow.fingerprint, OfferRow.payload).where(
                         OfferRow.source_name == offer.source_name,
                         OfferRow.external_id == offer.external_id,
                     )
                 ).one()
                 if existing.is_demo != offer.is_demo:
                     results.append(Disposition.PROVENANCE_CONFLICT)
-                elif existing.fingerprint != fingerprint:
+                elif OfferInput.model_validate_json(existing.payload) != offer:
                     results.append(Disposition.CHANGED_EXISTING)
                 else:
                     results.append(Disposition.DUPLICATE)
         return results
+
+    def delete_offer(self, source: str, external: str) -> None:
+        """Local deletion only; preserve deduplication and audit/budget history."""
+        with self.engine.begin() as connection:
+            connection.execute(
+                text(
+                    "INSERT INTO deleted_offers VALUES (:source,:external,:now) "
+                    "ON CONFLICT DO NOTHING"
+                ),
+                {"source": source, "external": external, "now": datetime.now(UTC).isoformat()},
+            )
+            connection.execute(
+                delete(OfferRow).where(
+                    OfferRow.source_name == source, OfferRow.external_id == external
+                )
+            )
+
+    def delete_demo(self) -> int:
+        with self.engine.begin() as connection:
+            connection.execute(
+                text(
+                    "INSERT OR IGNORE INTO deleted_offers "
+                    "SELECT source_name,external_id,:now FROM offers WHERE is_demo=1"
+                ),
+                {"now": datetime.now(UTC).isoformat()},
+            )
+            return int(
+                connection.execute(delete(OfferRow).where(OfferRow.is_demo.is_(True))).rowcount
+            )
 
     def list_offers(self) -> list[OfferInput]:
         with self.engine.connect() as connection:

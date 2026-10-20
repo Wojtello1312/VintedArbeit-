@@ -25,3 +25,12 @@
 }
 .htmx-indicator { display:none; }
 .htmx-request .htmx-indicator,.htmx-request.htmx-indicator { display:inline; }
+.cycle-spinner { display:inline-block; width:1.25rem; height:1.25rem; border:3px solid #94a3b8; border-top-color:#065f46; border-radius:50%; animation:cycle-spin 1s linear infinite; }
+.cycle-spinner.htmx-indicator { display:none; }
+.htmx-request .cycle-spinner.htmx-indicator { display:inline-block; }
+.cycle-track { height:0.4rem; overflow:hidden; border-radius:1rem; background:#e2e8f0; }
+.cycle-track span { display:block; width:30%; height:100%; background:#047857; animation:cycle-slide 1.8s ease-in-out infinite alternate; }
+button:disabled { opacity:0.55; cursor:wait; }
+@keyframes cycle-spin { to { transform:rotate(360deg); } }
+@keyframes cycle-slide { to { transform:translateX(230%); } }
+@media (prefers-reduced-motion:reduce) { .cycle-spinner,.cycle-track span { animation:none; } }

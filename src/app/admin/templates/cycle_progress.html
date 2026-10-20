@@ -1,0 +1,34 @@
+<section id="cycle-progress" data-running="{{ 'true' if status.running else 'false' }}" class="card space-y-5 p-6" hx-get="/admin/jobs/progress" hx-trigger="every 2s" hx-swap="outerHTML" aria-label="Przebieg cyklu">
+  <div class="flex flex-wrap items-center justify-between gap-4">
+    <div class="flex items-center gap-3">
+      {% if status.running %}<span class="cycle-spinner" aria-hidden="true"></span>{% endif %}
+      <div><h2>{{ 'Cykl w toku' if status.running else 'Przebieg pobierania' }}</h2>
+        <p role="status" aria-live="polite" class="mt-1 text-sm text-slate-600">
+          {% set run = status.last_run %}
+          {% if status.running %}{{ {'collecting':'Odczytywanie katalogu i ofert', 'analyzing':'Zapisywanie i analiza ofert', 'notifying':'Kończenie cyklu'}.get(run.phase if run else '', 'Uruchamianie cyklu') }}
+          {% elif run %}{{ {'completed':'Zakończony', 'error':'Cykl zakończony błędem', 'interrupted':'Cykl został przerwany'}.get(run.status, 'Gotowy do uruchomienia') }}
+          {% else %}Gotowy do uruchomienia{% endif %}
+        </p>
+      </div>
+    </div>
+    <span class="badge">{{ status.source_name }}{% if status.is_demo %} · DEMO{% endif %}</span>
+  </div>
+  {% if status.running %}<div class="cycle-track" aria-hidden="true"><span></span></div>{% endif %}
+  {% if run %}
+  <dl class="grid grid-cols-2 gap-4 text-sm sm:grid-cols-4">
+    {% for label,value in [('Odwiedzone strony',run.pages),('Pasujące oferty',run.fetched),('Nowe w bazie',run.imported),('Pominięte przez filtry',run.excluded),('Duplikaty / usunięte',run.skipped),('Przeanalizowane',run.processed),('Błędy',run.collection_errors + run.import_errors + run.analysis_errors)] %}
+    <div><dt class="text-slate-500">{{ label }}</dt><dd class="mt-1 text-xl font-semibold">{{ value }}</dd></div>
+    {% endfor %}
+  </dl>
+  {% if run.exclusion_reasons %}<details class="text-sm"><summary class="cursor-pointer">Dlaczego pominięto oferty?</summary><ul class="mt-2 space-y-1">{% for reason,count in run.exclusion_reasons.items() %}<li>{{ {'currency_mismatch':'Inna waluta','price_below_minimum':'Cena poniżej minimum','price_above_maximum':'Cena powyżej maksimum','condition_unknown_or_mismatch':'Stan nieznany lub niezgodny','category_unknown_or_mismatch':'Kategoria nieznana lub niezgodna','brand_unknown_or_mismatch':'Marka nieznana lub niezgodna','size_unknown_or_mismatch':'Rozmiar nieznany lub niezgodny'}.get(reason,reason) }}: {{ count }}</li>{% endfor %}</ul></details>{% endif %}
+  {% if run.error_type %}<p class="error">Nie udało się ukończyć cyklu: {{ run.error_type }}. Sprawdź log aplikacji i konfigurację źródła.</p>{% endif %}
+  {% endif %}
+  <div class="flex flex-wrap gap-3">
+    <form method="post" action="/admin/jobs/run" hx-post="/admin/jobs/run" hx-target="#cycle-progress" hx-swap="outerHTML" hx-disabled-elt="find button">
+      <input type="hidden" name="csrf" value="{{ csrf }}">
+      <button class="button" type="submit" {% if status.running %}disabled{% endif %}>{{ 'Cykl trwa…' if status.running else 'Uruchom cykl' }}<span class="htmx-indicator cycle-spinner" aria-hidden="true"></span></button>
+    </form>
+    <a class="secondary" href="/admin/offers?mode=production&amp;currency=all">Pokaż rzeczywiste oferty</a>
+  </div>
+  <p class="text-xs text-slate-500">Liczniki odświeżają się co 2 sekundy. Liczba stron obejmuje katalog; liczba dostępnych ofert może być mniejsza od limitu.</p>
+</section>

@@ -13,6 +13,7 @@ from fastapi.templating import Jinja2Templates
 from pydantic import ValidationError
 from starlette.responses import Response
 
+from app.admin.collection import CollectionPolicy
 from app.admin.password import verify_password
 from app.admin.policy import PanelPolicy
 from app.admin.presentation import reason_text, utc_display
@@ -31,6 +32,7 @@ from app.scheduler.runtime import JobRuntime
 from app.scheduler.service import JobBusy
 from app.schemas.pricing import PriceObservation, PriceType
 from vinted_deal_hunter.config import Settings
+from vinted_deal_hunter.db import SQLiteOfferRepository
 from vinted_deal_hunter.models import CURRENCY_SCALE
 
 
@@ -63,8 +65,20 @@ FEEDBACK_LABELS = {
     "purchased": "Kupione",
     "ignored": "Ignorowane",
 }
+CONDITION_LABELS = {
+    "new_with_tags": "Nowy z metką",
+    "new_without_tags": "Nowy bez metki",
+    "very_good": "Bardzo dobry",
+    "good": "Dobry",
+    "fair": "Zadowalający",
+    "unknown": "Nieznany",
+}
 TEMPLATES.env.globals.update(
-    states=STATE_LABELS, risks=RISK_LABELS, labels=FEEDBACK_LABELS, reason_text=reason_text
+    states=STATE_LABELS,
+    risks=RISK_LABELS,
+    labels=FEEDBACK_LABELS,
+    reason_text=reason_text,
+    conditions=CONDITION_LABELS,
 )
 TEMPLATES.env.filters["utc_display"] = utc_display
 
@@ -175,8 +189,10 @@ def admin_router(config: Settings) -> APIRouter:
     async def dashboard(request: Request) -> Response:
         rt, csrf = identity(request)
         queries = AdminQueries(rt.settings)
-        stats = await asyncio.to_thread(queries.dashboard)
-        offers, _ = await asyncio.to_thread(queries.offers, OfferFilters(sort="score"), deals=True)
+        stats = await asyncio.to_thread(queries.dashboard, production=True)
+        offers, _ = await asyncio.to_thread(
+            queries.offers, OfferFilters(sort="score", mode="production"), deals=True
+        )
         return render(
             request,
             "dashboard.html",
@@ -189,6 +205,20 @@ def admin_router(config: Settings) -> APIRouter:
 
     async def listings(request: Request, filters: OfferFilters, deals: bool) -> Response:
         rt, csrf = identity(request)
+        updates = {}
+        if "mode" not in request.query_params:
+            updates["mode"] = "production"
+        if "currency" not in request.query_params and not any(
+            value is not None
+            for value in (filters.min_price, filters.max_price, filters.min_profit)
+        ):
+            updates["currency"] = "all"
+        filters = filters.model_copy(update=updates)
+        if filters.currency == "all" and any(
+            value is not None
+            for value in (filters.min_price, filters.max_price, filters.min_profit)
+        ):
+            raise HTTPException(422, "Wybierz jedną walutę dla filtrów ceny i zysku.")
         offers, total = await asyncio.to_thread(
             AdminQueries(rt.settings).offers, filters, deals=deals
         )
@@ -212,6 +242,7 @@ def admin_router(config: Settings) -> APIRouter:
             following=following,
             deals=deals,
             currencies=CURRENCY_SCALE,
+            demo_count=AdminQueries(rt.settings).dashboard()["demo_count"],
         )
 
     @router.get("/offers", response_class=HTMLResponse)
@@ -273,7 +304,7 @@ def admin_router(config: Settings) -> APIRouter:
         page: Annotated[int, Query(ge=1, le=100000)] = 1,
     ) -> Response:
         rt, csrf = identity(request)
-        filters = OfferFilters(q=q, currency=currency, page=page)
+        filters = OfferFilters(q=q, currency=currency, page=page, mode="production")
         queries = AdminQueries(rt.settings)
         selected = require_offer(queries, key) if key else None
         rows, total = queries.offers(filters)
@@ -354,6 +385,8 @@ def admin_router(config: Settings) -> APIRouter:
             revision = int(data.pop("revision", "-1"))
             data.pop("csrf", None)
             payload: dict[str, object] = dict(data)
+            saved_policy = rt.panel.policy()[1]
+            payload["collection"] = saved_policy.collection if saved_policy else None
             payload["watched_brands"] = tuple(
                 value.strip()
                 for value in data.get("watched_brands", "").split(",")
@@ -398,8 +431,85 @@ def admin_router(config: Settings) -> APIRouter:
             csrf,
             title="System",
             status=await rt.manager.status(),
+            revision=rt.panel.policy()[0],
+            collection=CollectionPolicy.from_source(rt.settings.vinted),
+            currencies=CURRENCY_SCALE,
+            saved=request.query_params.get("saved") == "1",
             **details,
         )
+
+    @router.get("/jobs/progress", response_class=HTMLResponse)
+    async def progress(request: Request) -> Response:
+        rt, csrf = identity(request)
+        return render(request, "cycle_progress.html", csrf, status=await rt.manager.status())
+
+    @router.post("/collection")
+    async def collection_settings(request: Request) -> Response:
+        rt, csrf = identity(request)
+        data = await form_data(request)
+        check_csrf(request, data, csrf)
+        try:
+            revision = int(data.pop("revision", "-1"))
+            data.pop("csrf", None)
+            filters = {
+                key: data.pop(key, "")
+                for key in (
+                    "currency",
+                    "min_price",
+                    "max_price",
+                    "condition",
+                    "category",
+                    "brand",
+                    "size",
+                )
+            }
+            policy = CollectionPolicy.model_validate(
+                {**data, "enabled": data.get("enabled") == "on", "filters": filters}
+            )
+        except (ValueError, ValidationError):
+            raise HTTPException(
+                422, "Sprawdź frazę lub link katalogu, zakres cen, walutę i limit stron."
+            ) from None
+        lease = rt.manager.store.acquire()
+        if lease is None:
+            raise HTTPException(409, "Trwa cykl. Zapisz ustawienia po jego zakończeniu.")
+        try:
+            _, saved_policy = rt.panel.policy()
+            saved_policy = saved_policy or PanelPolicy.from_settings(rt.settings)
+            rt.panel.save_policy(
+                saved_policy.model_copy(update={"collection": policy}), revision, datetime.now(UTC)
+            )
+            rt.refresh_policy()
+        except RevisionConflict as exc:
+            raise HTTPException(409, str(exc)) from exc
+        finally:
+            lease.close()
+        return RedirectResponse("/admin/system?saved=1", status_code=303)
+
+    @router.post("/offers/{key}/delete")
+    async def delete_offer(request: Request, key: str) -> Response:
+        rt, csrf = identity(request)
+        check_csrf(request, await form_data(request), csrf)
+        lease = rt.manager.store.acquire()
+        if lease is None:
+            raise HTTPException(409, "Poczekaj na zakończenie cyklu przed usunięciem ofert.")
+        try:
+            repo = cast(SQLiteOfferRepository, request.app.state.repository)
+            outbox = rt.manager.cycle.notifications.outbox
+            if key == "demo":
+                await asyncio.to_thread(outbox.cancel_demo)
+                await asyncio.to_thread(repo.delete_demo)
+            else:
+                item = require_offer(AdminQueries(rt.settings), key)
+                await asyncio.to_thread(
+                    outbox.cancel_offer, item.offer.source_name, item.offer.external_id
+                )
+                await asyncio.to_thread(
+                    repo.delete_offer, item.offer.source_name, item.offer.external_id
+                )
+        finally:
+            lease.close()
+        return RedirectResponse("/admin/offers", status_code=303)
 
     @router.post("/jobs/{action}")
     async def control(request: Request, action: Literal["run", "pause", "resume"]) -> Response:
@@ -407,13 +517,19 @@ def admin_router(config: Settings) -> APIRouter:
         check_csrf(request, await form_data(request), csrf)
         try:
             if action == "run":
-                await rt.manager.run()
+                await rt.manager.submit()
             elif action == "pause":
                 await rt.manager.pause()
             else:
                 await rt.manager.resume()
         except JobBusy as exc:
             raise HTTPException(409, "Cykl już trwa.") from exc
+        if request.headers.get("HX-Request") == "true":
+            response = render(
+                request, "cycle_progress.html", csrf, status=await rt.manager.status()
+            )
+            response.status_code = 202 if action == "run" else 200
+            return response
         return RedirectResponse("/admin/system", status_code=303)
 
     return router

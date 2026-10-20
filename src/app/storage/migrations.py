@@ -11,7 +11,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.engine import URL
 
 DatabaseRole = Literal["offers", "analyses", "operations", "ai"]
-HEAD = "0002_indexes"
+HEAD = "0003_offer_management"
 _ALEMBIC_LOCK = RLock()
 
 

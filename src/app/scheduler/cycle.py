@@ -2,7 +2,7 @@
 
 import logging
 from collections import Counter
-from collections.abc import Sequence
+from collections.abc import Callable, Sequence
 from datetime import datetime
 from typing import Protocol
 
@@ -16,6 +16,8 @@ from vinted_deal_hunter.db import Disposition, OfferRepository
 from vinted_deal_hunter.ingestion import import_offers
 from vinted_deal_hunter.models import OfferInput
 from vinted_deal_hunter.sources import MockOfferSource, OfferSource
+from vinted_deal_hunter.vinted import CollectionReport, VintedOfferSource
+from vinted_deal_hunter.vinted_playwright import VintedPlaywrightOfferSource
 
 logger = logging.getLogger(__name__)
 
@@ -30,7 +32,11 @@ class EmptyContextProvider:
     def prepare(self, offer: OfferInput, as_of: datetime) -> AnalysisRequest:
         return AnalysisRequest(
             snapshot=DealSnapshot(
-                offer=offer, available_at=as_of, costs=CostBreakdown(currency=offer.currency)
+                offer=offer,
+                available_at=as_of,
+                costs=CostBreakdown(currency=offer.currency),
+                listing_url=offer.listing_url,
+                category=offer.category,
             ),
             as_of=as_of,
         )
@@ -45,7 +51,7 @@ class CapturingRepository:
     def add_many(self, offers: Sequence[OfferInput]) -> list[Disposition]:
         results = self.repository.add_many(offers)
         for offer, disposition in zip(offers, results, strict=True):
-            if disposition == Disposition.PROVENANCE_CONFLICT:
+            if disposition in {Disposition.PROVENANCE_CONFLICT, Disposition.DELETED}:
                 continue
             key = (offer.source_name, offer.external_id)
             if key in self.offers and self.offers[key] != offer:
@@ -69,10 +75,37 @@ class DealCycle:
         self.pipeline, self.notifications = pipeline, notifications
         self.source = source if source is not None else MockOfferSource()
         self.context = context if context is not None else EmptyContextProvider()
+        self.progress: Callable[[CycleReport], None] = lambda _: None
 
     def process(self, report: CycleReport) -> CycleReport:
+        def collection_progress(collection: CollectionReport) -> None:
+            nonlocal report
+            reasons = Counter(page.reason for page in collection.pages if page.status == "excluded")
+            report = report.model_copy(
+                update={
+                    "pages": len(collection.pages),
+                    "fetched": sum(page.status == "collected" for page in collection.pages),
+                    "excluded": sum(page.status == "excluded" for page in collection.pages),
+                    "collection_errors": sum(page.status == "error" for page in collection.pages),
+                    "exclusion_reasons": {key: value for key, value in reasons.items() if key},
+                }
+            )
+            self.progress(report)
+
+        if isinstance(self.source, (VintedOfferSource, VintedPlaywrightOfferSource)):
+            self.source.progress = collection_progress
         captured = CapturingRepository(self.repository)
         imported = import_offers(self.source, captured, self.settings)
+        report = report.model_copy(
+            update={
+                "phase": "analyzing",
+                "fetched": imported.total,
+                "imported": imported.new,
+                "skipped": imported.skipped,
+                "import_errors": imported.errors,
+            }
+        )
+        self.progress(report)
         states: Counter[str] = Counter()
         alerts: Counter[str] = Counter()
         errors = len(captured.conflicts)
@@ -104,6 +137,14 @@ class DealCycle:
                 logger.error(
                     "Cycle item failed source=%s error=%s", offer.source_name, type(exc).__name__
                 )
+            self.progress(
+                report.model_copy(
+                    update={
+                        "processed": sum(states.values()),
+                        "analysis_errors": errors + states.get(DealState.ERROR.value, 0),
+                    }
+                )
+            )
         return report.model_copy(
             update={
                 "fetched": imported.total,

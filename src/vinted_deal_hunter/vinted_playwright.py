@@ -10,12 +10,13 @@ from dataclasses import dataclass
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Literal, Protocol, Self
-from urllib.parse import urljoin, urlsplit
+from urllib.parse import parse_qsl, urlencode, urljoin, urlsplit, urlunsplit
 from urllib.robotparser import RobotFileParser
 
 import httpx
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
+from vinted_deal_hunter.collection_filters import CollectionFilters
 from vinted_deal_hunter.sources import SourceError
 from vinted_deal_hunter.vinted import (
     ITEM_PATH,
@@ -57,6 +58,7 @@ class VintedAutomationConfig(BaseModel):
     search: str | None = Field(default=None, max_length=200)
     urls: tuple[str, ...] = Field(default=(), max_length=100)
     browser: VintedPlaywrightConfig = Field(default_factory=VintedPlaywrightConfig)
+    filters: CollectionFilters | None = None
 
     @field_validator("search")
     @classmethod
@@ -247,6 +249,8 @@ class VintedPlaywrightOfferSource:
         self.sleep = sleep
         self.clock = clock
         self.report = CollectionReport(engine="playwright")
+        self.filters: CollectionFilters | None = None
+        self.progress: Callable[[CollectionReport], None] | None = None
         self._interval = self.config.interval_seconds
         self._next_navigation = 0.0
 
@@ -360,10 +364,13 @@ class VintedPlaywrightOfferSource:
                         document = self._navigate(session, url, catalog=match is None)
                         if match:
                             offer = parse_offer_html(document.html, url)
-                            records.append(offer.model_dump(exclude={"source_name", "is_demo"}))
+                            rejection = self.filters.rejection(offer) if self.filters else None
+                            if rejection is None:
+                                records.append(offer.model_dump(exclude={"source_name", "is_demo"}))
                             page = PageResult(
                                 url=url,
-                                status="collected",
+                                status="excluded" if rejection else "collected",
+                                reason=rejection,
                                 observed_at=datetime.now(UTC),
                                 offer=offer,
                                 price_basis="ASKING",
@@ -399,6 +406,8 @@ class VintedPlaywrightOfferSource:
                         logger.warning(
                             "Playwright Vinted page could not be imported (page %d)", len(seen)
                         )
+                    if self.progress is not None:
+                        self.progress(self.report)
         except CollectionStopped as exc:
             self.report.stopped_reason = str(exc)
             raise
@@ -414,11 +423,30 @@ def configured_vinted_source(
     if not config.enabled:
         return None
     urls = [search_url(config.search)] if config.search is not None else list(config.urls)
+    if config.filters is not None:
+        filtered_urls = []
+        for url in urls:
+            parsed = urlsplit(url)
+            if parsed.path.startswith("/catalog"):
+                criteria = config.filters.search_parameters()
+                params = [
+                    (key, value)
+                    for key, value in parse_qsl(parsed.query, keep_blank_values=True)
+                    if key not in criteria
+                ]
+                params.extend(criteria.items())
+                url = urlunsplit(parsed._replace(query=urlencode(params)))
+            filtered_urls.append(url)
+        urls = filtered_urls
     if config.engine == "playwright":
-        return VintedPlaywrightOfferSource(urls, config.browser)
+        source = VintedPlaywrightOfferSource(urls, config.browser)
+        source.filters = config.filters
+        return source
     from vinted_deal_hunter.vinted import VintedOfferSource
 
     http_config = VintedScrapeConfig.model_validate(
         config.browser.model_dump(include=set(VintedScrapeConfig.model_fields))
     )
-    return VintedOfferSource(urls, http_config)
+    http_source = VintedOfferSource(urls, http_config)
+    http_source.filters = config.filters
+    return http_source

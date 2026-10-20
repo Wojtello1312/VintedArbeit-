@@ -1,0 +1,25 @@
+<section class="card p-6">
+  <h2>Konfiguracja pobierania</h2>
+  <p class="mt-2 text-sm text-slate-500">Zapisz warunki przed uruchomieniem cyklu. Obowiązują również w harmonogramie.</p>
+  {% if saved %}<p class="notice mt-4" role="status">Konfiguracja pobierania zapisana.</p>{% endif %}
+  <form action="/admin/collection" method="post" class="mt-5 space-y-5">
+    <input type="hidden" name="csrf" value="{{ csrf }}"><input type="hidden" name="revision" value="{{ revision }}">
+    <label class="flex items-center gap-3"><input class="m-0 h-5 w-5" type="checkbox" name="enabled" {% if collection.enabled %}checked{% endif %}>Pobieraj rzeczywiste oferty z Vinted</label>
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <label>Wyszukiwana fraza<input name="search" maxlength="200" value="{{ collection.search }}" placeholder="np. Nike Air Max 90"></label>
+      <label class="sm:col-span-2">Lub link katalogu z filtrami Vinted<input name="catalog_url" maxlength="2000" value="{{ collection.catalog_url }}" placeholder="https://www.vinted.pl/catalog?…"></label>
+      <label>Waluta<select name="currency">{% for currency in currencies %}<option {% if collection.filters.currency == currency %}selected{% endif %}>{{ currency }}</option>{% endfor %}</select></label>
+      <label>Cena od<input type="number" name="min_price" min="0" step="0.01" value="{{ collection.filters.min_price if collection.filters.min_price is not none else '' }}"></label>
+      <label>Cena do<input type="number" name="max_price" min="0" step="0.01" placeholder="100" value="{{ collection.filters.max_price if collection.filters.max_price is not none else '' }}"></label>
+      <label>Stan<select name="condition"><option value="">Dowolny / nieznany</option>{% for value,label in conditions.items() %}<option value="{{ value }}" {% if collection.filters.condition == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></label>
+      <label>Kategoria<input name="category" maxlength="200" value="{{ collection.filters.category }}" placeholder="np. Buty"></label>
+      <label>Marka<input name="brand" maxlength="200" value="{{ collection.filters.brand }}" placeholder="np. Nike"></label>
+      <label>Rozmiar<input name="size" maxlength="100" value="{{ collection.filters.size }}" placeholder="np. 42"></label>
+      <label>Limit stron na cykl<input required name="max_pages" type="number" min="1" max="100" value="{{ collection.max_pages }}"></label>
+      <label>Przeglądarka<select name="browser_channel">{% for value,label in [('msedge','Microsoft Edge'),('chromium','Chromium'),('chrome','Google Chrome')] %}<option value="{{ value }}" {% if collection.browser_channel == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></label>
+    </div>
+    <p class="text-sm text-slate-500">Wypełnij frazę albo link katalogu. Link pozwala wybrać kategorię bezpośrednio na Vinted. Warunki poniżej są ponownie sprawdzane na odczytanych ofertach: brak stanu, kategorii lub rozmiaru nie spełnia ustawionego filtra. Wyłączone źródło oznacza tryb demo.</p>
+    <button id="save-collection" class="button" type="submit" {% if status.running %}disabled{% endif %}>Zapisz warunki pobierania</button>
+    <a class="link ml-3 text-sm" href="/admin/settings">Ustaw częstotliwość cykli</a>
+  </form>
+</section>

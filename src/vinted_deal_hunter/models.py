@@ -65,6 +65,7 @@ class OfferInput(SourceIdentity):
     external_id: Annotated[str, Field(min_length=1, max_length=200)]
     product_name: Annotated[str, Field(min_length=1, max_length=500)]
     brand: Annotated[str | None, Field(max_length=200)] = None
+    category: Annotated[str | None, Field(max_length=200)] = None
     size: Annotated[str | None, Field(max_length=100)] = None
     condition: Condition | None = None
     currency: str
@@ -82,12 +83,12 @@ class OfferInput(SourceIdentity):
             raise ValueError("external_id contains control characters")
         return result
 
-    @field_validator("product_name", "brand", "size", mode="before")
+    @field_validator("product_name", "brand", "size", "category", mode="before")
     @classmethod
     def normalize_text(cls, value: object) -> object:
         return clean_text(value) if isinstance(value, str) else value
 
-    @field_validator("brand", "size", mode="before")
+    @field_validator("brand", "size", "category", mode="before")
     @classmethod
     def empty_metadata(cls, value: object) -> object:
         if isinstance(value, str) and not clean_text(value):
@@ -176,3 +177,13 @@ class OfferInput(SourceIdentity):
     @property
     def price_minor(self) -> int:
         return int(self.asking_price * 10 ** CURRENCY_SCALE[self.currency])
+
+    @property
+    def listing_url(self) -> str | None:
+        if (
+            not self.is_demo
+            and self.source_name in {"vinted-public-pl", "vinted-manual"}
+            and re.fullmatch(r"[0-9]+", self.external_id)
+        ):
+            return f"https://www.vinted.pl/items/{self.external_id}"
+        return None

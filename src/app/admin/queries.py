@@ -8,9 +8,9 @@ from contextlib import contextmanager
 from dataclasses import dataclass
 from decimal import Decimal
 from pathlib import Path
-from typing import Literal
+from typing import Literal, Self
 
-from pydantic import Field, field_validator
+from pydantic import Field, field_validator, model_validator
 
 from app.scheduler.store import CycleReport
 from app.schemas.deals import AnalysisRecord, DealState
@@ -26,6 +26,10 @@ def offer_key(source: str, external: str) -> str:
 class OfferFilters(FrozenSchema):
     q: str = Field(default="", max_length=200)
     brand: str = Field(default="", max_length=200)
+    category: str = Field(default="", max_length=200)
+    condition: Literal[
+        "", "new_with_tags", "new_without_tags", "very_good", "good", "fair", "unknown"
+    ] = ""
     currency: str = "PLN"
     min_price: Decimal | None = Field(default=None, ge=0)
     max_price: Decimal | None = Field(default=None, ge=0)
@@ -37,6 +41,20 @@ class OfferFilters(FrozenSchema):
     sort: Literal["newest", "price_asc", "price_desc", "score", "profit", "name"] = "newest"
     page: int = Field(default=1, ge=1, le=100000)
 
+    @model_validator(mode="after")
+    def coherent_prices(self) -> Self:
+        if self.currency == "all" and any(
+            value is not None for value in (self.min_price, self.max_price, self.min_profit)
+        ):
+            raise ValueError("Wybierz jedną walutę dla filtrów ceny i zysku.")
+        if (
+            self.min_price is not None
+            and self.max_price is not None
+            and self.min_price > self.max_price
+        ):
+            raise ValueError("Cena od nie może przekraczać ceny do.")
+        return self
+
     @field_validator("min_price", "max_price", "min_score", "min_profit", mode="before")
     @classmethod
     def empty_number(cls, value: object) -> object:
@@ -45,7 +63,7 @@ class OfferFilters(FrozenSchema):
     @field_validator("currency")
     @classmethod
     def supported_currency(cls, value: str) -> str:
-        if value not in CURRENCY_SCALE:
+        if value != "all" and value not in CURRENCY_SCALE:
             raise ValueError("unsupported currency")
         return value
 
@@ -57,6 +75,12 @@ class OfferView:
     analysis: AnalysisRecord | None
     label: str | None
 
+    @property
+    def listing_url(self) -> str | None:
+        return self.offer.listing_url or (
+            self.analysis.request.snapshot.listing_url if self.analysis else None
+        )
+
 
 LATEST = """WITH ranked AS (
  SELECT payload,analysis_id,ROW_NUMBER() OVER (
@@ -66,7 +90,7 @@ LATEST = """WITH ranked AS (
           julianday(json_extract(payload,'$.history[#-1].recorded_at')) DESC, analysis_id DESC
  ) AS position FROM analyses.deal_analyses
 ), inventory AS (
- SELECT o.source_name,o.external_id,
+ SELECT o.source_name,o.external_id,o.imported_at,
  coalesce(json_extract(a.payload,'$.request.snapshot.offer'),o.payload) AS offer,
  a.payload AS analysis, f.label AS label
  FROM offers o LEFT JOIN ranked a ON a.position=1 AND
@@ -120,8 +144,16 @@ class AdminQueries:
         )
 
     def offers(self, filters: OfferFilters, *, deals: bool = False) -> tuple[list[OfferView], int]:
-        conditions = ["json_extract(offer,'$.currency')=?"]
-        params: list[object] = [filters.currency]
+        conditions = ["1=1"]
+        params: list[object] = []
+        if filters.currency != "all":
+            conditions.append("json_extract(offer,'$.currency')=?")
+            params.append(filters.currency)
+        elif any(
+            value is not None
+            for value in (filters.min_price, filters.max_price, filters.min_profit)
+        ):
+            raise ValueError("Wybierz jedną walutę dla filtrów kwotowych.")
         if filters.q:
             conditions.append(
                 "(instr(fold(json_extract(offer,'$.product_name')),fold(?))>0 "
@@ -131,6 +163,12 @@ class AdminQueries:
         if filters.brand:
             conditions.append("fold(json_extract(offer,'$.brand'))=fold(?)")
             params.append(filters.brand)
+        if filters.category:
+            conditions.append("instr(fold(json_extract(offer,'$.category')),fold(?))>0")
+            params.append(filters.category)
+        if filters.condition:
+            conditions.append("coalesce(json_extract(offer,'$.condition'),'unknown')=?")
+            params.append(filters.condition)
         for value, field, comparison in (
             (filters.min_price, "json_extract(offer,'$.asking_price')", "decimal_ge"),
             (filters.max_price, "json_extract(offer,'$.asking_price')", "decimal_le"),
@@ -156,13 +194,15 @@ class AdminQueries:
         if deals:
             conditions.append("json_extract(analysis,'$.state') IN ('APPROVED','NOTIFIED')")
         ordering = {
-            "newest": "julianday(json_extract(offer,'$.published_at')) DESC",
+            "newest": "imported_at DESC",
             "price_asc": "json_extract(offer,'$.asking_price') COLLATE decimal ASC",
             "price_desc": "json_extract(offer,'$.asking_price') COLLATE decimal DESC",
             "score": "json_extract(analysis,'$.score.total') COLLATE decimal DESC",
             "profit": "json_extract(analysis,'$.profit.estimated_profit') COLLATE decimal DESC",
             "name": "fold(json_extract(offer,'$.product_name')) ASC",
         }[filters.sort]
+        if filters.currency == "all" and filters.sort in {"price_asc", "price_desc", "profit"}:
+            ordering = "json_extract(offer,'$.currency')," + ordering
         where = " WHERE " + " AND ".join(conditions)
         with self.connection() as db:
             total = db.execute(
@@ -206,11 +246,12 @@ class AdminQueries:
             ).fetchall()
         return [AnalysisRecord.model_validate_json(row[0]) for row in rows], total
 
-    def dashboard(self) -> dict[str, object]:
+    def dashboard(self, *, production: bool = False) -> dict[str, object]:
         with self.connection() as db:
             rows = db.execute(
                 LATEST + "SELECT json_extract(analysis,'$.state') AS state,"
                 "json_extract(analysis,'$.score.total') AS score FROM inventory"
+                + (" WHERE json_extract(offer,'$.is_demo')=0" if production else "")
             ).fetchall()
             demo = db.execute("SELECT COUNT(*) FROM offers WHERE is_demo=1").fetchone()[0]
             sent = db.execute(

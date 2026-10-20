@@ -29,6 +29,24 @@ class AlertOutbox(OperationsStore):
         super().__init__(path)
         self.config = config
 
+    def cancel_offer(self, source: str, external: str) -> None:
+        """Caller holds the cycle lease; never change sent or uncertain deliveries."""
+        with self.transaction() as db:
+            db.execute(
+                "UPDATE alert_outbox SET status='cancelled',reason='offer_deleted' "
+                "WHERE status IN ('pending','retry') "
+                "AND json_extract(payload,'$.source_name')=? "
+                "AND json_extract(payload,'$.external_id')=?",
+                (source, external),
+            )
+
+    def cancel_demo(self) -> None:
+        with self.transaction() as db:
+            db.execute(
+                "UPDATE alert_outbox SET status='cancelled',reason='offer_deleted' "
+                "WHERE is_demo=1 AND status IN ('pending','retry')"
+            )
+
     def enqueue(self, message: AlertMessage, now: datetime) -> bool:
         with self.transaction() as db:
             result = db.execute(

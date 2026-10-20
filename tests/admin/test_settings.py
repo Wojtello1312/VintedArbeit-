@@ -102,13 +102,19 @@ def test_job_controls_and_demo_idempotence(signed_in, settings):
         assert response.status_code == 200
         assert rt.manager.store.paused() == (action == "pause")
     assert signed_in.post("/admin/jobs/run", data={"csrf": token}).status_code == 200
+    signed_in.portal.call(wait_for_cycle, rt.manager)
     stats = AdminQueries(settings).dashboard()
     assert stats["total"] > 0 and stats["demo_count"] == stats["total"]
     assert signed_in.post("/admin/jobs/run", data={"csrf": token}).status_code == 200
+    signed_in.portal.call(wait_for_cycle, rt.manager)
     assert AdminQueries(settings).dashboard() == stats
     assert AdminQueries(settings).offers(OfferFilters(mode="production"))[1] == 0
     assert len(AdminQueries(settings).system()["jobs"]) == 2
     assert "Zakończony" in signed_in.get("/admin/system").text
+
+
+async def wait_for_cycle(manager):
+    await manager._task
 
 
 def test_store_policy_conflict_and_login_window(client, settings):

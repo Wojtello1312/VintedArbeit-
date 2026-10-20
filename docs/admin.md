@@ -46,18 +46,18 @@ nie wymyśla. Historyczny backtest jest osobnym narzędziem i nie zasila panelu.
 
 ## Widoki i znaczenie danych
 
-- **Przegląd:** nowe oferty (bez analizy lub stan NEW), odrzucone, okazje
+- **Przegląd:** rzeczywiste nowe oferty (bez analizy lub stan NEW), odrzucone, okazje
   (APPROVED/NOTIFIED), średni scoring ostatnich ocen. Każda oferta liczona raz.
   Liczba AI to ukończone wyniki w ledgerze, bez powtórzeń cache. Koszt obejmuje
   znane rozliczenia według skonfigurowanych stawek; rezerwacje nieznanych kosztów
   są pokazane osobno. Powiadomienia Telegram i lokalne symulacje demo są rozdzielone.
 - **Oferty:** wyszukiwanie nazwy/ID, marka, zakres ceny, minimalny scoring,
   ryzyko, zysk, etykieta, demo/produkcja i waluta; sortowanie i paginacja po 25.
-  Kwoty są porównywane dokładnie przez Decimal. Jedna waluta na listę,
-  domyślnie PLN; brak niejawnych przeliczeń. HTMX odświeża tabelę; formularze
+  Kwoty są porównywane dokładnie przez Decimal. Domyślnie wszystkie waluty,
+  filtry kwotowe wymagają jednej waluty; brak niejawnych przeliczeń. HTMX odświeża tabelę; formularze
   i linki działają również bez JavaScript.
-- **Szczegóły:** ostatnia analiza, opis, bezpieczny link do ogłoszenia (jeśli
-  zapisany), powody decyzji, ryzyko, zysk, historia etapów i wersja scoringu.
+- **Szczegóły:** ostatnia analiza, opis, bezpieczny link do ogłoszenia (z numerycznego
+  ID Vinted lub zapisanej analizy), powody decyzji, ryzyko, zysk, historia etapów i wersja scoringu.
   Historia analiz ma paginację po 20. Nieznane koszty/zysk pozostają nieznane.
 - **Okazje:** zatwierdzone oferty, domyślnie od najwyższego scoringu, z filtrem
   minimalnego zysku. Na stronie szczegółów można nadać `good_deal`, `bad_deal`,
@@ -129,3 +129,74 @@ HTMX oraz strony na szerokościach 390 i 1440 px, bez zewnętrznych zasobów.
 Od ETAPU 8 `/imports`, `/offers` i `/jobs/*` wymagają Bearer `JOBS_API_TOKEN`.
 Docker Compose, migracje i instrukcje Windows: [deployment.md](deployment.md).
 Pełna dokumentacja REST: [api.md](api.md).
+
+## Cykl pobierania i zarządzanie ofertami
+
+Po aktualizacji zatrzymaj serwer i uruchom w jego terminalu PowerShell:
+
+```powershell
+git pull origin main
+$env:Path = "$HOME\.local\bin;$env:Path"
+uv sync --locked --extra browser
+uv run --frozen --extra browser python -m app.migrate
+uv run --frozen --extra browser uvicorn vinted_deal_hunter.api:create_app --factory --host 127.0.0.1 --port 8000
+```
+
+Zachowaj `VDH_DB_PATH` i `ADMIN_PASSWORD_HASH` używane przez istniejącą instalację.
+Nowy terminal wymaga ponownego ustawienia tych zmiennych; instrukcja generowania
+hasła jest w [deployment.md](deployment.md). Microsoft Edge nie wymaga pobierania
+Chromium. Dla kanału Chromium wykonaj `uv run --extra browser playwright install chromium`.
+
+1. W **System → Konfiguracja pobierania** zaznacz rzeczywiste źródło Vinted.
+2. Podaj frazę (np. Nike Air Max 90) albo publiczny link katalogu z filtrami
+   ustawionymi na Vinted. Podaj dokładnie jedno z tych pól.
+3. Ustaw np. walutę PLN, cenę do 100, stan „Bardzo dobry”. Opcjonalna kategoria
+   to nazwa odczytana w ogłoszeniu (np. Buty), również element ścieżki kategorii.
+   Marka i rozmiar wymagają zgodności z odczytaną wartością. Puste pola nie filtrują.
+4. Wybierz zainstalowaną przeglądarkę i limit stron, zapisz warunki, uruchom cykl.
+5. W **Oferty** obejrzyj wyniki. Importy CLI do tej samej bazy też są widoczne.
+
+Cena i stan trafiają do parametrów publicznego katalogu i są dodatkowo sprawdzane
+na każdej pobranej ofercie. Nazwa kategorii, marka i rozmiar są sprawdzane lokalnie;
+aby zawęzić katalog po taksonomii serwisu, użyj jego linku z filtrami. Nieznany stan,
+rozmiar lub kategoria nie przechodzą ustawionego filtra. Brak obsługiwanych metadanych
+może więc zmniejszyć liczbę importowanych ofert; licznik pominięć podaje przyczyny.
+Obsługiwane są standardowe metadane oraz jawne atrybuty `item-attributes-*`
+i oznaczone breadcrumbs w wyrenderowanym HTML. Zmiana struktury serwisu może
+wymagać aktualizacji parsera; warunków nie wywnioskujemy z samej frazy wyszukiwania.
+
+Cykl działa w tle i ma trwałą blokadę przed nakładaniem. Panel odpytuje stan co
+2 sekundy, pokazując etap, odwiedzone strony, pasujące i nowe oferty, duplikaty,
+pominięcia przez filtry, analizy i błędy. Animacja nie udaje procentu ukończenia,
+bo liczba dostępnych ofert nie jest znana z góry. Przy preferencji ograniczenia
+ruchu animacje są wyłączone. POST nie wymaga czekania na cały import, a zamknięcie
+strony nie przerywa cyklu. Ręczne odświeżenie działa również bez JavaScriptu.
+Po zakończeniu można otworzyć listę ofert. Dane w otwartej tabeli wymagają odświeżenia.
+
+Konfiguracja źródła zapisuje się razem z wersjonowaną polityką panelu i ma
+pierwszeństwo przed `VDH_VINTED`. Zmiana podczas cyklu lub zapis starego formularza
+dają 409. Zwykłe ustawienia scoringu nie kasują konfiguracji pobierania. Wyłączenie
+źródła Vinted przywraca źródło demo offline. Częstotliwość i automatyczne cykle
+ustawisz nadal w **Ustawieniach**, a pauzę w **Systemie**.
+
+Lista i przegląd domyślnie ukrywają demo. Listy pokazują wszystkie waluty;
+nie przeliczamy SEK/DKK na PLN. Przed filtrowaniem kwot wybierz jedną walutę.
+Sortowanie cen przy wszystkich walutach grupuje wyniki po walucie. „Ostatnio dodane”
+korzysta z czasu importu UTC; starych czasów importu nie odtwarzamy fikcyjnie.
+Starsze wpisy bez czasu są za nowymi. Pozostałe sortowania obejmują cenę, nazwę,
+scoring i zysk. Scoring/zysk mogą pozostać nieznane, dopóki brakuje porównań i kosztów.
+
+Link ogłoszenia pochodzi bezpośrednio z numerycznego ID źródła Vinted:
+`https://www.vinted.pl/items/123`. Jest dostępny w tabeli i szczegółach nawet bez
+analizy. ID z innymi znakami i dane demo nie służą do tworzenia takiego linku.
+
+**Usuń** usuwa ofertę z lokalnego katalogu, **Usuń dane demo** usuwa wszystkie
+lokalne oferty demonstracyjne. Formularze wymagają sesji i CSRF, a przeglądarka
+pyta o potwierdzenie. Usuwanie podczas cyklu jest blokowane. Lista usuniętych
+identyfikatorów zapobiega ich ponownemu importowi (`skip_reasons.deleted`) i analizie.
+Historia już wykonanych analiz, koszty AI, oceny i rejestr powiadomień pozostają
+w bazach audytowych. Oczekujące powiadomienia usuwanych ofert są anulowane;
+wysłane lub niepewne dostarczenia zachowują swoją historię. Operacja nie usuwa ogłoszenia z Vinted.
+
+Migracja `0003_offer_management` dodaje czas importu i tabelę usuniętych tożsamości.
+Nie usuwa istniejących ofert automatycznie i nie zmienia ich dat publikacji.

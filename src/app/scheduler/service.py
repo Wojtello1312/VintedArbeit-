@@ -35,6 +35,7 @@ class JobManager:
         self._task: asyncio.Task[CycleReport] | None = None
         self._closing = False
         self.before_run: Callable[[], None] | None = None
+        self.cycle.progress = self.store.save
 
     def reconfigure(self, config: SchedulerConfig) -> None:
         self.config = config
@@ -94,10 +95,18 @@ class JobManager:
             logger.error("Scheduled cycle failed error=%s", type(exc).__name__)
 
     async def run(self, run_id: str | None = None) -> CycleReport:
+        return await asyncio.shield(await self.submit(run_id))
+
+    async def submit(self, run_id: str | None = None) -> asyncio.Task[CycleReport]:
+        """Acquire the lease before returning; the UI can immediately poll progress."""
         identity = run_id or uuid4().hex
         previous = await asyncio.to_thread(self.store.get, identity)
         if previous is not None and previous.status != "running":
-            return previous
+
+            async def completed() -> CycleReport:
+                return previous
+
+            return asyncio.create_task(completed())
         if self._closing or (self._task is not None and not self._task.done()):
             raise JobBusy("cycle is already running or shutting down")
         lease = self.store.acquire()
@@ -118,7 +127,7 @@ class JobManager:
                 lease.close()
 
         self._task = asyncio.create_task(execute())
-        return await asyncio.shield(self._task)
+        return self._task
 
     async def _execute(self, identity: str) -> CycleReport:
         started = time.monotonic()
@@ -132,15 +141,24 @@ class JobManager:
         await asyncio.to_thread(self.store.save, report)
         try:
             report = await asyncio.to_thread(self.cycle.process, report)
+            report = report.model_copy(update={"phase": "notifying"})
+            await asyncio.to_thread(self.store.save, report)
             deliveries = await self.cycle.notifications.flush(
                 allow_production=not self.cycle.source.is_demo
             )
             alerts = dict(report.alerts)
             alerts.update({f"delivery_{key}": value for key, value in deliveries.items()})
-            report = report.model_copy(update={"status": "completed", "alerts": alerts})
+            report = report.model_copy(
+                update={"status": "completed", "phase": "completed", "alerts": alerts}
+            )
         except Exception as exc:
             logger.error("Cycle failed id=%s error=%s", identity, type(exc).__name__)
-            report = report.model_copy(update={"status": "error", "error_type": type(exc).__name__})
+            saved_report = await asyncio.to_thread(self.store.get, identity)
+            if saved_report is not None:
+                report = saved_report
+            report = report.model_copy(
+                update={"status": "error", "phase": "error", "error_type": type(exc).__name__}
+            )
         report = report.model_copy(
             update={"finished_at": self.clock(), "duration_seconds": time.monotonic() - started}
         )

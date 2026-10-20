@@ -13,8 +13,10 @@ from urllib.robotparser import RobotFileParser
 import httpx
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
+from vinted_deal_hunter.collection_filters import CollectionFilters
+from vinted_deal_hunter.html_attributes import ItemAttributes
 from vinted_deal_hunter.models import OfferInput
-from vinted_deal_hunter.sources import SavedHTMLOfferSource, SourceError
+from vinted_deal_hunter.sources import SavedHTMLOfferSource, SourceError, _condition
 
 ORIGIN = "https://www.vinted.pl"
 USER_AGENT = "VintedDealHunterTest/0.1"
@@ -36,7 +38,7 @@ class VintedScrapeConfig(BaseModel):
 
 class PageResult(BaseModel):
     url: str
-    status: Literal["collected", "catalog", "error"]
+    status: Literal["collected", "catalog", "error", "excluded"]
     observed_at: datetime
     reason: str | None = None
     offer: OfferInput | None = None
@@ -110,8 +112,13 @@ def parse_offer_html(content: bytes, url: str) -> OfferInput:
     if len(matching) != 1:
         raise SourceError("ambiguous_or_mismatched_product_metadata")
     try:
+        attributes = ItemAttributes()
+        attributes.feed(content.decode("utf-8-sig"))
+        extra = dict(attributes.values)
+        if "condition" in extra:
+            extra["condition"] = _condition(extra["condition"]) or "unknown"
         return OfferInput.model_validate(
-            {**matching[0], "source_name": "vinted-public-pl", "is_demo": False}
+            {**matching[0], **extra, "source_name": "vinted-public-pl", "is_demo": False}
         )
     except ValidationError as exc:
         raise SourceError("invalid_offer_metadata") from exc
@@ -215,6 +222,8 @@ class VintedOfferSource:
         self.sleep = sleep
         self.clock = clock
         self.report = CollectionReport()
+        self.filters: CollectionFilters | None = None
+        self.progress: Callable[[CollectionReport], None] | None = None
         self._next_request = 0.0
         self._interval = self.config.interval_seconds
 
@@ -329,10 +338,13 @@ class VintedOfferSource:
                             raise CollectionStopped("challenge_requires_manual_review")
                         if match:
                             offer = self._offer(body, url)
-                            records.append(offer.model_dump(exclude={"source_name", "is_demo"}))
+                            rejection = self.filters.rejection(offer) if self.filters else None
+                            if rejection is None:
+                                records.append(offer.model_dump(exclude={"source_name", "is_demo"}))
                             page = PageResult(
                                 url=url,
-                                status="collected",
+                                status="excluded" if rejection else "collected",
+                                reason=rejection,
                                 observed_at=datetime.now(UTC),
                                 offer=offer,
                                 price_basis="ASKING",
@@ -361,6 +373,8 @@ class VintedOfferSource:
                             )
                         )
                         logger.warning("Vinted page could not be imported (page %d)", len(seen))
+                    if self.progress is not None:
+                        self.progress(self.report)
             except CollectionStopped as exc:
                 self.report.stopped_reason = str(exc)
                 raise

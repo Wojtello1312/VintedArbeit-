@@ -15,7 +15,7 @@ from app.scheduler.store import JobStore
 from app.storage.sqlite import SQLiteAnalysisStore
 from vinted_deal_hunter.config import Settings
 from vinted_deal_hunter.db import OfferRepository
-from vinted_deal_hunter.sources import OfferSource
+from vinted_deal_hunter.sources import MockOfferSource, OfferSource
 from vinted_deal_hunter.vinted_playwright import configured_vinted_source
 
 
@@ -29,6 +29,7 @@ class JobRuntime:
         context: AnalysisContextProvider | None = None,
     ) -> None:
         self.base_settings = settings
+        self.provided_source = source
         self.panel = AdminStore(settings.jobs_db_path)
         self.policy_revision, policy = self.panel.policy()
         if policy is not None:
@@ -70,6 +71,10 @@ class JobRuntime:
         if settings.deal.ai_review_required:
             processor = ReviewedDealPipeline(pipeline, self.reviewer)
         self.manager.cycle.settings = settings
+        if self.provided_source is None:
+            self.manager.cycle.source = (
+                configured_vinted_source(settings.vinted) or MockOfferSource()
+            )
         self.manager.cycle.pipeline = processor
         self.manager.cycle.notifications.pipeline = pipeline
         self.manager.reconfigure(settings.scheduler)

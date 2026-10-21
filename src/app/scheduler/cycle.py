@@ -13,7 +13,7 @@ from app.scheduler.store import CycleReport
 from app.schemas.deals import AnalysisRequest, CostBreakdown, DealSnapshot, DealState
 from vinted_deal_hunter.config import Settings
 from vinted_deal_hunter.db import Disposition, OfferRepository
-from vinted_deal_hunter.ingestion import import_offers
+from vinted_deal_hunter.ingestion import ImportReport, PartialImportError, import_offers
 from vinted_deal_hunter.models import OfferInput
 from vinted_deal_hunter.sources import MockOfferSource, OfferSource
 from vinted_deal_hunter.vinted import CollectionReport, VintedOfferSource
@@ -78,6 +78,18 @@ class DealCycle:
         self.progress: Callable[[CycleReport], None] = lambda _: None
 
     def process(self, report: CycleReport) -> CycleReport:
+        def import_progress(imported: ImportReport) -> None:
+            nonlocal report
+            report = report.model_copy(
+                update={
+                    "fetched": imported.total,
+                    "imported": imported.new,
+                    "skipped": imported.skipped,
+                    "import_errors": imported.errors,
+                }
+            )
+            self.progress(report)
+
         def collection_progress(collection: CollectionReport) -> None:
             nonlocal report
             reasons = Counter(page.reason for page in collection.pages if page.status == "excluded")
@@ -87,15 +99,49 @@ class DealCycle:
                     "fetched": sum(page.status == "collected" for page in collection.pages),
                     "excluded": sum(page.status == "excluded" for page in collection.pages),
                     "collection_errors": sum(page.status == "error" for page in collection.pages),
+                    "requests": collection.requests,
+                    "collection_end_reason": collection.end_reason,
                     "exclusion_reasons": {key: value for key, value in reasons.items() if key},
                 }
             )
             self.progress(report)
 
-        if isinstance(self.source, (VintedOfferSource, VintedPlaywrightOfferSource)):
-            self.source.progress = collection_progress
+        collector = (
+            self.source
+            if isinstance(self.source, (VintedOfferSource, VintedPlaywrightOfferSource))
+            else None
+        )
+        if collector is not None:
+            collector.progress = collection_progress
+            report = report.model_copy(
+                update={
+                    "max_requests": collector.config.max_requests,
+                    "max_pages": collector.config.max_pages,
+                }
+            )
         captured = CapturingRepository(self.repository)
-        imported = import_offers(self.source, captured, self.settings)
+        try:
+            imported = import_offers(self.source, captured, self.settings, progress=import_progress)
+        except PartialImportError as exc:
+            imported = exc.report
+            report = report.model_copy(
+                update={
+                    "collection_incomplete": True,
+                    "error_type": exc.original_error_type,
+                    "error_code": exc.code,
+                }
+            )
+            logger.warning(
+                "Collection interrupted id=%s error=%s code=%s imported=%d skipped=%d",
+                report.run_id,
+                exc.original_error_type,
+                exc.code or "unknown",
+                imported.new,
+                imported.skipped,
+            )
+        finally:
+            if collector is not None:
+                collection_progress(collector.report)
         report = report.model_copy(
             update={
                 "phase": "analyzing",

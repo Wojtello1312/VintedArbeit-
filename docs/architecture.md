@@ -33,6 +33,13 @@ Autoryzowane źródło → normalizacja → zapis obserwacji → filtry → dob�
 → wycena → zysk i ryzyko → ranking → opcjonalny reviewer AI → outbox → Telegram.
 API i dashboard udostępniają dane oraz uzasadnienia decyzji z bazy.
 
+Publiczne kolektory HTML udostępniają opcjonalny `StreamingOfferSource.iter_records`.
+Warstwa ingestion waliduje i zatwierdza każdy rekord przed kolejnym odczytem sieci.
+`PartialImportError` przenosi raport dotychczasowych zapisów; koordynator kończy
+analizę już zebranych ofert i zapisuje wynik `partial`. Adaptery CSV/JSON zachowują
+walidację całego dokumentu i zapis partii. Warstwa źródeł nie zna repozytorium
+ani schedulera. Ponowne pobranie opiera się na istniejącej deduplikacji w SQLite.
+
 Domyślny profil `demo` korzysta wyłącznie z lokalnych fixture, lokalnej bazy,
 wyłączonego AI i lokalnego odbiornika powiadomień. Wszystkie zasoby interfejsu
 muszą być dostępne lokalnie; dashboard nie wymaga CDN. Profil zewnętrzny wymaga

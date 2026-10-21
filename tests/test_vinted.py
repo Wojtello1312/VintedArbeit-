@@ -10,7 +10,7 @@ import pytest
 from vinted_deal_hunter import vinted_scraper
 from vinted_deal_hunter.config import Settings
 from vinted_deal_hunter.db import SQLiteOfferRepository
-from vinted_deal_hunter.ingestion import import_offers
+from vinted_deal_hunter.ingestion import PartialImportError, import_offers
 from vinted_deal_hunter.sources import SourceError
 from vinted_deal_hunter.vinted import (
     ORIGIN,
@@ -256,16 +256,18 @@ def test_bad_prices_missing_metadata_and_mismatched_products_are_reported(conten
     assert source.report.pages[0].status == "error"
 
 
-def test_challenge_stops_and_no_partial_import(settings, repository):
+def test_challenge_stops_and_preserves_previously_imported_offers(settings, repository):
     def handler(request):
         if request.url.path == "/items/456-demo":
             return response(request, content="<title>Just a moment...</title>")
         return response(request)
 
     source, calls, _ = source_for(handler, urls=[ITEM, f"{ORIGIN}/items/456-demo"])
-    with pytest.raises(CollectionStopped, match="challenge"):
+    with pytest.raises(PartialImportError) as caught:
         import_offers(source, repository, settings)
-    assert repository.list_offers() == []
+    assert caught.value.code == "challenge_requires_manual_review"
+    assert caught.value.report.new == 1 and not caught.value.report.completed
+    assert len(repository.list_offers()) == 1
     assert len(calls) == 3
 
 

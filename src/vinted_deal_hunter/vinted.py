@@ -3,7 +3,7 @@
 import logging
 import re
 import time
-from collections.abc import Callable, Sequence
+from collections.abc import Callable, Iterator, Sequence
 from datetime import UTC, datetime
 from html.parser import HTMLParser
 from typing import Literal
@@ -16,7 +16,12 @@ from pydantic import BaseModel, ConfigDict, Field, ValidationError
 from vinted_deal_hunter.collection_filters import CollectionFilters
 from vinted_deal_hunter.html_attributes import ItemAttributes
 from vinted_deal_hunter.models import OfferInput
-from vinted_deal_hunter.sources import SavedHTMLOfferSource, SourceError, _condition
+from vinted_deal_hunter.sources import (
+    SavedHTMLOfferSource,
+    SourceError,
+    SourceErrorCode,
+    _condition,
+)
 
 ORIGIN = "https://www.vinted.pl"
 USER_AGENT = "VintedDealHunterTest/0.1"
@@ -54,10 +59,18 @@ class CollectionReport(BaseModel):
     pages: list[PageResult] = Field(default_factory=list)
     truncated: bool = False
     stopped_reason: str | None = None
+    end_reason: Literal["page_limit", "record_limit", "queue_exhausted"] | None = None
 
 
 class CollectionStopped(SourceError):
     """Stop the whole run on access restrictions or exhausted request budgets."""
+
+    def __init__(self, message: str) -> None:
+        try:
+            code = SourceErrorCode(message)
+        except ValueError:
+            code = None
+        super().__init__(message, code=code)
 
 
 def challenge_detected(content: bytes, title: str = "") -> bool:
@@ -301,11 +314,14 @@ class VintedOfferSource:
         return parse_offer_html(body, url)
 
     def read(self, *, max_records: int) -> list[object]:
+        return list(self.iter_records(max_records=max_records))
+
+    def iter_records(self, *, max_records: int) -> Iterator[object]:
         if max_records < 1:
             raise SourceError("max_records must be positive")
         self.report = CollectionReport()
         self._interval = self.config.interval_seconds
-        records: list[object] = []
+        record_count = 0
         queue = list(self.urls)
         seen: set[str] = set()
         with httpx.Client(
@@ -320,9 +336,12 @@ class VintedOfferSource:
                 while queue:
                     if (
                         len(self.report.pages) >= self.config.max_pages
-                        or len(records) >= max_records
+                        or record_count >= max_records
                     ):
                         self.report.truncated = True
+                        self.report.end_reason = (
+                            "record_limit" if record_count >= max_records else "page_limit"
+                        )
                         break
                     url = queue.pop(0)
                     match = ITEM_PATH.fullmatch(urlsplit(url).path)
@@ -339,8 +358,6 @@ class VintedOfferSource:
                         if match:
                             offer = self._offer(body, url)
                             rejection = self.filters.rejection(offer) if self.filters else None
-                            if rejection is None:
-                                records.append(offer.model_dump(exclude={"source_name", "is_demo"}))
                             page = PageResult(
                                 url=url,
                                 status="excluded" if rejection else "collected",
@@ -375,9 +392,14 @@ class VintedOfferSource:
                         logger.warning("Vinted page could not be imported (page %d)", len(seen))
                     if self.progress is not None:
                         self.progress(self.report)
+                    result = self.report.pages[-1]
+                    if result.status == "collected" and result.offer is not None:
+                        record_count += 1
+                        yield result.offer.model_dump(exclude={"source_name", "is_demo"})
+                else:
+                    self.report.end_reason = "queue_exhausted"
             except CollectionStopped as exc:
                 self.report.stopped_reason = str(exc)
                 raise
             finally:
                 self.report.finished_at = datetime.now(UTC)
-        return records

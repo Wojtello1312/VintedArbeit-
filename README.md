@@ -40,6 +40,9 @@ ustawić frazę lub link katalogu, walutę, zakres cen, stan, kategorię, markę
 rozmiar, przeglądarkę i limit stron. Zapisane ustawienia działają także po
 restarcie. **Uruchom cykl** rozpoczyna pracę w tle; animacja i liczniki pokazują
 rzeczywisty postęp. Wymagany dodatek `browser` i zainstalowana przeglądarka.
+Oferty zapisują się na bieżąco. Przerwanie pobierania zachowuje wcześniejsze
+wyniki, a panel pokazuje częściowy przebieg i przyczynę zatrzymania. Limit stron
+obejmuje katalog i strony ofert; nie gwarantuje określonej liczby wyników.
 
 Lista domyślnie pokazuje **rzeczywiste oferty we wszystkich walutach**. Linki
 Vinted mają postać `https://www.vinted.pl/items/NUMEROFERTY`, także przed analizą.

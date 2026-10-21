@@ -6,6 +6,30 @@ from app.schemas.deals import DecisionReason
 from vinted_deal_hunter.sources import SourceErrorCode
 
 SOURCE_ERRORS = {
+    SourceErrorCode.REQUEST_LIMIT: (
+        "Osiągnięto limit żądań cyklu. Obejmuje on robots.txt, odczyty stron i ponowienia. "
+        "Sprawdź licznik żądań; limit stron jest niezależny."
+    ),
+    SourceErrorCode.ACCESS_RESTRICTED_401: "Odmowa dostępu (HTTP 401). Pobieranie zatrzymano.",
+    SourceErrorCode.ACCESS_RESTRICTED_403: "Odmowa dostępu (HTTP 403). Pobieranie zatrzymano.",
+    SourceErrorCode.ACCESS_RESTRICTED_429: (
+        "Źródło ograniczyło liczbę żądań (HTTP 429). Pobieranie zatrzymano; "
+        "nie ponawiaj od razu cyklu."
+    ),
+    SourceErrorCode.CHALLENGE: (
+        "Źródło wyświetliło CAPTCHA lub stronę blokady. Pobieranie zatrzymano."
+    ),
+    SourceErrorCode.REDIRECT: (
+        "Źródło przekierowało na inną stronę. Pobieranie zatrzymano; sprawdź adres katalogu."
+    ),
+    SourceErrorCode.ROBOTS_UNAVAILABLE: (
+        "Nie udało się odczytać robots.txt. Sprawdź połączenie z internetem i DNS."
+    ),
+    SourceErrorCode.ROBOTS_DISALLOWED: (
+        "Reguły robots.txt nie pozwalają odczytać tej strony. Pobieranie zatrzymano."
+    ),
+    SourceErrorCode.ROBOTS_INVALID: "Źródło zwróciło nieprawidłowy dokument robots.txt.",
+    SourceErrorCode.RETRY_AFTER: "Serwer zażądał przerwy (Retry-After). Pobieranie zatrzymano.",
     SourceErrorCode.PLAYWRIGHT_NOT_INSTALLED: (
         "Brak biblioteki Playwright. Zatrzymaj serwer, wykonaj "
         "uv sync --locked --extra browser i uruchom serwer ponownie z --extra browser."

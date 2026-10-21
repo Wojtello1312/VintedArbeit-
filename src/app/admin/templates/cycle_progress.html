@@ -6,7 +6,7 @@
         <p role="status" aria-live="polite" class="mt-1 text-sm text-slate-600">
           {% set run = status.last_run %}
           {% if status.running %}{{ {'collecting':'Odczytywanie katalogu i ofert', 'analyzing':'Zapisywanie i analiza ofert', 'notifying':'Kończenie cyklu'}.get(run.phase if run else '', 'Uruchamianie cyklu') }}
-          {% elif run %}{{ {'completed':'Zakończony', 'error':'Cykl zakończony błędem', 'interrupted':'Cykl został przerwany'}.get(run.status, 'Gotowy do uruchomienia') }}
+          {% elif run %}{{ {'completed':'Zakończony', 'partial':'Zakończony częściowo — zachowano zebrane oferty', 'error':'Cykl zakończony błędem', 'interrupted':'Cykl został przerwany'}.get(run.status, 'Gotowy do uruchomienia') }}
           {% else %}Gotowy do uruchomienia{% endif %}
         </p>
       </div>
@@ -20,8 +20,11 @@
     <div><dt class="text-slate-500">{{ label }}</dt><dd class="mt-1 text-xl font-semibold">{{ value }}</dd></div>
     {% endfor %}
   </dl>
+  {% if run.max_pages %}<p class="text-sm text-slate-600">Strony: {{ run.pages }} / {{ run.max_pages }} · Żądania: {{ run.requests }} / {{ run.max_requests }} (z robots.txt i ponowieniami).</p>{% endif %}
+  {% if run.collection_end_reason %}<p class="text-sm text-slate-600">{{ {'page_limit':'Osiągnięto ustawiony limit stron.', 'record_limit':'Osiągnięto limit importowanych rekordów.', 'queue_exhausted':'Sprawdzono wszystkie dostępne linki z pobranego katalogu. Limit stron określa maksimum, a nie gwarantowaną liczbę wyników.'}.get(run.collection_end_reason, '') }}</p>{% endif %}
   {% if run.exclusion_reasons %}<details class="text-sm"><summary class="cursor-pointer">Dlaczego pominięto oferty?</summary><ul class="mt-2 space-y-1">{% for reason,count in run.exclusion_reasons.items() %}<li>{{ {'currency_mismatch':'Inna waluta','price_below_minimum':'Cena poniżej minimum','price_above_maximum':'Cena powyżej maksimum','condition_unknown_or_mismatch':'Stan nieznany lub niezgodny','category_unknown_or_mismatch':'Kategoria nieznana lub niezgodna','brand_unknown_or_mismatch':'Marka nieznana lub niezgodna','size_unknown_or_mismatch':'Rozmiar nieznany lub niezgodny'}.get(reason,reason) }}: {{ count }}</li>{% endfor %}</ul></details>{% endif %}
   {% if run.error_type %}<p class="error" role="alert">Nie udało się ukończyć cyklu: {{ run.error_type }}{% if run.error_code %} ({{ run.error_code.value }}){% endif %}. {{ source_error_text(run.error_code) }}</p>{% endif %}
+  {% if run.collection_incomplete %}<p class="notice">Zachowano wcześniej zapisane oferty. Nowe: {{ run.imported }}, pominięte jako duplikaty lub usunięte: {{ run.skipped }}. Lista ofert jest dostępna niezależnie od ukończenia dalszej analizy.</p>{% endif %}
   {% endif %}
   <div class="flex flex-wrap gap-3">
     <form method="post" action="/admin/jobs/run" hx-post="/admin/jobs/run" hx-target="#cycle-progress" hx-swap="outerHTML" hx-disabled-elt="find button">

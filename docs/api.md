@@ -95,11 +95,20 @@ Poniższe endpointy wymagają sesji administratora; POST wymaga formularza
 
 `POST /jobs/run` REST nadal czeka na zakończenie i zwraca raport JSON.
 Pole `error_code` raportu (również w `GET /jobs/status` → `last_run`) zawiera
-bezpieczny kod awarii uruchomienia przeglądarki lub `null`, gdy szczegółowa
+bezpieczny kod awarii uruchomienia przeglądarki, limitu żądań lub blokady źródła,
+albo `null`, gdy szczegółowa
 przyczyna nie jest dostępna. Nie zawiera surowej treści wyjątku. Kody i instrukcje
 naprawy opisano w [dokumentacji panelu](admin.md#cykl-pobierania-i-zarządzanie-ofertami).
 Raport zawiera dodatkowo `phase`, `pages`, `excluded`, `collection_errors`
 i `exclusion_reasons`. Liczniki trwającego cyklu są utrwalane w bazie jobów.
+`requests`, `max_requests` i `max_pages` opisują wykorzystanie limitów kolektora.
+`collection_end_reason` to `page_limit`, `record_limit`, `queue_exhausted` lub `null`.
+Po przerwaniu źródła z wcześniej odebranymi rekordami raport ma
+`collection_incomplete=true`, zachowuje przyczynę, a cykl analizuje już zebrane
+oferty i kończy się `status=partial`, `phase=partial`. Oferty są zapisywane na
+bieżąco; odczyt `/offers` pokazuje je przed końcem cyklu. Powtórzenie tego samego
+`run_id` zwraca również zapisany wynik częściowy. Nowy identyfikator uruchamia
+nowy cykl z deduplikacją. `totals.failed_cycles` obejmuje też przebiegi `partial`.
 Panel domyślnie wybiera `mode=production`, `currency=all`; API REST zachowuje
 wcześniejsze wartości domyślne. `currency=all` grupuje sortowanie cen po walucie;
 filtry kwotowe wymagają konkretnej waluty.

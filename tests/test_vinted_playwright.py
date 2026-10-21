@@ -12,6 +12,7 @@ import pytest
 from app.scheduler.runtime import JobRuntime
 from vinted_deal_hunter import vinted_scraper
 from vinted_deal_hunter.config import Settings
+from vinted_deal_hunter.db import SQLiteOfferRepository
 from vinted_deal_hunter.ingestion import import_offers
 from vinted_deal_hunter.sources import SourceError, SourceErrorCode
 from vinted_deal_hunter.vinted import ORIGIN, CollectionStopped, VintedOfferSource, search_url
@@ -326,6 +327,54 @@ def test_playwright_cli_is_default_and_emits_engine_report(tmp_path, capsys, mon
     assert result == 0
     assert payload["collection"]["engine"] == "playwright"
     assert payload["import"]["new"] == 1
+
+
+@pytest.mark.parametrize("explicit_budget", [None, 62])
+def test_cli_100_pages_uses_matching_request_budget_and_reports_preserved_partial_import(
+    tmp_path, capsys, monkeypatch, explicit_budget
+):
+    catalog = search_url("synthetic")
+    urls = [f"{ORIGIN}/items/{i}-synthetic" for i in range(1001, 1111)]
+    calls = []
+
+    def offline(seeds, config):
+        documents = {catalog: [document(catalog, links=tuple(urls))]}
+        documents.update(
+            {url: [document(url, html=item_html(str(i)))] for i, url in enumerate(urls, start=1001)}
+        )
+        browser = FakeBrowser(documents)
+        calls.append(browser)
+        return VintedPlaywrightOfferSource(
+            seeds,
+            config,
+            robots_transport=robots_transport(),
+            session_factory=lambda _: browser,
+            sleep=lambda _: None,
+        )
+
+    monkeypatch.setattr(vinted_scraper, "VintedPlaywrightOfferSource", offline)
+    path = tmp_path / "offers.sqlite3"
+    args = ["--search", "synthetic", "--max-pages", "100", "--db", str(path)]
+    if explicit_budget is not None:
+        args.extend(["--max-requests", str(explicit_budget)])
+    result = vinted_scraper.main(args)
+    payload = json.loads(capsys.readouterr().out)
+    expected = 99 if explicit_budget is None else 60
+    assert result == (0 if explicit_budget is None else 2)
+    assert payload["import"]["new"] == expected
+    assert payload["import"]["completed"] == (explicit_budget is None)
+    if explicit_budget is not None:
+        assert payload["error"] == "collection_interrupted"
+        assert payload["error_code"] == "request_limit"
+    reopened = SQLiteOfferRepository(path)
+    try:
+        assert len(reopened.list_offers()) == expected
+    finally:
+        reopened.close()
+    assert all(browser.closed for browser in calls)
+    assert vinted_scraper.main(args) == result
+    repeated = json.loads(capsys.readouterr().out)
+    assert repeated["import"]["new"] == 0 and repeated["import"]["skipped"] == expected
 
 
 def test_cli_uses_browser_response_limit_independent_of_import_file_limit(

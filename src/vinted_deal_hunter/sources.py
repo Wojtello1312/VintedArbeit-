@@ -5,12 +5,13 @@ import io
 import json
 import re
 from abc import ABC, abstractmethod
+from collections.abc import Iterator
 from decimal import Decimal
 from enum import StrEnum
 from html.parser import HTMLParser
 from importlib.resources import files
 from pathlib import Path
-from typing import Protocol
+from typing import Protocol, runtime_checkable
 from urllib.parse import urlparse
 
 
@@ -20,6 +21,16 @@ class SourceErrorCode(StrEnum):
     BROWSER_NOT_INSTALLED = "browser_not_installed"
     BROWSER_START_FAILED = "browser_start_failed"
     BROWSER_SUBPROCESS_UNSUPPORTED = "browser_subprocess_unsupported"
+    REQUEST_LIMIT = "request_limit"
+    ACCESS_RESTRICTED_401 = "access_restricted_http_401"
+    ACCESS_RESTRICTED_403 = "access_restricted_http_403"
+    ACCESS_RESTRICTED_429 = "access_restricted_http_429"
+    CHALLENGE = "challenge_requires_manual_review"
+    REDIRECT = "redirect_requires_manual_review"
+    ROBOTS_UNAVAILABLE = "robots_unavailable"
+    ROBOTS_DISALLOWED = "robots_disallowed"
+    ROBOTS_INVALID = "unrecognized_robots_document"
+    RETRY_AFTER = "server_requested_retry_after"
 
 
 class SourceError(ValueError):
@@ -38,6 +49,13 @@ class OfferSource(Protocol):
     def is_demo(self) -> bool: ...
 
     def read(self, *, max_records: int) -> list[object]: ...
+
+
+@runtime_checkable
+class StreamingOfferSource(OfferSource, Protocol):
+    """Yield independent records that can be committed before the next network request."""
+
+    def iter_records(self, *, max_records: int) -> Iterator[object]: ...
 
 
 class AuthorizedOfferSource(ABC):

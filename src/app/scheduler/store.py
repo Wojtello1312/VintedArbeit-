@@ -2,7 +2,7 @@
 
 from datetime import datetime
 from pathlib import Path
-from typing import TextIO
+from typing import Literal, TextIO
 
 import portalocker
 from pydantic import Field
@@ -34,6 +34,11 @@ class CycleReport(FrozenSchema):
     pages: int = 0
     excluded: int = 0
     collection_errors: int = 0
+    collection_incomplete: bool = False
+    collection_end_reason: Literal["page_limit", "record_limit", "queue_exhausted"] | None = None
+    requests: int = 0
+    max_requests: int | None = None
+    max_pages: int | None = None
     exclusion_reasons: dict[str, int] = Field(default_factory=dict)
 
 
@@ -117,5 +122,7 @@ class JobStore(OperationsStore):
         return {
             "cycles": len(reports),
             "processed": sum(row.processed for row in reports),
-            "failed_cycles": sum(row.status in {"error", "interrupted"} for row in reports),
+            "failed_cycles": sum(
+                row.status in {"error", "interrupted", "partial"} for row in reports
+            ),
         }

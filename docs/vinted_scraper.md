@@ -72,8 +72,19 @@ całego przebiegu. `import` podaje `new`, `skipped`, `errors` oraz powody pomini
 
 Kody wyjścia: 0 — import bez błędów (może być ucięty przez jawny limit),
 1 — częściowe błędy stron/rekordów, 2 — przerwany przebieg lub błąd konfiguracji/DB.
-Przy przerwaniu pobierania nie są zapisywane nawet wcześniej zebrane oferty;
-`import=null`. Raport zbierania może zawierać ich dane do diagnostyki.
+Każda poprawna, pasująca oferta jest zapisywana przed pobraniem kolejnej strony.
+Przerwanie po zebraniu rekordów zachowuje wcześniejsze zapisy; CLI zwraca kod 2,
+`import.completed=false`, liczniki importu i `error=collection_interrupted`.
+`error_code` podaje bezpieczną przyczynę, np. `request_limit`,
+`access_restricted_http_429` lub `challenge_requires_manual_review`.
+Przy awarii przed pierwszym rekordem `import=null`. Po awarii bazy lub procesu
+wcześniejsze zatwierdzone transakcje również pozostają w bazie, choć raport może
+być niepełny. Kolejny cykl deduplikuje dane według źródła i ID; nie usuwaj bazy.
+Źródła plikowe CSV/JSON nadal weryfikują cały dokument przed zapisem partii.
+
+Limit 100 stron obejmuje katalog i strony ogłoszeń, nie 100 stron katalogu.
+Nie gwarantuje też 100 wyników. `collection.end_reason` rozróżnia `page_limit`,
+`record_limit` oraz `queue_exhausted` (wyczerpane linki z pobranego katalogu).
 Pole `collection.engine` wskazuje `playwright` albo `http`. W trybie Playwright
 `collection.requests` liczy robots.txt i nawigacje głównego dokumentu; zasoby
 strony nie są osobnymi pozycjami raportu.
@@ -110,9 +121,14 @@ Zniknięcie oferty, 404 i oznaczenie niedostępności nigdy nie tworzą ceny SOL
 - Robots.txt jest pobierany na początku przebiegu. Brak możliwości jego odczytu
   zatrzymuje przebieg. Uwzględniane są Allow/Disallow, wildcard `*`, końcowe `$`,
   Crawl-delay i Request-rate. Robots.txt nie jest zgodą prawną na przetwarzanie.
-- Domyślnie: 10 stron, 25 żądań łącznie z robots/retry, 5 sekund odstępu,
+- Domyślnie: 10 stron, 5 sekund odstępu,
   timeout HTTP 15 sekund na operację, maksymalnie 10 MB rozpakowanej odpowiedzi.
   Ustawienia CLI: `--max-pages`, `--max-requests`, `--interval`, `--timeout`.
+  CLI bez jawnego `--max-requests` dobiera budżet do liczby stron i retry:
+  domyślnie 21 żądań dla 10 stron, 201 dla 100. Jawny limit jest respektowany;
+  wspólna górna granica to 250. Panel także dopasowuje budżet do liczby stron.
+  Bezpośrednia konfiguracja `VintedScrapeConfig` zachowuje domyślne 25 żądań.
+  Wysoka liczba retry może wyczerpać budżet przed limitem stron.
   Limit wyrenderowanej treści jest niezależny od limitu plików importu. Domyślnie
   wynosi 10 MB i można go zmniejszyć opcją `--max-response-bytes` (maks. 10 MB).
 - `VintedScrapeConfig` pozwala też ustawić `retries` (domyślnie 1, maks. 3)

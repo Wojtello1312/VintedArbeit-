@@ -183,7 +183,22 @@ pominięcia przez filtry, analizy i błędy. Animacja nie udaje procentu ukończ
 bo liczba dostępnych ofert nie jest znana z góry. Przy preferencji ograniczenia
 ruchu animacje są wyłączone. POST nie wymaga czekania na cały import, a zamknięcie
 strony nie przerywa cyklu. Ręczne odświeżenie działa również bez JavaScriptu.
-Po zakończeniu można otworzyć listę ofert. Dane w otwartej tabeli wymagają odświeżenia.
+Listę ofert można otworzyć już podczas pobierania: każda poprawna, pasująca oferta
+jest zatwierdzana w bazie przed odczytem następnej strony. Dane w otwartej tabeli
+wymagają odświeżenia. Po przerwaniu źródła cykl analizuje wcześniej zebrane oferty
+i kończy się jako **Zakończony częściowo** (`partial`), z zachowanymi licznikami.
+Błąd przed pierwszym rekordem nadal daje `error`. Awaria procesu lub bazy również
+nie usuwa wcześniejszych zatwierdzonych ofert; kolejny cykl deduplikuje dane.
+Nie odzyskamy w ten sposób ofert utraconych przez starszą wersję przed zapisem.
+
+Panel pokazuje osobno wykorzystane strony i żądania (robots.txt i retry).
+Limit 100 stron oznacza np. jeden katalog i maksymalnie 99 stron ofert. Katalog
+może udostępnić mniej linków: wtedy komunikat o wyczerpaniu linków oznacza normalne
+zakończenie, a nie awarię. Kody `request_limit`, `access_restricted_http_403`,
+`access_restricted_http_429` i `challenge_requires_manual_review` odróżniają
+limit aplikacji od odmowy dostępu po stronie źródła. Nie ponawiamy pobierania po
+takiej odmowie w tym samym cyklu. Nowy cykl zaczyna od katalogu i deduplikuje
+oferty, nie kontynuuje starej sesji przeglądarki od zapisanej pozycji.
 
 Konfiguracja źródła zapisuje się razem z wersjonowaną polityką panelu i ma
 pierwszeństwo przed `VDH_VINTED`. Zmiana podczas cyklu lub zapis starego formularza

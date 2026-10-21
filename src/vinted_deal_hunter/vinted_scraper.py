@@ -12,7 +12,7 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from vinted_deal_hunter.config import Settings
 from vinted_deal_hunter.db import SQLiteOfferRepository
-from vinted_deal_hunter.ingestion import import_offers
+from vinted_deal_hunter.ingestion import PartialImportError, import_offers
 from vinted_deal_hunter.sources import SourceError
 from vinted_deal_hunter.vinted import VintedOfferSource, VintedScrapeConfig, search_url
 from vinted_deal_hunter.vinted_playwright import (
@@ -29,7 +29,11 @@ def main(argv: Sequence[str] | None = None) -> int:
     seeds.add_argument("--url", action="append", help="Public item/catalog URL; may be repeated")
     seeds.add_argument("--search", help="Query for the public catalog HTML")
     parser.add_argument("--max-pages", type=int, default=10)
-    parser.add_argument("--max-requests", type=int, default=25)
+    parser.add_argument(
+        "--max-requests",
+        type=int,
+        help="Request budget including robots and retries (default: derived from --max-pages)",
+    )
     parser.add_argument("--interval", type=float, default=5)
     parser.add_argument("--timeout", type=float, default=15)
     parser.add_argument(
@@ -59,7 +63,11 @@ def main(argv: Sequence[str] | None = None) -> int:
         urls = [search_url(args.search)] if args.search else args.url
         common = {
             "max_pages": args.max_pages,
-            "max_requests": args.max_requests,
+            "max_requests": (
+                args.max_requests
+                if args.max_requests is not None
+                else min(250, 1 + args.max_pages * (VintedScrapeConfig().retries + 1))
+            ),
             "interval_seconds": args.interval,
             "timeout_seconds": args.timeout,
             "max_response_bytes": args.max_response_bytes,
@@ -98,6 +106,26 @@ def main(argv: Sequence[str] | None = None) -> int:
             )
         )
         return 1 if imported.errors or any(p.status == "error" for p in source.report.pages) else 0
+    except PartialImportError as exc:
+        logging.error(
+            "Collection interrupted code=%s; preserved new=%d skipped=%d",
+            exc.code or "unknown",
+            exc.report.new,
+            exc.report.skipped,
+        )
+        print(
+            json.dumps(
+                {
+                    "collection": source.report.model_dump(mode="json") if source else None,
+                    "import": exc.report.model_dump(mode="json"),
+                    "error": "collection_interrupted",
+                    "error_code": exc.code,
+                },
+                ensure_ascii=False,
+                indent=2,
+            )
+        )
+        return 2
     except (
         SourceError,
         ValidationError,

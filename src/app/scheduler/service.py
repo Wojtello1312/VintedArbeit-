@@ -149,8 +149,9 @@ class JobManager:
             )
             alerts = dict(report.alerts)
             alerts.update({f"delivery_{key}": value for key, value in deliveries.items()})
+            outcome = "partial" if report.collection_incomplete else "completed"
             report = report.model_copy(
-                update={"status": "completed", "phase": "completed", "alerts": alerts}
+                update={"status": outcome, "phase": outcome, "alerts": alerts}
             )
         except Exception as exc:
             error_code = exc.code if isinstance(exc, SourceError) else None

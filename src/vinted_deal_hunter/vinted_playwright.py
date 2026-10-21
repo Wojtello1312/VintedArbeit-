@@ -5,7 +5,7 @@ from __future__ import annotations
 import importlib
 import logging
 import time
-from collections.abc import Callable, Sequence
+from collections.abc import Callable, Iterator, Sequence
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from pathlib import Path
@@ -347,11 +347,14 @@ class VintedPlaywrightOfferSource:
         raise AssertionError("Unreachable browser navigation attempt")
 
     def read(self, *, max_records: int) -> list[object]:
+        return list(self.iter_records(max_records=max_records))
+
+    def iter_records(self, *, max_records: int) -> Iterator[object]:
         if max_records < 1:
             raise SourceError("max_records must be positive")
         self.report = CollectionReport(engine="playwright")
         self._interval = self.config.interval_seconds
-        records: list[object] = []
+        record_count = 0
         queue = list(self.urls)
         seen: set[str] = set()
         try:
@@ -363,9 +366,12 @@ class VintedPlaywrightOfferSource:
                 while queue:
                     if (
                         len(self.report.pages) >= self.config.max_pages
-                        or len(records) >= max_records
+                        or record_count >= max_records
                     ):
                         self.report.truncated = True
+                        self.report.end_reason = (
+                            "record_limit" if record_count >= max_records else "page_limit"
+                        )
                         break
                     url = queue.pop(0)
                     match = ITEM_PATH.fullmatch(urlsplit(url).path)
@@ -380,8 +386,6 @@ class VintedPlaywrightOfferSource:
                         if match:
                             offer = parse_offer_html(document.html, url)
                             rejection = self.filters.rejection(offer) if self.filters else None
-                            if rejection is None:
-                                records.append(offer.model_dump(exclude={"source_name", "is_demo"}))
                             page = PageResult(
                                 url=url,
                                 status="excluded" if rejection else "collected",
@@ -423,12 +427,17 @@ class VintedPlaywrightOfferSource:
                         )
                     if self.progress is not None:
                         self.progress(self.report)
+                    result = self.report.pages[-1]
+                    if result.status == "collected" and result.offer is not None:
+                        record_count += 1
+                        yield result.offer.model_dump(exclude={"source_name", "is_demo"})
+                else:
+                    self.report.end_reason = "queue_exhausted"
         except CollectionStopped as exc:
             self.report.stopped_reason = str(exc)
             raise
         finally:
             self.report.finished_at = datetime.now(UTC)
-        return records
 
 
 def configured_vinted_source(

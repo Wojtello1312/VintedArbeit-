@@ -94,6 +94,10 @@ Poniższe endpointy wymagają sesji administratora; POST wymaga formularza
 | `POST /admin/offers/demo/delete` | Usunięcie lokalnych ofert demo, z zachowaniem pozostałych danych. |
 
 `POST /jobs/run` REST nadal czeka na zakończenie i zwraca raport JSON.
+Pole `error_code` raportu (również w `GET /jobs/status` → `last_run`) zawiera
+bezpieczny kod awarii uruchomienia przeglądarki lub `null`, gdy szczegółowa
+przyczyna nie jest dostępna. Nie zawiera surowej treści wyjątku. Kody i instrukcje
+naprawy opisano w [dokumentacji panelu](admin.md#cykl-pobierania-i-zarządzanie-ofertami).
 Raport zawiera dodatkowo `phase`, `pages`, `excluded`, `collection_errors`
 i `exclusion_reasons`. Liczniki trwającego cyklu są utrwalane w bazie jobów.
 Panel domyślnie wybiera `mode=production`, `currency=all`; API REST zachowuje

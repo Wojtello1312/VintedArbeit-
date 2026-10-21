@@ -4,18 +4,21 @@ import json
 from datetime import UTC, datetime
 from decimal import Decimal
 from threading import Event
+from unittest.mock import Mock
 
 import pytest
 from fastapi.testclient import TestClient
 
 from app.admin.queries import AdminQueries, OfferFilters, offer_key
 from app.notifications.formatting import AlertMessage
+from app.scheduler.store import JobStore
 from tests.admin.helpers import csrf, login
 from tests.admin.test_settings import payload
 from tests.test_vinted_playwright import FakeBrowser, document, item_html, robots_transport
 from vinted_deal_hunter.api import create_app
 from vinted_deal_hunter.db import Disposition
 from vinted_deal_hunter.models import OfferInput
+from vinted_deal_hunter.sources import SourceError, SourceErrorCode
 from vinted_deal_hunter.vinted import ORIGIN
 from vinted_deal_hunter.vinted_playwright import VintedPlaywrightOfferSource
 
@@ -196,6 +199,47 @@ def test_collection_and_progress_require_session_and_csrf(client, signed_in):
 
 async def wait_for_task(manager):
     return await manager._task
+
+
+@pytest.mark.parametrize(
+    ("code", "hint"),
+    [
+        (SourceErrorCode.CHROMIUM_NOT_INSTALLED, "Brak przeglądarki Chromium"),
+        (SourceErrorCode.BROWSER_NOT_INSTALLED, "Nie znaleziono wybranej przeglądarki"),
+        (SourceErrorCode.PLAYWRIGHT_NOT_INSTALLED, "uv sync --locked --extra browser"),
+        (SourceErrorCode.BROWSER_START_FAILED, "Nie udało się uruchomić przeglądarki"),
+        (SourceErrorCode.BROWSER_SUBPROCESS_UNSUPPORTED, "Proactor"),
+        (None, "Ten cykl nie zawiera szczegółowego kodu przyczyny"),
+    ],
+)
+def test_source_failure_diagnosis_in_progress_api_history_and_logs(
+    signed_in, settings, caplog, code, hint
+):
+    assert signed_in.post("/admin/collection", data=collection_form(signed_in)).status_code == 200
+    manager = signed_in.app.state.runtime.manager
+    source = manager.cycle.source
+    source.robots_transport = robots_transport()
+    source.session_factory = Mock(side_effect=SourceError("private driver credentials", code=code))
+    token = csrf(signed_in.get("/admin/system"))
+    response = signed_in.post(
+        "/admin/jobs/run", data={"csrf": token}, headers={"HX-Request": "true"}
+    )
+    assert response.status_code == 202
+    report = signed_in.portal.call(wait_for_task, manager)
+    assert report.status == "error" and report.error_code == code
+    assert JobStore(settings.jobs_db_path).latest().error_code == code
+    progress = signed_in.get("/admin/jobs/progress")
+    system = signed_in.get("/admin/system")
+    assert hint in progress.text and hint in system.text
+    headers = {"Authorization": "Bearer " + settings.jobs_api_token.get_secret_value()}
+    status = signed_in.get("/jobs/status", headers=headers)
+    assert status.json()["last_run"]["error_code"] == code
+    assert not status.json()["running"]
+    assert "code=" + (code or "unknown") in caplog.text
+    assert (
+        "private driver credentials" not in progress.text + system.text + status.text + caplog.text
+    )
+    source.session_factory.assert_called_once()
 
 
 def test_background_cycle_progress_lock_filters_import_and_dashboard(

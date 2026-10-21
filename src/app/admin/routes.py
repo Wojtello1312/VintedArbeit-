@@ -16,7 +16,7 @@ from starlette.responses import Response
 from app.admin.collection import CollectionPolicy
 from app.admin.password import verify_password
 from app.admin.policy import PanelPolicy
-from app.admin.presentation import reason_text, utc_display
+from app.admin.presentation import reason_text, source_error_text, utc_display
 from app.admin.queries import AdminQueries, OfferFilters, OfferView
 from app.admin.security import (
     LOGIN_COOKIE,
@@ -78,6 +78,7 @@ TEMPLATES.env.globals.update(
     risks=RISK_LABELS,
     labels=FEEDBACK_LABELS,
     reason_text=reason_text,
+    source_error_text=source_error_text,
     conditions=CONDITION_LABELS,
 )
 TEMPLATES.env.filters["utc_display"] = utc_display

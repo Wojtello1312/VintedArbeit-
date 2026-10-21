@@ -17,7 +17,7 @@ import httpx
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 from vinted_deal_hunter.collection_filters import CollectionFilters
-from vinted_deal_hunter.sources import SourceError
+from vinted_deal_hunter.sources import SourceError, SourceErrorCode
 from vinted_deal_hunter.vinted import (
     ITEM_PATH,
     ORIGIN,
@@ -115,7 +115,8 @@ class _PlaywrightBrowserSession:
             api: Any = importlib.import_module("playwright.sync_api")
         except ImportError as exc:
             raise SourceError(
-                "playwright_not_installed: run uv sync --locked --extra browser"
+                "playwright_not_installed: run uv sync --locked --extra browser",
+                code=SourceErrorCode.PLAYWRIGHT_NOT_INSTALLED,
             ) from exc
         try:
             self._manager: Any = api.sync_playwright().start()
@@ -137,13 +138,27 @@ class _PlaywrightBrowserSession:
         except Exception as exc:
             manager = getattr(self, "_manager", None)
             if manager is not None:
-                manager.stop()
-            hint = (
-                "run uv run --extra browser playwright install chromium"
-                if config.browser_channel == "chromium" and config.browser_executable is None
-                else f"install or select browser channel {config.browser_channel}"
-            )
-            raise SourceError(f"browser_unavailable: {hint}") from exc
+                try:
+                    manager.stop()
+                except Exception:
+                    # Cleanup must not replace the original startup diagnosis.
+                    logger.warning("Playwright cleanup failed after browser startup error")
+            code = SourceErrorCode.BROWSER_START_FAILED
+            hint = "check the selected browser and its installation"
+            # Inspect locally; never expose browser stderr, paths or exception chains.
+            detail = str(exc).casefold()
+            if isinstance(exc, NotImplementedError):
+                code = SourceErrorCode.BROWSER_SUBPROCESS_UNSUPPORTED
+                hint = "use a Python event loop with subprocess support"
+            elif "executable doesn't exist" in detail or (
+                "distribution" in detail and "not found" in detail
+            ):
+                code = SourceErrorCode.BROWSER_NOT_INSTALLED
+                hint = "install or select an installed browser"
+                if config.browser_channel == "chromium" and config.browser_executable is None:
+                    code = SourceErrorCode.CHROMIUM_NOT_INSTALLED
+                    hint = "run uv run --frozen --extra browser playwright install chromium"
+            raise SourceError(f"{code}: {hint}", code=code) from exc
 
     @staticmethod
     def _route(route: Any, request: Any) -> None:

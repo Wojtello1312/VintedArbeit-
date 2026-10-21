@@ -3,6 +3,40 @@
 from datetime import UTC, datetime
 
 from app.schemas.deals import DecisionReason
+from vinted_deal_hunter.sources import SourceErrorCode
+
+SOURCE_ERRORS = {
+    SourceErrorCode.PLAYWRIGHT_NOT_INSTALLED: (
+        "Brak biblioteki Playwright. Zatrzymaj serwer, wykonaj "
+        "uv sync --locked --extra browser i uruchom serwer ponownie z --extra browser."
+    ),
+    SourceErrorCode.CHROMIUM_NOT_INSTALLED: (
+        "Brak przeglądarki Chromium wymaganej przez Playwright. "
+        "Wybierz zainstalowany Microsoft Edge w konfiguracji pobierania i zapisz warunki. "
+        "Możesz też zainstalować Chromium poleceniem: "
+        "uv run --frozen --extra browser playwright install chromium."
+    ),
+    SourceErrorCode.BROWSER_NOT_INSTALLED: (
+        "Nie znaleziono wybranej przeglądarki. Zainstaluj ją lub wybierz "
+        "zainstalowaną przeglądarkę w konfiguracji pobierania i zapisz warunki."
+    ),
+    SourceErrorCode.BROWSER_START_FAILED: (
+        "Nie udało się uruchomić przeglądarki. Sprawdź jej instalację, "
+        "wybór w konfiguracji pobierania i uprawnienia do uruchamiania programów."
+    ),
+    SourceErrorCode.BROWSER_SUBPROCESS_UNSUPPORTED: (
+        "Środowisko Python nie pozwala Playwright uruchomić procesu przeglądarki. "
+        "Na Windows uruchom aplikację w zwykłym terminalu PowerShell; "
+        "pętla asyncio używana przez Playwright musi obsługiwać podprocesy (Proactor)."
+    ),
+}
+
+
+def source_error_text(code: SourceErrorCode | None) -> str:
+    if code is not None:
+        return SOURCE_ERRORS[code]
+    return "Sprawdź konfigurację źródła. Ten cykl nie zawiera szczegółowego kodu przyczyny."
+
 
 REASONS = {
     "policy_passed": "Spełniono wszystkie deterministyczne kryteria kwalifikacji.",

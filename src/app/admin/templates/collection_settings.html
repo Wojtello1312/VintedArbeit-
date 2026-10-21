@@ -18,6 +18,7 @@
       <label>Limit stron na cykl<input required name="max_pages" type="number" min="1" max="100" value="{{ collection.max_pages }}"></label>
       <label>Przeglądarka<select name="browser_channel">{% for value,label in [('msedge','Microsoft Edge'),('chromium','Chromium'),('chrome','Google Chrome')] %}<option value="{{ value }}" {% if collection.browser_channel == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></label>
     </div>
+    <p class="text-sm text-slate-500">Microsoft Edge i Google Chrome muszą być zainstalowane na komputerze uruchamiającym serwer. Chromium wymaga osobnej instalacji: <code>uv run --frozen --extra browser playwright install chromium</code>.</p>
     <p class="text-sm text-slate-500">Wypełnij frazę albo link katalogu. Link pozwala wybrać kategorię bezpośrednio na Vinted. Warunki poniżej są ponownie sprawdzane na odczytanych ofertach: brak stanu, kategorii lub rozmiaru nie spełnia ustawionego filtra. Wyłączone źródło oznacza tryb demo.</p>
     <button id="save-collection" class="button" type="submit" {% if status.running %}disabled{% endif %}>Zapisz warunki pobierania</button>
     <a class="link ml-3 text-sm" href="/admin/settings">Ustaw częstotliwość cykli</a>

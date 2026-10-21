@@ -9,6 +9,7 @@ from pydantic import Field
 
 from app.schemas.pricing import FrozenSchema
 from app.storage.operations import OperationsStore, timestamp
+from vinted_deal_hunter.sources import SourceErrorCode
 
 
 class CycleReport(FrozenSchema):
@@ -28,6 +29,7 @@ class CycleReport(FrozenSchema):
     states: dict[str, int] = Field(default_factory=dict)
     alerts: dict[str, int] = Field(default_factory=dict)
     error_type: str | None = None
+    error_code: SourceErrorCode | None = None
     phase: str = "collecting"
     pages: int = 0
     excluded: int = 0

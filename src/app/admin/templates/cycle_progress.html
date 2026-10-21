@@ -21,7 +21,7 @@
     {% endfor %}
   </dl>
   {% if run.exclusion_reasons %}<details class="text-sm"><summary class="cursor-pointer">Dlaczego pominięto oferty?</summary><ul class="mt-2 space-y-1">{% for reason,count in run.exclusion_reasons.items() %}<li>{{ {'currency_mismatch':'Inna waluta','price_below_minimum':'Cena poniżej minimum','price_above_maximum':'Cena powyżej maksimum','condition_unknown_or_mismatch':'Stan nieznany lub niezgodny','category_unknown_or_mismatch':'Kategoria nieznana lub niezgodna','brand_unknown_or_mismatch':'Marka nieznana lub niezgodna','size_unknown_or_mismatch':'Rozmiar nieznany lub niezgodny'}.get(reason,reason) }}: {{ count }}</li>{% endfor %}</ul></details>{% endif %}
-  {% if run.error_type %}<p class="error">Nie udało się ukończyć cyklu: {{ run.error_type }}. Sprawdź log aplikacji i konfigurację źródła.</p>{% endif %}
+  {% if run.error_type %}<p class="error" role="alert">Nie udało się ukończyć cyklu: {{ run.error_type }}{% if run.error_code %} ({{ run.error_code.value }}){% endif %}. {{ source_error_text(run.error_code) }}</p>{% endif %}
   {% endif %}
   <div class="flex flex-wrap gap-3">
     <form method="post" action="/admin/jobs/run" hx-post="/admin/jobs/run" hx-target="#cycle-progress" hx-swap="outerHTML" hx-disabled-elt="find button">

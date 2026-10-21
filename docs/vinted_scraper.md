@@ -190,3 +190,9 @@ filtrowania. Zapis panelu ma pierwszeństwo przed konfiguracją środowiska.
 Warunki dotyczą cykli aplikacji; osobny CLI nadal używa własnych argumentów.
 Pominięta oferta ma w raporcie strony `status=excluded` i kod przyczyny.
 Link do ogłoszenia w panelu jest dostępny również dla wcześniej pobranych ofert.
+
+Jeżeli panel zgłasza `SourceError` przy starcie, sprawdź wybraną przeglądarkę.
+Chromium wymaga `uv run --frozen --extra browser playwright install chromium`;
+zainstalowany Microsoft Edge można wybrać bez pobierania Chromium. Wybór należy
+zapisać przed następnym cyklem. Nowe raporty zawierają `error_code`, rozróżniający
+brak biblioteki, brak przeglądarki i inne awarie jej uruchomienia.

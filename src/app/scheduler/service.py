@@ -13,6 +13,7 @@ from app.core.price_estimator import now_utc
 from app.scheduler.config import SchedulerConfig
 from app.scheduler.cycle import DealCycle
 from app.scheduler.store import CycleReport, JobStore
+from vinted_deal_hunter.sources import SourceError
 
 logger = logging.getLogger(__name__)
 
@@ -152,12 +153,23 @@ class JobManager:
                 update={"status": "completed", "phase": "completed", "alerts": alerts}
             )
         except Exception as exc:
-            logger.error("Cycle failed id=%s error=%s", identity, type(exc).__name__)
+            error_code = exc.code if isinstance(exc, SourceError) else None
+            logger.error(
+                "Cycle failed id=%s error=%s code=%s",
+                identity,
+                type(exc).__name__,
+                error_code or "unknown",
+            )
             saved_report = await asyncio.to_thread(self.store.get, identity)
             if saved_report is not None:
                 report = saved_report
             report = report.model_copy(
-                update={"status": "error", "phase": "error", "error_type": type(exc).__name__}
+                update={
+                    "status": "error",
+                    "phase": "error",
+                    "error_type": type(exc).__name__,
+                    "error_code": error_code,
+                }
             )
         report = report.model_copy(
             update={"finished_at": self.clock(), "duration_seconds": time.monotonic() - started}

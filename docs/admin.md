@@ -147,6 +147,18 @@ Nowy terminal wymaga ponownego ustawienia tych zmiennych; instrukcja generowania
 hasła jest w [deployment.md](deployment.md). Microsoft Edge nie wymaga pobierania
 Chromium. Dla kanału Chromium wykonaj `uv run --extra browser playwright install chromium`.
 
+Jeśli cykl kończy się `SourceError`, sprawdź kod przyczyny w panelu postępu.
+`chromium_not_installed` oznacza brak plików Chromium wymaganych przez daną wersję
+Playwright: wybierz zainstalowany Microsoft Edge, zapisz warunki i uruchom cykl
+ponownie albo wykonaj `uv run --frozen --extra browser playwright install chromium`.
+Samo `uv sync --locked --extra browser` instaluje bibliotekę, ale nie przeglądarkę.
+`playwright_not_installed` wymaga instalacji tego dodatku i ponownego startu serwera
+z `--extra browser`. `browser_not_installed` dotyczy wybranej przeglądarki lub
+niestandardowej ścieżki, a `browser_start_failed` oznacza inną awarię uruchomienia.
+Nie zmieniamy automatycznie wybranej przeglądarki. Raport i log zapisują bezpieczny
+kod przyczyny; surowe komunikaty procesu i ścieżki lokalne nie trafiają do panelu.
+Starsze raporty nie zawierają kodu; uruchom nowy cykl po aktualizacji aplikacji.
+
 1. W **System → Konfiguracja pobierania** zaznacz rzeczywiste źródło Vinted.
 2. Podaj frazę (np. Nike Air Max 90) albo publiczny link katalogu z filtrami
    ustawionymi na Vinted. Podaj dokładnie jedno z tych pól.

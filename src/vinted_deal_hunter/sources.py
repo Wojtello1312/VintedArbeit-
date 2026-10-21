@@ -6,6 +6,7 @@ import json
 import re
 from abc import ABC, abstractmethod
 from decimal import Decimal
+from enum import StrEnum
 from html.parser import HTMLParser
 from importlib.resources import files
 from pathlib import Path
@@ -13,8 +14,20 @@ from typing import Protocol
 from urllib.parse import urlparse
 
 
+class SourceErrorCode(StrEnum):
+    PLAYWRIGHT_NOT_INSTALLED = "playwright_not_installed"
+    CHROMIUM_NOT_INSTALLED = "chromium_not_installed"
+    BROWSER_NOT_INSTALLED = "browser_not_installed"
+    BROWSER_START_FAILED = "browser_start_failed"
+    BROWSER_SUBPROCESS_UNSUPPORTED = "browser_subprocess_unsupported"
+
+
 class SourceError(ValueError):
     """The source could not be read safely; distinct from a bad individual record."""
+
+    def __init__(self, message: str, *, code: SourceErrorCode | None = None) -> None:
+        super().__init__(message)
+        self.code = code
 
 
 class OfferSource(Protocol):

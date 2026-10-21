@@ -3,6 +3,7 @@
 import asyncio
 import json
 from decimal import Decimal
+from unittest.mock import Mock
 
 import httpx
 import portalocker
@@ -12,6 +13,7 @@ from app.scheduler.runtime import JobRuntime
 from vinted_deal_hunter import vinted_scraper
 from vinted_deal_hunter.config import Settings
 from vinted_deal_hunter.ingestion import import_offers
+from vinted_deal_hunter.sources import SourceError, SourceErrorCode
 from vinted_deal_hunter.vinted import ORIGIN, CollectionStopped, VintedOfferSource, search_url
 from vinted_deal_hunter.vinted_playwright import (
     BrowserDocument,
@@ -25,6 +27,86 @@ from vinted_deal_hunter.vinted_playwright import (
 
 ITEM_123 = f"{ORIGIN}/items/123-demo"
 ITEM_456 = f"{ORIGIN}/items/456-demo"
+
+
+def test_missing_playwright_has_safe_setup_diagnosis(monkeypatch):
+    monkeypatch.setattr(
+        "vinted_deal_hunter.vinted_playwright.importlib.import_module",
+        Mock(side_effect=ImportError("private installation path")),
+    )
+    with pytest.raises(SourceError) as caught:
+        _PlaywrightBrowserSession(VintedPlaywrightConfig())
+    assert caught.value.code == SourceErrorCode.PLAYWRIGHT_NOT_INSTALLED
+    assert "uv sync --locked --extra browser" in str(caught.value)
+    assert "private installation path" not in str(caught.value)
+
+
+@pytest.mark.parametrize(
+    ("channel", "failure", "expected"),
+    [
+        (
+            "chromium",
+            RuntimeError("Executable doesn't exist at /private/browser"),
+            SourceErrorCode.CHROMIUM_NOT_INSTALLED,
+        ),
+        (
+            "msedge",
+            RuntimeError("Chromium distribution 'msedge' is not found at /private/browser"),
+            SourceErrorCode.BROWSER_NOT_INSTALLED,
+        ),
+        (
+            "chrome",
+            RuntimeError("Chromium distribution 'chrome' is not found at /private/browser"),
+            SourceErrorCode.BROWSER_NOT_INSTALLED,
+        ),
+        ("chromium", RuntimeError("private launch details"), SourceErrorCode.BROWSER_START_FAILED),
+        (
+            "chromium",
+            NotImplementedError("private loop details"),
+            SourceErrorCode.BROWSER_SUBPROCESS_UNSUPPORTED,
+        ),
+    ],
+)
+def test_browser_startup_error_is_classified_without_exposing_stderr(
+    monkeypatch, channel, failure, expected
+):
+    manager = Mock()
+    manager.chromium.launch.side_effect = failure
+    api = Mock()
+    api.sync_playwright.return_value.start.return_value = manager
+    monkeypatch.setattr(
+        "vinted_deal_hunter.vinted_playwright.importlib.import_module", Mock(return_value=api)
+    )
+    with pytest.raises(SourceError) as caught:
+        _PlaywrightBrowserSession(VintedPlaywrightConfig(browser_channel=channel))
+    assert caught.value.code == expected
+    assert "private" not in str(caught.value)
+    manager.stop.assert_called_once()
+
+
+def test_driver_start_failure_preserved_without_manager(monkeypatch):
+    api = Mock()
+    api.sync_playwright.return_value.start.side_effect = NotImplementedError()
+    monkeypatch.setattr(
+        "vinted_deal_hunter.vinted_playwright.importlib.import_module", Mock(return_value=api)
+    )
+    with pytest.raises(SourceError) as caught:
+        _PlaywrightBrowserSession(VintedPlaywrightConfig())
+    assert caught.value.code == SourceErrorCode.BROWSER_SUBPROCESS_UNSUPPORTED
+
+
+def test_cleanup_failure_does_not_mask_startup_diagnosis(monkeypatch, caplog):
+    api = Mock()
+    manager = api.sync_playwright.return_value.start.return_value
+    manager.chromium.launch.side_effect = RuntimeError("Executable doesn't exist at /private")
+    manager.stop.side_effect = RuntimeError("private cleanup details")
+    monkeypatch.setattr(
+        "vinted_deal_hunter.vinted_playwright.importlib.import_module", Mock(return_value=api)
+    )
+    with pytest.raises(SourceError) as caught:
+        _PlaywrightBrowserSession(VintedPlaywrightConfig())
+    assert caught.value.code == SourceErrorCode.CHROMIUM_NOT_INSTALLED
+    assert "private" not in caplog.text
 
 
 def item_html(item_id: str, price: str = "25.50") -> bytes:
